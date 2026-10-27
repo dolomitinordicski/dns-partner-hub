@@ -1,6 +1,8 @@
 name: DNS Partner Hub — Pages Preview
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -20,18 +22,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       DNS_PAGES_PREVIEW: 'true'
-      VITE_DNS_FIREBASE_PROJECT_ID: dns-core
-      VITE_DNS_FIREBASE_API_KEY: ${{ vars.DNS_FIREBASE_WEB_API_KEY }}
-      VITE_DNS_FIREBASE_AUTH_DOMAIN: ${{ vars.DNS_FIREBASE_AUTH_DOMAIN }}
-      VITE_DNS_FIREBASE_APP_ID: ${{ vars.DNS_FIREBASE_WEB_APP_ID }}
+      VITE_DNS_STATIC_PREVIEW: 'true'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
-      - name: Verify DNS-only frontend configuration
-        run: node scripts/hosting-preflight.mjs
       - run: npm run check
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
