@@ -25,7 +25,10 @@ jobs:
       - run: npm install --no-audit --no-fund
       - name: Verify DNS-only Firebase configuration
         run: node scripts/hosting-preflight.mjs
-      - run: npm run check
+      - name: Typecheck frontend
+        run: npm run lint
+      - name: Build static frontend only
+        run: npx vite build
       - name: Authenticate Google Cloud via Workload Identity Federation
         uses: google-github-actions/auth@v2
         with:
