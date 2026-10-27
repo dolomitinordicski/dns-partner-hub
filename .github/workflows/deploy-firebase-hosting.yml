@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
+      - name: Verify DNS-only Firebase configuration
+        run: node scripts/hosting-preflight.mjs
       - run: npm run check
       - name: Authenticate Google Cloud via Workload Identity Federation
         uses: google-github-actions/auth@v2
