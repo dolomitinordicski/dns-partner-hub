@@ -5,11 +5,9 @@ import { Hero } from './components/Hero';
 import { VisionSection } from './components/VisionSection';
 import { CorporateDesignSection } from './components/CorporateDesignSection';
 import { QualityCriteriaSection } from './components/QualityCriteriaSection';
-import { VoucherGenerator } from './components/VoucherGenerator';
 import { DownloadsSection } from './components/DownloadsSection';
 import { RegionsSection } from './components/RegionsSection';
 import { ContactSection } from './components/ContactSection';
-import { RegionalToolsSection } from './components/RegionalToolsSection';
 import { WidgetCreator } from './components/WidgetCreator';
 import { PartnerOnboarding } from './components/PartnerOnboarding';
 import { PartnerLoginModal } from './components/PartnerLoginModal';
@@ -327,20 +325,16 @@ export default function App() {
           </div>
         )}
 
-        {/* VOUCHER SYSTEM TAB */}
-        {false && activeTab === 'voucher-system' && (
-          <VoucherGenerator 
-            lang={lang} 
-            accessLevel={accessLevel}
-            partnerCode={partnerCode}
-            partnerName={partnerName}
-            onOpenLoginModal={() => setIsLoginModalOpen(true)}
-          />
-        )}
-
-        {/* REGIONAL TOOLS TAB (B2B TOOLBOX & ANALYTICS) */}
-        {false && activeTab === 'regional-tools' && (
-          <RegionalToolsSection lang={lang} a11y={a11y} accessLevel={accessLevel} />
+        {/* Legacy modules intentionally isolated: no guest data or privileged reads. */}
+        {(activeTab === 'voucher-system' || activeTab === 'regional-tools') && (
+          <section className="max-w-4xl mx-auto p-8 text-center" role="status">
+            <h2 className="text-xl font-bold">DNS Partner Hub</h2>
+            <p className="mt-3">
+              {lang === 'de' ? 'Dieser geschützte Dienst wird derzeit auf das neue DNS-System umgestellt.' :
+               lang === 'it' ? 'Questo servizio riservato è in fase di migrazione al nuovo sistema DNS.' :
+               'This protected service is being migrated to the new DNS system.'}
+            </p>
+          </section>
         )}
 
         {/* REGIONS TAB */}
