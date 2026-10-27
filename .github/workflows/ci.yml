@@ -1,0 +1,31 @@
+name: DNS Partner Hub — Verify
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Typecheck and build
+        run: npm run check
+      - name: Upload preview build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dns-partner-hub-build
+          path: dist/
+          retention-days: 7
