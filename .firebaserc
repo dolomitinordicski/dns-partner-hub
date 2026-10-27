@@ -1,0 +1,10 @@
+{
+  "projects": { "default": "dns-core" },
+  "targets": {
+    "dns-core": {
+      "hosting": {
+        "partner-hub": ["dns-partner-hub"]
+      }
+    }
+  }
+}
