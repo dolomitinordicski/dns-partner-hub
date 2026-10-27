@@ -17,7 +17,7 @@ import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
 import { StickyToolboxBar } from './components/StickyToolboxBar';
-import { DemoAccessSwitcher } from './components/DemoAccessSwitcher';
+
 import { partnerSignIn } from './lib/firebase';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Footer } from './components/Footer';
@@ -61,53 +61,15 @@ export default function App() {
 
   const isLight = a11y.theme === 'light';
 
-  const handleLoginSuccess = (code: string, name: string, role?: 'partner' | 'regional' | 'admin') => {
-    if (role === 'admin') {
-      setAccessLevel('admin');
-      setPartnerName('Direzione Dolomiti NordicSki');
-      setPartnerCode('ADMIN-DIR-001');
-    } else if (role === 'regional') {
-      setAccessLevel('regional');
-      setPartnerName(name || 'TVB Dolomiti Paganella / Partner Regionale');
-      setPartnerCode(code || 'TVB-REG-001');
-      setActiveTab('regional-tools');
-    } else {
-      setAccessLevel('partner');
-      setPartnerCode(code || '3Z-HOTEL-042');
-      setPartnerName(name || 'Sporthotel Drei Zinnen');
-      setActiveTab('voucher-system');
-    }
+  // Role elevation is disabled until the server-authenticated DNS grant integration is ready.
+  const handleLoginSuccess = (_code: string, _name: string, _role?: 'partner' | 'regional' | 'admin') => {
+    setAccessLevel('public');
+    setPartnerCode('');
+    setPartnerName('');
   };
 
-  const handleSelectDemoRole = async (role: AccessLevel) => {
-    if (role === 'public') {
-      handleLogout();
-      return;
-    }
-
-    // Authenticate with Firebase Auth anonymously in DEMO_MODE so Firestore rules pass
-    await partnerSignIn(
-      role === 'admin' ? 'DNS-ADMIN-KEY' : role === 'regional' ? 'REG-3ZINNEN-01' : '3Z-HOTEL-042'
-    );
-
-    if (role === 'admin') {
-      setAccessLevel('admin');
-      setPartnerName('Direzione Generale Dolomiti NordicSki');
-      setPartnerCode('ADMIN-DIR-001');
-      if (activeTab === 'home' || activeTab === 'vision' || activeTab === 'contacts') {
-        setActiveTab('voucher-system');
-      }
-    } else if (role === 'regional') {
-      setAccessLevel('regional');
-      setPartnerName('Associazione Turistica 3 Zinnen Dolomiten');
-      setPartnerCode('REG-3ZINNEN-01');
-      setActiveTab('regional-tools');
-    } else {
-      setAccessLevel('partner');
-      setPartnerName('Sporthotel Drei Zinnen');
-      setPartnerCode('3Z-HOTEL-042');
-      setActiveTab('voucher-system');
-    }
+  const handleSelectDemoRole = (_role: AccessLevel) => {
+    // A browser action must never assign a privileged DNS role.
   };
 
   const handleLogout = () => {
@@ -151,14 +113,7 @@ export default function App() {
         onSelectDemoRole={handleSelectDemoRole}
       />
 
-      {/* Interactive Demo Access Level Switcher */}
-      <DemoAccessSwitcher
-        accessLevel={accessLevel}
-        partnerName={partnerName}
-        partnerCode={partnerCode}
-        onSelectRole={handleSelectDemoRole}
-        lang={lang}
-      />
+
 
       {/* Floating Sticky Quick Toolboxes Bar (AT, B2C, RT) */}
       <StickyToolboxBar setActiveTab={setActiveTab} lang={lang} />
