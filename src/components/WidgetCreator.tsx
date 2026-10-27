@@ -56,7 +56,8 @@ const OFFICIAL_PALETTES: { id: WidgetThemePreset; label: string; color: string; 
 ];
 
 export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel = 'public' }) => {
-  const isPartner = accessLevel !== 'public';
+  // No official certified seal until server-authorized widget entitlement exists.
+  const isPartner = false;
 
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [widgetLang, setWidgetLang] = useState<Language>(lang);
@@ -68,7 +69,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
   const [includeWeather, setIncludeWeather] = useState<boolean>(true);
   const [includePrices, setIncludePrices] = useState<boolean>(isPartner ? true : false);
 
-  const includeBadge = isPartner; // Always true for logged in partners, false for public
+  const includeBadge = false; // Fail-closed: role selected in the client is not certification.
 
   const regionName = selectedRegion === 'all' 
     ? (widgetLang === 'it' ? 'Tutte le 8 Aree Dolomiti NordicSki' : widgetLang === 'de' ? 'Alle 8 Regionen' : 'All 8 Regions')
