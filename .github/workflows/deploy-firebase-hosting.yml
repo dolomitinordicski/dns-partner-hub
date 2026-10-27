@@ -1,8 +1,6 @@
 name: DNS Partner Hub — Firebase Hosting
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 
 permissions:
   contents: read
