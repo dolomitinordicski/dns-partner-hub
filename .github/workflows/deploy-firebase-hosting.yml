@@ -4,6 +4,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: dns-partner-hub-hosting
