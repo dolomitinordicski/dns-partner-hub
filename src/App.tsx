@@ -11,6 +11,7 @@ import { RegionsSection } from './components/RegionsSection';
 import { ContactSection } from './components/ContactSection';
 import { RegionalToolsSection } from './components/RegionalToolsSection';
 import { WidgetCreator } from './components/WidgetCreator';
+import { PartnerOnboarding } from './components/PartnerOnboarding';
 import { PartnerLoginModal } from './components/PartnerLoginModal';
 import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
@@ -169,6 +170,7 @@ export default function App() {
         {activeTab === 'home' && (
           <div>
             <Hero setActiveTab={setActiveTab} lang={lang} a11y={a11y} />
+            <PartnerOnboarding lang={lang} onWidget={() => setActiveTab('widgets')} />
 
             {/* Quick Feature Shortcut Cards */}
             <section className={`py-12 border-b transition-colors ${
