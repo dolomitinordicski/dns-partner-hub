@@ -7,13 +7,17 @@ import {
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 // Runtime Firebase client settings belong exclusively to the DNS-owned project.
 // Values are public web-app identifiers, not admin credentials.
-const firebaseConfig = {
+const staticPreview = import.meta.env.VITE_DNS_STATIC_PREVIEW === 'true';
+const firebaseConfig = staticPreview ? {
+  apiKey: 'preview-no-api-key', authDomain: 'preview.invalid',
+  projectId: 'dns-preview-offline', appId: '1:0:web:preview',
+} : {
   apiKey: import.meta.env.VITE_DNS_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_DNS_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_DNS_FIREBASE_PROJECT_ID,
   appId: import.meta.env.VITE_DNS_FIREBASE_APP_ID,
 };
-if (firebaseConfig.projectId !== 'dns-core' || !firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.appId) {
+if (!staticPreview && (firebaseConfig.projectId !== 'dns-core' || !firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.appId)) {
   throw new Error('DNS Firebase web app configuration is missing or not dns-core');
 }
 
@@ -38,6 +42,7 @@ export async function partnerSignIn(_partnerCode: string, _password?: string): P
 
 /** Auth identity only. Never infer partner/regional/admin roles from this result. */
 export async function signInVerifiedEmail(email: string, password: string): Promise<SignInResult> {
+  if (staticPreview) return { ok: false, error: 'Preview only: authentication disabled.' };
   try {
     const credential = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
     if (!credential.user.emailVerified || credential.user.isAnonymous) {
