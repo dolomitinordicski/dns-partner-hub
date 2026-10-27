@@ -18,7 +18,6 @@ import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
 import { StickyToolboxBar } from './components/StickyToolboxBar';
 
-import { partnerSignIn } from './lib/firebase';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Footer } from './components/Footer';
 import { 
