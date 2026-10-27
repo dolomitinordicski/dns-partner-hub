@@ -205,17 +205,17 @@ export default function App() {
                       {lang === 'en' && 'Skipass Voucher Issuance'}
                     </h3>
                     <p className="text-xs opacity-90 leading-relaxed font-light">
-                      {lang === 'de' && 'Erstellen Sie direkt an der Rezeption Loipenpass-Gutscheine mit QR-Code für Ihre Gäste.'}
-                      {lang === 'it' && 'Emetti voucher skipass con QR Code direttamente per i tuoi ospiti alla reception.'}
-                      {lang === 'en' && 'Issue QR code skipass vouchers directly for your hotel guests at reception.'}
+                      {lang === 'de' && 'Gutscheinmodul in Vorbereitung. Freischaltung erst nach DNS Core Integration.'}
+                      {lang === 'it' && 'Modulo voucher in preparazione. Attivazione dopo l’integrazione sicura con DNS Core.'}
+                      {lang === 'en' && 'Voucher module in preparation, pending secure DNS Core integration.'}
                     </p>
                     <div className={`text-xs font-bold flex items-center space-x-1 pt-2 ${
                       isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
                     }`}>
                       <span>
-                        {lang === 'de' && 'Gutschein ausstellen'}
-                        {lang === 'it' && 'Emetti Voucher'}
-                        {lang === 'en' && 'Issue Voucher'}
+                        {lang === 'de' && 'In Vorbereitung'}
+                        {lang === 'it' && 'In preparazione'}
+                        {lang === 'en' && 'Coming soon'}
                       </span>
                       <ChevronRight className="w-4 h-4" />
                     </div>
