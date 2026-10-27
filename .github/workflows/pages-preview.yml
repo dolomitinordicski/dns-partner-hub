@@ -29,7 +29,10 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
-      - run: npm run check
+      - name: Typecheck frontend
+        run: npm run lint
+      - name: Build static frontend only
+        run: npx vite build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
