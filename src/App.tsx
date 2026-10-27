@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { DNS_DEFAULT_UI_LANGUAGE, DNS_UI_LANGUAGE_STORAGE_KEY, resolveDNSLanguagePreference } from '@dolomitinordicski/dns-shared-data/localization';
 import { NavigationTab, Language, AccessibilitySettings, AccessLevel } from './types';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -31,7 +32,20 @@ import {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavigationTab>('home');
-  const [lang, setLang] = useState<Language>('de');
+  const [lang, setLang] = useState<Language>(() => {
+    try {
+      const saved = window.localStorage.getItem(DNS_UI_LANGUAGE_STORAGE_KEY);
+      if (saved === 'en') return 'en'; // Partner Hub supports English in addition to Foundation DE/IT.
+      return resolveDNSLanguagePreference({ stored: saved }) as Language;
+    } catch {
+      return DNS_DEFAULT_UI_LANGUAGE;
+    }
+  });
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    try { window.localStorage.setItem(DNS_UI_LANGUAGE_STORAGE_KEY, lang); } catch { /* storage optional */ }
+  }, [lang]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isA11yModalOpen, setIsA11yModalOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
