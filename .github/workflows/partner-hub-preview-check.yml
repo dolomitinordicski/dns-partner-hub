@@ -1,0 +1,25 @@
+name: Partner Hub preview check
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: ''
+      - run: npm install --no-audit --no-fund
+      - run: npm run check
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: partner-hub-static-preview
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7

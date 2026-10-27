@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { 
   getAuth, 
   signInWithEmailAndPassword, 
-  signInAnonymously, 
   signOut as fbSignOut 
 } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
@@ -18,25 +17,26 @@ export const auth = getAuth(app);
 // true = accesso anonimo Firebase (la demo funziona contro le regole chiuse).
 // false = produzione: email/password reali; il ruolo autorevole deve arrivare
 // da un custom claim impostato lato backend, non dal client.
-export const DEMO_MODE = true;
-
-function partnerCodeToEmail(partnerCode: string): string {
-  const safe = partnerCode.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  return `${safe}@partner.dolomitinordicski.local`;
-}
+export const DEMO_MODE = false;
 
 export interface SignInResult { ok: boolean; error?: string; }
 
-export async function partnerSignIn(partnerCode: string, password?: string): Promise<SignInResult> {
+/** Legacy code login intentionally disabled. Email Auth alone is not authorization. */
+export async function partnerSignIn(_partnerCode: string, _password?: string): Promise<SignInResult> {
+  return { ok: false, error: 'Partner authentication will be enabled after DNS server grant verification.' };
+}
+
+/** Auth identity only. Never infer partner/regional/admin roles from this result. */
+export async function signInVerifiedEmail(email: string, password: string): Promise<SignInResult> {
   try {
-    if (DEMO_MODE) {
-      await signInAnonymously(auth);
-      return { ok: true };
+    const credential = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
+    if (!credential.user.emailVerified || credential.user.isAnonymous) {
+      await fbSignOut(auth);
+      return { ok: false, error: 'Email verification is required.' };
     }
-    await signInWithEmailAndPassword(auth, partnerCodeToEmail(partnerCode), password || 'demo1234');
     return { ok: true };
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  } catch {
+    return { ok: false, error: 'Authentication failed.' };
   }
 }
 
