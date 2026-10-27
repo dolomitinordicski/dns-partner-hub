@@ -5,11 +5,9 @@ import { Hero } from './components/Hero';
 import { VisionSection } from './components/VisionSection';
 import { CorporateDesignSection } from './components/CorporateDesignSection';
 import { QualityCriteriaSection } from './components/QualityCriteriaSection';
-import { VoucherGenerator } from './components/VoucherGenerator';
 import { DownloadsSection } from './components/DownloadsSection';
 import { RegionsSection } from './components/RegionsSection';
 import { ContactSection } from './components/ContactSection';
-import { RegionalToolsSection } from './components/RegionalToolsSection';
 import { WidgetCreator } from './components/WidgetCreator';
 import { PartnerOnboarding } from './components/PartnerOnboarding';
 import { PartnerLoginModal } from './components/PartnerLoginModal';
@@ -327,20 +325,21 @@ export default function App() {
           </div>
         )}
 
-        {/* VOUCHER SYSTEM TAB */}
-        {activeTab === 'voucher-system' && (
-          <VoucherGenerator 
-            lang={lang} 
-            accessLevel={accessLevel}
-            partnerCode={partnerCode}
-            partnerName={partnerName}
-            onOpenLoginModal={() => setIsLoginModalOpen(true)}
-          />
-        )}
-
-        {/* REGIONAL TOOLS TAB (B2B TOOLBOX & ANALYTICS) */}
-        {activeTab === 'regional-tools' && (
-          <RegionalToolsSection lang={lang} a11y={a11y} accessLevel={accessLevel} />
+        {/* Legacy modules isolated until DNS Core authorization is ready. */}
+        {(activeTab === 'voucher-system' || activeTab === 'regional-tools') && (
+          <section className="max-w-3xl mx-auto px-4 sm:px-8 py-16" role="status">
+            <div className="rounded-2xl border border-[#82B2BD]/40 bg-white p-8 text-[#083845] shadow-sm space-y-4">
+              <h1 className="text-2xl font-bold">
+                {lang === 'de' ? 'Modul in Vorbereitung' : lang === 'it' ? 'Modulo in preparazione' : 'Module in preparation'}
+              </h1>
+              <p>
+                {lang === 'de' ? 'Dieses Modul wird erst nach der sicheren Anbindung an DNS Core freigeschaltet.' : lang === 'it' ? 'Questo modulo sarà disponibile dopo il collegamento sicuro a DNS Core.' : 'This module will become available after secure integration with DNS Core.'}
+              </p>
+              <button type="button" onClick={() => setActiveTab('home')} className="rounded-lg bg-[#0D4D5E] px-5 py-3 text-white font-semibold">
+                {lang === 'de' ? 'Zur Startseite' : lang === 'it' ? 'Torna alla home' : 'Back to home'}
+              </button>
+            </div>
+          </section>
         )}
 
         {/* REGIONS TAB */}
