@@ -328,7 +328,7 @@ export default function App() {
         )}
 
         {/* VOUCHER SYSTEM TAB */}
-        {activeTab === 'voucher-system' && (
+        {false && activeTab === 'voucher-system' && (
           <VoucherGenerator 
             lang={lang} 
             accessLevel={accessLevel}
@@ -339,7 +339,7 @@ export default function App() {
         )}
 
         {/* REGIONAL TOOLS TAB (B2B TOOLBOX & ANALYTICS) */}
-        {activeTab === 'regional-tools' && (
+        {false && activeTab === 'regional-tools' && (
           <RegionalToolsSection lang={lang} a11y={a11y} accessLevel={accessLevel} />
         )}
 
