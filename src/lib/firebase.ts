@@ -5,12 +5,22 @@ import {
   signOut as fbSignOut 
 } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+// Runtime Firebase client settings belong exclusively to the DNS-owned project.
+// Values are public web-app identifiers, not admin credentials.
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_DNS_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_DNS_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_DNS_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_DNS_FIREBASE_APP_ID,
+};
+if (firebaseConfig.projectId !== 'dns-core' || !firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.appId) {
+  throw new Error('DNS Firebase web app configuration is missing or not dns-core');
+}
 
 const app = initializeApp(firebaseConfig);
 
 // CRITICAL: The app will break without databaseId specified
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // DEMO_MODE:
@@ -91,15 +101,3 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   throw new Error(JSON.stringify(errInfo));
 }
 
-// Validate connection on startup
-async function testConnection() {
-  try {
-    await getDocFromServer(doc(db, 'vouchers', '_test_connection_'));
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error('Please check your Firebase configuration.');
-    }
-  }
-}
-
-testConnection();
