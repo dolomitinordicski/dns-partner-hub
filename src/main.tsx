@@ -5,6 +5,8 @@ import './index.css';
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 import { initDNSUIPrimitives } from '@dolomitinordicski/dns-shared-data/ui/primitives';
 import { initDNSShellRuntime } from '@dolomitinordicski/dns-shared-data/ui/shell';
+import { initDNSFooterRuntime } from '@dolomitinordicski/dns-shared-data/ui/footer';
+import { initDNSToolChromeRuntime } from '@dolomitinordicski/dns-shared-data/ui/tool-chrome';
 
 // Foundation owns the source tokens. Keep existing component classes during migration.
 const { colors, typography } = DNS_DESIGN_SYSTEM;
@@ -21,6 +23,9 @@ rootStyle.setProperty('--dns-font-body', `"${typography.secondaryFamily}", syste
 // Foundation primitives are shared; retain the existing accessibility dialog for now.
 initDNSUIPrimitives();
 initDNSShellRuntime('portal');
+// Foundation owns footer decoration and the shared corporate header/navigation runtime.
+initDNSFooterRuntime();
+initDNSToolChromeRuntime({ autoCreateProgress: false });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
