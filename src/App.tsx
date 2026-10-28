@@ -15,7 +15,6 @@ import { PartnerLoginModal } from './components/PartnerLoginModal';
 import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
-import { StickyToolboxBar } from './components/StickyToolboxBar';
 
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Footer } from './components/Footer';
@@ -126,10 +125,7 @@ export default function App() {
 
 
 
-      {/* Floating Sticky Quick Toolboxes Bar (AT, B2C, RT) */}
-      <StickyToolboxBar setActiveTab={setActiveTab} lang={lang} />
-
-      {/* Main Content Area */}
+{/* Main Content Area */}
       <main className="flex-1">
         
         {/* HOME DASHBOARD TAB */}
