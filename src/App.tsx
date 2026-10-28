@@ -139,7 +139,7 @@ export default function App() {
             <PartnerOnboarding lang={lang} onWidget={() => setActiveTab('widgets')} />
 
             {/* Quick Feature Shortcut Cards */}
-            <section className={`py-12 border-b transition-colors ${
+            <section className={`dns-portal-home-services py-12 border-b transition-colors ${
               isLight ? 'bg-[#FFFFFF] border-[#82B2BD]/30' : 'bg-[#083845] border-[#417483]/30'
             }`}>
               <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
@@ -166,7 +166,7 @@ export default function App() {
                   {/* Corporate Design */}
                   <div
                     onClick={() => setActiveTab('corporate-design')}
-                    className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
+                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
                       isLight
                         ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
                         : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
@@ -202,7 +202,7 @@ export default function App() {
                   {/* Prevendita Voucher */}
                   <div
                     onClick={() => setActiveTab('voucher-system')}
-                    className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
+                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
                       isLight
                         ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
                         : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
@@ -238,7 +238,7 @@ export default function App() {
                   {/* Criteri Qualità */}
                   <div
                     onClick={() => setActiveTab('quality-criteria')}
-                    className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
+                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
                       isLight
                         ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
                         : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
@@ -274,7 +274,7 @@ export default function App() {
                   {/* Download Assets */}
                   <div
                     onClick={() => setActiveTab('downloads')}
-                    className={`p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
+                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
                       isLight
                         ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
                         : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
