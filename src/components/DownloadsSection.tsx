@@ -187,9 +187,9 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
             <p className={`text-sm sm:text-base leading-relaxed max-w-3xl ${
               isLight ? 'text-[#417483]' : 'text-slate-200'
             }`}>
-              {lang === 'it' && 'Scarica i pacchetti vettoriali dei loghi ufficiali 2026, la mappa completa in alta risoluzione delle 8 aree (1.000 km di piste), i prospetti informativi trilingui per le camere degli ospiti ed il kit social media.'}
-              {lang === 'de' && 'Laden Sie hochauflösende Vektorlogos, komplette Loipenkarten der 8 Regionen (1.000 km) sowie Informationsflyer für Hotelzimmer herunter.'}
-              {lang === 'en' && 'Download 2026 vector logos, high-resolution 1,000 km trail maps, guest room information flyers, and social media kits.'}
+              {lang === 'it' && 'Consulta le risorse per i partner. I materiali sono disponibili solo quando esiste un collegamento verificato.'}
+              {lang === 'de' && 'Partnerressourcen im Überblick. Dateien können nur mit einem verifizierten Link geöffnet werden.'}
+              {lang === 'en' && 'Browse partner resources. Materials can only be opened when a verified file link is available.'}
             </p>
           </div>
 
@@ -499,7 +499,7 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
               </div>
               <div className="space-y-1">
                 <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-0.5 rounded bg-[#052832] border border-[#417483]/40 text-[#AAD0D1]">
-                  DOCUMENTO UFFICIALE B2B • {previewItem.fileType} ({previewItem.fileSize})
+                  {lang === 'de' ? 'MATERIALINFORMATION' : lang === 'it' ? 'INFORMAZIONI MATERIALE' : 'MATERIAL INFORMATION'}
                 </span>
                 <h3 className="text-xl font-extrabold text-white leading-tight">
                   {getLoc(previewItem.title, lang)}
@@ -507,34 +507,15 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
               </div>
             </div>
 
-            {/* Simulated Document Preview Canvas */}
-            <div className="p-6 rounded-xl bg-white text-slate-900 border-2 border-[#0D4D5E] space-y-4 shadow-inner">
-              <div className="flex items-center justify-between border-b pb-3 border-slate-200">
-                <span className="font-black text-[#0D4D5E] text-lg">DOLOMITI NORDICSKI</span>
-                <span className="text-xs font-mono font-bold bg-[#0D4D5E] text-white px-2 py-0.5 rounded">
-                  {previewItem.fileType} PREVIEW
-                </span>
-              </div>
-
-              <div className="space-y-2 text-xs">
-                <p className="font-medium text-slate-800 leading-relaxed">
-                  {getLoc(previewItem.description, lang)}
-                </p>
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1 text-[11px]">
-                  <span className="font-bold text-[#0D4D5E] block">Specifiche e Risoluzione:</span>
-                  <ul className="list-disc list-inside text-slate-600 space-y-0.5">
-                    <li>Formato file: {previewItem.fileType} alta risoluzione vettoriale / PDF</li>
-                    <li>Dimensione pacchetto: {previewItem.fileSize}</li>
-                    <li>Ultimo aggiornamento: {getLoc(previewItem.updatedAt, lang)}</li>
-                    <li>Uso consentito: Strutture ricettive e partner accreditati Dolomiti NordicSki</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="text-[10px] font-mono text-slate-400 text-center pt-2">
-                Dolomiti NordicSki &bull; 1.000 km Cross-Country Carousel &bull; Offizielles Dokument
-              </div>
-            </div>
+             {/* Metadata only; not a simulated file preview. */}
+             <div className="p-5 rounded-xl bg-[#052832] border border-[#417483]/40 space-y-3 text-sm text-slate-200">
+               <p>{getLoc(previewItem.description, lang)}</p>
+               <p className="text-xs">
+                 {hasDownloadUrl(previewItem)
+                   ? (lang === 'de' ? 'Materialbeschreibung, keine Dateivorschau.' : lang === 'it' ? 'Descrizione del materiale, non anteprima del file.' : 'Material description, not a file preview.')
+                   : (lang === 'de' ? 'Keine verifizierte Datei verfügbar.' : lang === 'it' ? 'Nessun file verificato disponibile.' : 'No verified file available.')}
+               </p>
+             </div>
 
             {/* Actions */}
             <div className="flex items-center justify-end space-x-3 pt-2">
