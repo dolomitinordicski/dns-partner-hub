@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sparkles, Award, Sun, Ticket, ChevronRight } from 'lucide-react';
 import { WidgetTrailPreview } from './WidgetTrailPreview';
-import { DNS_LOGO_BASE64 } from '../../data/portalData';
+import { DNS_SHARED_WEB_LOGO_URL } from '../../services/foundationBrand';
 import type { Language } from '../../types';
 
 interface WidgetPreviewProps {
@@ -54,7 +54,7 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                   {/* LOGO: BORDERLESS & ENLARGED BY 20% */}
                   <div className="flex items-center justify-center shrink-0">
                     <img 
-                      src={DNS_LOGO_BASE64} 
+                      src={DNS_SHARED_WEB_LOGO_URL} 
                       alt="Dolomiti NordicSki Logo" 
                       className="h-10 sm:h-11 w-auto object-contain rounded-none"
                     />
@@ -222,12 +222,15 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                       isLight ? 'text-emerald-700' : 'text-emerald-300'
                     }`} />
                     <span>
-                      {widgetLang === 'de' && 'Loipenpass Tarife 2026'}
-                      {widgetLang === 'it' && 'Prezzi & Tariffe Skipass 2026'}
-                      {widgetLang === 'en' && 'Pass Prices & Tariffs 2026'}
+                      {widgetLang === 'de' && 'Loipenpass-Tarife'}
+                      {widgetLang === 'it' && 'Prezzi & Tariffe Skipass'}
+                      {widgetLang === 'en' && 'Pass Prices & Tariffs'}
                     </span>
                   </div>
 
+                  <p role="status" className="text-xs opacity-80">
+                    {widgetLang === 'de' ? 'Aktuelle Preise aus der offiziellen Quelle noch nicht verfügbar.' : widgetLang === 'it' ? 'Tariffe aggiornate dalla fonte ufficiale non ancora disponibili.' : 'Current official prices are not yet available.'}
+                  </p>
                   <div className="grid grid-cols-3 gap-2.5 text-xs">
                     <div className={`p-3 rounded-none border text-center ${
                       isLight ? 'bg-emerald-100/70 border-emerald-300' : 'bg-black/30 border-white/15'
@@ -239,7 +242,7 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                       </span>
                       <span className={`font-black text-base ${
                         isLight ? 'text-emerald-950' : 'text-emerald-300'
-                      }`}>€ 13,00</span>
+                      }`}>—</span>
                     </div>
 
                     <div className={`p-3 rounded-none border text-center ${
@@ -252,7 +255,7 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                       </span>
                       <span className={`font-black text-base ${
                         isLight ? 'text-emerald-950' : 'text-emerald-300'
-                      }`}>€ 45,00</span>
+                      }`}>—</span>
                     </div>
 
                     <div className={`p-3 rounded-none border text-center ${
@@ -265,7 +268,7 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                       </span>
                       <span className={`font-black text-base ${
                         isLight ? 'text-emerald-950' : 'text-emerald-300'
-                      }`}>€ 120,00</span>
+                      }`}>—</span>
                     </div>
                   </div>
                 </div>
