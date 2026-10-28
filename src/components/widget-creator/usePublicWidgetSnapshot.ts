@@ -16,8 +16,8 @@ export interface PublicWidgetSnapshot {
   publishedAt: string;
   logo: { url: string; alt: { de: string; it: string; en: string } } | null;
   pricing: { status: string; items: PublicPrice[] };
-  trails: { status: string; openKm: number | null; totalKm: number | null };
-  weather: { status: string; temperatureC: number | null; snowDepthCm: number | null };
+  trails: { status: string; observedAt: string | null; openKm: number | null; totalKm: number | null };
+  weather: { status: string; observedAt: string | null; temperatureC: number | null; snowDepthCm: number | null };
 }
 type State = { status: 'loading' | 'available' | 'unavailable' | 'error'; snapshot: PublicWidgetSnapshot | null };
 
