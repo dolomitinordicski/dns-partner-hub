@@ -28,7 +28,7 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
         <img src={DNS_FOOTER_GRAPHIC.url} alt="" aria-hidden="true" className="absolute bottom-0 right-0 w-4/5 max-w-xl pointer-events-none opacity-25" />
         <p className="relative text-xs font-bold uppercase tracking-wider opacity-90">{tr('Dolomiti NordicSki · Widget-Vorschau', 'Dolomiti NordicSki · Anteprima widget', 'Dolomiti NordicSki · Widget preview')}</p>
         <div className="relative flex flex-wrap items-center gap-4">
-          <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="max-h-16 max-w-36 object-contain" />
+          {areaId === "all" && <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="max-h-16 max-w-36 object-contain" />}
           {regionLogos.logos.map(logo => <img key={logo.id} src={logo.url} alt={logo.label} className="max-h-16 max-w-36 object-contain" loading="lazy" />)}
           {regionLogos.status === 'ready' && regionLogos.logos.length === 0 && snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
           <div className="min-w-0 flex-1">
@@ -55,7 +55,7 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
           {priceItems.length > 0 ? <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{priceItems.map(p => <div key={p.productCode} className="rounded-md p-4" style={{ background: c.background }}><p className="text-xs">{p.productCode}</p><p className="text-lg font-bold" style={{ color: c.deep }}>{new Intl.NumberFormat(lang, { style: 'currency', currency: p.currency }).format(p.amount)}</p></div>)}</div> : <p className="text-sm">{tr('Preise nicht verfügbar', 'Prezzi non disponibili', 'Prices unavailable')}</p>}
         </div>}
       </div>
-      <footer className="px-5 sm:px-7 py-3 text-xs font-semibold" style={{ borderTop: '1px solid ' + c.border, color: c.mid }}>Powered by Dolomiti NordicSki</footer>
+      <footer className="px-5 sm:px-7 py-3 flex flex-wrap items-center justify-between gap-4 text-xs font-semibold" style={{ borderTop: '1px solid ' + c.border, color: c.mid }}><span>Powered by Dolomiti NordicSki</span>{areaId !== "all" && <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="ml-auto max-h-12 max-w-32 object-contain" />}</footer>
     </section>
   );
 }
