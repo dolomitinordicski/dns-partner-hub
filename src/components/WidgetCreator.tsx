@@ -110,13 +110,9 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
           />
 
           <div className="lg:col-span-7">
-            {publicData.snapshot ? (
-              <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot} />
-            ) : (
-              <p role="status" className="p-4 border border-current">
-                {lang === 'de' ? 'Keine veröffentlichten Widget-Daten verfügbar.' : lang === 'it' ? 'Nessun dato widget pubblicato disponibile.' : 'No published widget data available.'}
-              </p>
-            )}
+            <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot}
+              regionName={regionName} includeTrails={includeTrails} includeWeather={includeWeather}
+              includePrices={includePrices} paletteColor={currentBgColor} isLight={isLight} />
           </div>
         </div>
 
