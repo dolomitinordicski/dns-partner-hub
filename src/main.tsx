@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 import { initDNSUIPrimitives } from '@dolomitinordicski/dns-shared-data/ui/primitives';
+import { initDNSShellRuntime } from '@dolomitinordicski/dns-shared-data/ui/shell';
 
 // Foundation owns the source tokens. Keep existing component classes during migration.
 const { colors, typography } = DNS_DESIGN_SYSTEM;
@@ -19,6 +20,7 @@ rootStyle.setProperty('--dns-font-body', `"${typography.secondaryFamily}", syste
 
 // Foundation primitives are shared; retain the existing accessibility dialog for now.
 initDNSUIPrimitives();
+initDNSShellRuntime('portal');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

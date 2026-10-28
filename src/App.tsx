@@ -126,7 +126,21 @@ export default function App() {
 
 
 {/* Main Content Area */}
-      <main className="flex-1">
+      <div data-dns-portal-layout style={{flex:1}}>
+        <nav id="dns-portal-navigation" data-dns-app-nav data-dns-open="false" aria-label="Partner Hub" className="dns-card" style={{borderRadius:0,padding:'20px 12px',display:'flex',flexDirection:'column',gap:4}}>
+          {([
+            ['home',{de:'Start',it:'Home',en:'Home'}],
+            ['vision',{de:'Vision',it:'Vision',en:'Vision'}],
+            ['corporate-design',{de:'Corporate Design',it:'Corporate Design',en:'Corporate Design'}],
+            ['quality-criteria',{de:'Qualitätskriterien',it:'Criteri di qualità',en:'Quality criteria'}],
+            ['widgets',{de:'Widget Creator',it:'Widget Creator',en:'Widget Creator'}],
+            ['regions',{de:'DNS Gebiete',it:'Aree DNS',en:'DNS areas'}],
+            ['downloads',{de:'Downloads',it:'Download',en:'Downloads'}],
+            ['contacts',{de:'Kontakt',it:'Contatti',en:'Contacts'}],
+          ] as const).map(([tab,labels])=><button type="button" key={tab} className="dns-button" data-variant={activeTab===tab?'primary':'tertiary'} aria-current={activeTab===tab?'page':undefined} style={{justifyContent:'flex-start',fontSize:12}} onClick={()=>{setActiveTab(tab);window.dispatchEvent(new Event('dns:portal-navigate'));window.scrollTo({top:0,behavior:'smooth'});}}>{labels[lang]}</button>)}
+        </nav>
+        <main data-dns-shell-main className="flex-1" style={{minWidth:0}}>
+
         
         {/* HOME DASHBOARD TAB */}
         {activeTab === 'home' && (
@@ -367,7 +381,8 @@ export default function App() {
           />
         )}
 
-      </main>
+        </main>
+      </div>
 
       {/* Partner Login Modal Dialog */}
       <PartnerLoginModal
@@ -401,7 +416,7 @@ export default function App() {
       />
 
       {/* Footer */}
-      <Footer setActiveTab={setActiveTab} lang={lang} onOpenLegal={handleOpenLegal} />
+      <div data-dns-tool-footer><Footer setActiveTab={setActiveTab} lang={lang} onOpenLegal={handleOpenLegal} /></div>
 
       {/* Floating Go To Top Button (Always visible across all devices) */}
       <ScrollToTopButton lang={lang} />
