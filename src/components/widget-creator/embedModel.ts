@@ -1,4 +1,4 @@
-import type { Language } from '../types';
+import type { Language } from '../../types';
 
 export type WidgetThemePreset = 'dns-primary' | 'dns-deep' | 'dns-muted-teal' | 'frosted-ice';
 
