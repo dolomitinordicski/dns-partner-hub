@@ -201,7 +201,7 @@ export default function App() {
       />
 
       {/* Footer */}
-      <div data-dns-tool-footer><Footer setActiveTab={setActiveTab} lang={lang} onOpenLegal={handleOpenLegal} /></div>
+      <div data-dns-tool-footer><Footer lang={lang} onOpenLegal={handleOpenLegal} /></div>
 
       {/* Floating Go To Top Button (Always visible across all devices) */}
 
