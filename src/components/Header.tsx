@@ -3,7 +3,8 @@ import type { NavigationTab, Language, AccessibilitySettings, AccessLevel } from
 import { DNS_FOUNDATION_RELEASE_VERSION } from '@dolomitinordicski/dns-shared-data/release';
 
 const DNS_SHARED_WEB_LOGO_URL = `https://raw.githubusercontent.com/dolomitinordicski/dns-shared-data/foundation-v${DNS_FOUNDATION_RELEASE_VERSION}/brand/logo-web.png`;
-import { Accessibility, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { initDNSAccessibilityRuntime } from '@dolomitinordicski/dns-shared-data/ui/accessibility';
 
 interface HeaderProps {
   activeTab: NavigationTab;
@@ -25,6 +26,19 @@ export const Header: React.FC<HeaderProps> = ({
   lang, setLang, accessLevel, onOpenLoginModal, onLogout, onOpenA11yModal
 }) => {
   const [open, setOpen] = React.useState(false);
+  const a11yMount = React.useRef<HTMLDivElement>(null);
+  const a11yRuntime = React.useRef<ReturnType<typeof initDNSAccessibilityRuntime> | null>(null);
+
+  React.useEffect(() => {
+    if (!a11yMount.current) return;
+    const runtime = initDNSAccessibilityRuntime({ mountTarget: a11yMount.current, language: lang === 'it' ? 'it' : 'de' });
+    a11yRuntime.current = runtime;
+    return () => { runtime.disconnect(); a11yRuntime.current = null; };
+  }, []);
+
+  React.useEffect(() => {
+    a11yRuntime.current?.setLanguage(lang === 'it' ? 'it' : 'de');
+  }, [lang]);
 
   React.useEffect(() => {
     document.querySelector('[data-dns-app-nav]')?.setAttribute('data-dns-open', String(open));
@@ -53,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button key={l} type="button" className="dns-button" data-variant={lang === l ? 'primary' : 'tertiary'} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>
               ))}
             </div>
-            <button type="button" className="dns-button" data-variant="icon" aria-label={lang === 'de' ? 'Barrierefreiheit' : lang === 'it' ? 'Accessibilità' : 'Accessibility'} onClick={onOpenA11yModal}><Accessibility size={18} /></button>
+            <div ref={a11yMount} data-dns-accessibility-mount />
             <button type="button" className="dns-tool-header-session-action" onClick={accessLevel === 'public' ? onOpenLoginModal : onLogout}>
               {accessLevel === 'public' ? (lang === 'de' ? 'Anmelden' : lang === 'it' ? 'Accedi' : 'Login') : (lang === 'de' ? 'Abmelden' : lang === 'it' ? 'Esci' : 'Logout')}
             </button>
