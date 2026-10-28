@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Language, AccessibilitySettings, AccessLevel } from '../types';
-import { LOGO_VARIANTS, BRAND_GUIDELINES } from '../data/portalData';
+import { BRAND_GUIDELINES } from '../data/portalData';
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
-import { DNS_SHARED_WEB_LOGO_URL } from '../services/foundationBrand';
+import { DNS_SHARED_WEB_LOGO_URL, DNS_SHARED_PRINT_LOGO_URL } from '../services/foundationBrand';
 import { 
   FileText, 
   Download, 
@@ -48,10 +48,24 @@ const rgbFromHex = (hex: string): string => {
   return [0, 2, 4].map((position) => parseInt(value.slice(position, position + 2), 16)).join(', ');
 };
 
+const LOGO_VARIANTS = [
+  {
+    id: 'web', name: { de: 'DNS Web-Logo (PNG)', it: 'Logo DNS web (PNG)', en: 'DNS Web Logo (PNG)' },
+    useCase: { de: 'Offizielle Foundation-Datei für Web und Anwendungen.', it: 'File ufficiale Foundation per web e applicazioni.', en: 'Official Foundation file for web and apps.' },
+    fileFormats: ['PNG'], bgType: 'light' as const, downloadSize: 'PNG',
+    fileName: 'dolomiti-nordicski-logo-web.png', downloadUrl: DNS_SHARED_WEB_LOGO_URL,
+  },
+  {
+    id: 'print', name: { de: 'DNS Druck-Logo (PNG)', it: 'Logo DNS stampa (PNG)', en: 'DNS Print Logo (PNG)' },
+    useCase: { de: 'Offizielle Foundation-Datei für Druck und PDF.', it: 'File ufficiale Foundation per stampa e PDF.', en: 'Official Foundation file for print and PDF.' },
+    fileFormats: ['PNG'], bgType: 'light' as const, downloadSize: 'PNG',
+    fileName: 'dolomiti-nordicski-logo-print.png', downloadUrl: DNS_SHARED_PRINT_LOGO_URL,
+  },
+] as const;
+
 export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ lang, a11y, accessLevel = 'public' }) => {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
-  const [selectedLogoId, setSelectedLogoId] = useState<string>('logo-main-color');
-  const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
+  const [selectedLogoId, setSelectedLogoId] = useState<string>('web');
   const [activeTimelineYear, setActiveTimelineYear] = useState<number>(2025);
   const [statementLang, setStatementLang] = useState<'de' | 'it' | 'en'>('de');
 
@@ -63,9 +77,21 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
     setTimeout(() => setCopiedColor(null), 2000);
   };
 
-  const handleDownloadLogo = (logoName: string, format: string) => {
-    setDownloadSuccess(`${logoName} (${format})`);
-    setTimeout(() => setDownloadSuccess(null), 3000);
+  const downloadOfficialLogo = async (url: string, fileName: string) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const objectUrl = URL.createObjectURL(await response.blob());
+      const anchor = document.createElement('a');
+      anchor.href = objectUrl;
+      anchor.download = fileName;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    } catch {
+      window.location.assign(url);
+    }
   };
 
   const activeLogo = LOGO_VARIANTS.find(l => l.id === selectedLogoId) || LOGO_VARIANTS[0];
@@ -107,42 +133,11 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
             </p>
           </div>
 
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDownloadLogo('Corporate Design Manual 2026', 'PDF');
-            }}
-            className={`inline-flex items-center space-x-2 px-5 py-3 rounded-xl font-black text-sm shadow-lg transition-all shrink-0 hover:scale-[1.02] ${
-              isLight 
-                ? 'bg-[var(--color-dns-deep)] hover:bg-[var(--color-dns-primary-dark)] text-white' 
-                : 'bg-[var(--color-dns-light)] hover:bg-white text-[var(--color-dns-primary-dark)]'
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            <span>
-              {lang === 'it' && 'Scarica Manuale PDF (14.8 MB)'}
-              {lang === 'de' && 'Handbuch PDF herunterladen (14.8 MB)'}
-              {lang === 'en' && 'Download Manual PDF (14.8 MB)'}
-            </span>
-            <Download className="w-4 h-4 ml-1" />
-          </a>
-        </div>
-
-        {/* Success Alert Banner */}
-        {downloadSuccess && (
-          <div className="p-4 rounded-xl bg-[var(--color-dns-deep)] border border-[var(--color-dns-light)]/50 text-[var(--color-dns-light)] flex items-center justify-between animate-fadeIn shadow-xl">
-            <div className="flex items-center space-x-3">
-              <CheckCircle2 className="w-5 h-5 text-[var(--color-dns-light)]" />
-              <span className="text-sm font-bold">
-                {lang === 'it' && `Download avviato con successo: ${downloadSuccess}`}
-                {lang === 'de' && `Download erfolgreich gestartet: ${downloadSuccess}`}
-                {lang === 'en' && `Download successfully started: ${downloadSuccess}`}
-              </span>
-            </div>
-            <span className="text-xs text-[var(--color-dns-light)] font-bold uppercase tracking-wider">OK</span>
+          <div role="status" className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-dns-border)] bg-[var(--color-dns-surface)] px-4 py-3 text-xs text-[var(--color-dns-muted)]">
+            <FileText className="h-4 w-4" />
+            {lang === 'de' ? 'Corporate Design Handbuch: Download noch nicht verfügbar' : lang === 'it' ? 'Manuale Corporate Design: download non ancora disponibile' : 'Corporate Design manual: download not yet available'}
           </div>
-        )}
+        </div>
 
         {/* 1. VISUAL IDENTITY: 3 COLORS 1 VOICE & SYMBOLOGY */}
         <div className={`border rounded-3xl p-6 sm:p-10 space-y-8 shadow-2xl transition-colors ${
@@ -473,14 +468,14 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
             </div>
             <div>
               <h3 className="text-xl sm:text-2xl font-black font-[family-name:var(--font-display)]">
-                {lang === 'de' && 'Offizielle Logos & Vektorformate'}
-                {lang === 'it' && 'Loghi Ufficiali & Formati Vettoriali'}
-                {lang === 'en' && 'Official Logos & Vector Formats'}
+                {lang === 'de' && 'Offizielle DNS Logos (PNG)'}
+                {lang === 'it' && 'Loghi ufficiali DNS (PNG)'}
+                {lang === 'en' && 'Official DNS Logos (PNG)'}
               </h3>
               <p className="text-xs font-light opacity-80">
-                {lang === 'de' && 'Wählen Sie die Variante und laden Sie das Logo im passenden Format herunter (Druck Vektor oder Digital Web)'}
-                {lang === 'it' && 'Seleziona la variante e scarica il logo nel formato necessario (Print Vettoriale o Digital Web)'}
-                {lang === 'en' && 'Select the variant and download the logo in the required format (Print Vector or Digital Web)'}
+                {lang === 'de' && 'Wählen Sie das Web- oder Drucklogo aus der Foundation-Release.'}
+                {lang === 'it' && 'Seleziona il logo web o stampa dalla release Foundation.'}
+                {lang === 'en' && 'Choose the web or print logo from the Foundation release.'}
               </p>
             </div>
           </div>
@@ -551,11 +546,11 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 activeLogo.bgType === 'light' ? 'bg-white' :
                 activeLogo.bgType === 'color' ? 'bg-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-primary-dark)] bg-[radial-gradient(var(--color-dns-mid)_1px,transparent_1px)] [background-size:16px_16px]'
               }`}>
-                {/* Official Base64 Logo Image Rendering */}
+                {/* Official Foundation Logo Image Rendering */}
                 <div className="flex flex-col items-center justify-center text-center space-y-4 select-none">
                   <div className="bg-white p-6 rounded-2xl shadow-xl max-w-md flex items-center justify-center border border-slate-200">
                     <img 
-                      src={DNS_SHARED_WEB_LOGO_URL} 
+                      src={activeLogo.downloadUrl} 
                       alt="Dolomiti NordicSki Masterbrand" 
                       className="max-h-28 sm:max-h-36 w-auto object-contain"
                     />
@@ -583,7 +578,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                   {activeLogo.fileFormats.map((fmt) => (
                     <button
                       key={fmt}
-                      onClick={() => handleDownloadLogo(getLoc(activeLogo.name, lang), fmt)}
+                      onClick={() => void downloadOfficialLogo(activeLogo.downloadUrl, activeLogo.fileName)}
                       className={`px-4 py-3 rounded-xl border flex items-center justify-between text-xs font-bold transition-all group shadow-md ${
                         isLight 
                           ? 'bg-[var(--color-dns-bg)] hover:bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-primary-dark)]' 
