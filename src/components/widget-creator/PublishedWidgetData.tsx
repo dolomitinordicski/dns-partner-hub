@@ -1,11 +1,13 @@
 import { DNS_DESIGN_SYSTEM, DNS_FOOTER_GRAPHIC } from '@dolomitinordicski/dns-shared-data';
 import React from 'react';
+import { DNS_SHARED_WEB_LOGO_URL } from '../../services/foundationBrand';
+import { resolveDNSRegionAccent } from '@dolomitinordicski/dns-shared-data';
 import type { Language } from '../../types';
 import type { PublicWidgetSnapshot } from './usePublicWidgetSnapshot';
 
-interface Props { lang: Language; snapshot: PublicWidgetSnapshot | null; regionName: string; includeTrails: boolean; includeWeather: boolean; includePrices: boolean; paletteColor: string; isLight: boolean }
+interface Props { lang: Language; snapshot: PublicWidgetSnapshot | null; regionName: string; includeTrails: boolean; includeWeather: boolean; includePrices: boolean; paletteColor: string; isLight: boolean; areaId: string }
 
-export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails, includeWeather, includePrices, paletteColor, isLight }: Props) {
+export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails, includeWeather, includePrices, paletteColor, isLight, areaId }: Props) {
   const label = lang === 'de' ? 'Veröffentlichte Daten' : lang === 'it' ? 'Dati pubblicati' : 'Published data';
   const priceItems = snapshot?.pricing.status === 'available'
     ? snapshot.pricing.items.filter(p => p.currency === 'EUR' && Number.isFinite(p.amount) && p.amount >= 0)
@@ -13,16 +15,19 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
   const trails = snapshot?.trails.status === 'available' ? snapshot.trails : null;
   const weather = snapshot?.weather.status === 'available' ? snapshot.weather : null;
   const c = DNS_DESIGN_SYSTEM.colors;
+  const accent = areaId === 'all' ? null : resolveDNSRegionAccent(areaId);
   const tr = (de: string, it: string, en: string) => lang === 'de' ? de : lang === 'it' ? it : en;
   const valueColor = isLight ? c.deep : c.surface;
   return (
     <section aria-label={label} className="overflow-hidden rounded-2xl border relative isolate" style={{ borderColor: c.border, background: c.surface, color: c.darkText, boxShadow: "0 18px 60px rgba(13,77,94,.14)", fontFamily: DNS_DESIGN_SYSTEM.typography.primaryFamily }}>
+      {accent && <div aria-hidden="true" className="h-1.5 w-full" style={{ background: accent }} />}
       <header className="relative overflow-hidden p-6 sm:p-9 space-y-6" style={{ background: `linear-gradient(125deg, ${paletteColor} 0%, ${c.mid} 65%, ${c.deep} 100%)`, color: isLight ? c.deep : c.surface, minHeight: 220 }}>
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(circle at 88% 12%, rgba(255,255,255,.32), transparent 52%), linear-gradient(155deg, rgba(255,255,255,.18), transparent 65%)" }} />
         <img src={DNS_FOOTER_GRAPHIC.url} alt="" aria-hidden="true" className="absolute bottom-0 right-0 w-4/5 max-w-xl pointer-events-none opacity-25" />
         <p className="relative text-xs font-bold uppercase tracking-wider opacity-90">{tr('Dolomiti NordicSki · Widget-Vorschau', 'Dolomiti NordicSki · Anteprima widget', 'Dolomiti NordicSki · Widget preview')}</p>
         <div className="relative flex flex-wrap items-center gap-4">
-          {snapshot?.logo?.url?.startsWith('https://') && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
+          <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="max-h-16 max-w-36 object-contain" />
+          {snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
           <div className="min-w-0 flex-1">
             <h3 className="text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight">{regionName}</h3>
             <p className="text-xs mt-1 opacity-80">{snapshot ? tr('Veröffentlichte Daten', 'Dati pubblicati', 'Published data') + ' · ' + snapshot.revision : tr('Noch keine Live-Daten verfügbar', 'Dati live non ancora disponibili', 'Live data not yet available')}</p>
