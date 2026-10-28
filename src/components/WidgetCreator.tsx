@@ -21,6 +21,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [widgetLang, setWidgetLang] = useState<Language>(lang);
   const [themePreset, setThemePreset] = useState<WidgetThemePreset>('dns-primary');
+  const [layout, setLayout] = useState<'standard' | 'compact'>('standard');
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
   // Content toggles state
@@ -102,6 +103,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
           <WidgetControls
             lang={lang} widgetLang={widgetLang} setWidgetLang={setWidgetLang}
             themePreset={themePreset} setThemePreset={setThemePreset}
+            layout={layout} setLayout={setLayout}
             selectedRegion={selectedRegion} setSelectedRegion={setSelectedRegion}
             includeTrails={includeTrails} setIncludeTrails={setIncludeTrails}
             includeWeather={includeWeather} setIncludeWeather={setIncludeWeather}
@@ -112,7 +114,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
           <div className="lg:col-span-7">
             <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot}
               regionName={regionName} includeTrails={includeTrails} includeWeather={includeWeather}
-              includePrices={includePrices} paletteColor={currentBgColor} isLight={isLight} areaId={selectedRegion} />
+              includePrices={includePrices} paletteColor={currentBgColor} isLight={isLight} areaId={selectedRegion} layout={layout} />
           </div>
         </div>
 
