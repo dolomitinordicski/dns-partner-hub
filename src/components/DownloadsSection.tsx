@@ -50,7 +50,7 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
   const [newTitle, setNewTitle] = useState<string>('');
   const [newCategory, setNewCategory] = useState<string>('logos');
   const [newFileType, setNewFileType] = useState<string>('PDF');
-  const [newFileSize, setNewFileSize] = useState<string>('4.5 MB');
+  const [newFileSize, setNewFileSize] = useState<string>('');
   const [newDescription, setNewDescription] = useState<string>('');
   const [newDownloadUrl, setNewDownloadUrl] = useState<string>('');
 
@@ -68,8 +68,8 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
           title: d.title || 'Nuovo Materiale',
           category: d.category || 'logos',
           fileType: d.fileType || 'PDF',
-          fileSize: d.fileSize || '1.0 MB',
-          updatedAt: d.updatedAt || new Date().toISOString().slice(0, 10),
+          fileSize: d.fileSize || '',
+          updatedAt: d.updatedAt || '',
           description: d.description || '',
           downloadUrl: d.downloadUrl || '',
           createdViaAdmin: true
@@ -93,9 +93,9 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
         title: newTitle.trim(),
         category: newCategory,
         fileType: newFileType,
-        fileSize: newFileSize || '2.5 MB',
+        fileSize: newFileSize.trim(),
         updatedAt: new Date().toISOString().slice(0, 10),
-        description: newDescription || 'Materiale ufficiale caricato dalla Direzione Generale.',
+        description: newDescription.trim(),
         downloadUrl: newDownloadUrl.trim(),
         createdAt: new Date().toISOString(),
         createdViaAdmin: true
@@ -140,9 +140,9 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
 
   const categories = [
     { id: 'all', label: { it: 'Tutti i File', de: 'Alle Dateien', en: 'All Files' } },
-    { id: 'logos', label: { it: 'Loghi Vettoriali', de: 'Vektor-Logos', en: 'Vector Logos' } },
+    { id: 'logos', label: { it: 'Loghi', de: 'Logos', en: 'Logos' } },
     { id: 'brand-manual', label: { it: 'Manuale Corporate', de: 'Handbuch', en: 'Brand Manual' } },
-    { id: 'maps', label: { it: 'Cartine Piste 1.000 km', de: 'Loipenkarten', en: 'Trail Maps' } },
+    { id: 'maps', label: { it: 'Mappe delle piste', de: 'Loipenkarten', en: 'Trail Maps' } },
     { id: 'flyer', label: { it: 'Flyer & Info Camere', de: 'Flyer & Info', en: 'Guest Flyers' } },
     { id: 'social', label: { it: 'Kit Social Media', de: 'Social Kit', en: 'Social Media Kit' } }
   ];
@@ -286,7 +286,7 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
                         ? 'bg-[#F0F5F6] text-[#0D4D5E] border-[#82B2BD]' 
                         : 'bg-[#052832] text-[#AAD0D1] border-[#417483]/30'
                   }`}>
-                    {item.fileType} • {item.fileSize}
+                    {[item.fileType, item.fileSize].filter(Boolean).join(' • ') || (hasDownloadUrl(item) ? 'File' : (lang === 'de' ? 'Geplant' : lang === 'it' ? 'Previsto' : 'Planned'))}
                     {item.createdViaAdmin && ' • DB ADMIN'}
                   </span>
 
@@ -294,8 +294,8 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
                     <span className={`text-[10px] font-medium flex items-center space-x-1 ${
                       isLight ? 'text-[#417483]' : 'text-slate-300'
                     }`}>
-                      <Calendar className="w-3 h-3" />
-                      <span>{getLoc(item.updatedAt, lang)}</span>
+                      {getLoc(item.updatedAt, lang) && <Calendar className="w-3 h-3" />}
+                      {getLoc(item.updatedAt, lang) && <span>{getLoc(item.updatedAt, lang)}</span>}
                     </span>
 
                     {isAdmin && item.createdViaAdmin && (
