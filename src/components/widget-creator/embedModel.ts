@@ -42,7 +42,14 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
     bg: encodeURIComponent(backgroundColor),
     lang: widgetLang
   }).toString();
-  const iframeSrc = `https://www.dolomitinordicski.com/widget?${queryParams}`;
+  // Stable DNS-hosted deployment: no build/version parameter in partner embed HTML.
+  // Fail closed until DNS confirms the widget route and configures its public URL.
+  const configuredEndpoint = import.meta.env.VITE_DNS_WIDGET_EMBED_URL?.trim();
+  if (!configuredEndpoint) return { iframeSrc: '', iframeHeight: 0, embedCode: '' };
+  const endpoint = new URL(configuredEndpoint);
+  if (endpoint.protocol !== 'https:') return { iframeSrc: '', iframeHeight: 0, embedCode: '' };
+  endpoint.search = queryParams;
+  const iframeSrc = endpoint.toString();
   const iframeHeight = (includeBadge ? 120 : 0) + (includeTrails ? 160 : 0) + (includeWeather ? 100 : 0) + (includePrices ? 140 : 0) + 120;
   const embedCode = `<iframe src="${iframeSrc}" width="100%" height="${iframeHeight}" frameborder="0" style="border:none; border-radius:0px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.25);" title="Dolomiti NordicSki Live Widget (${widgetLang.toUpperCase()})"></iframe>`;
   return { iframeSrc, iframeHeight, embedCode };
