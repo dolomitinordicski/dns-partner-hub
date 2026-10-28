@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DNS_DEFAULT_UI_LANGUAGE, DNS_UI_LANGUAGE_STORAGE_KEY, resolveDNSLanguagePreference } from '@dolomitinordicski/dns-shared-data/localization';
 import { NavigationTab, Language, AccessibilitySettings, AccessLevel } from './types';
 import { Header } from './components/Header';
+import { FoundationScrollProgress } from './components/FoundationScrollProgress';
 import { VisionSection } from './components/VisionSection';
 import { CorporateDesignSection } from './components/CorporateDesignSection';
 import { QualityCriteriaSection } from './components/QualityCriteriaSection';
@@ -99,9 +100,7 @@ export default function App() {
         onOpenA11yModal={() => { /* Foundation controls its own panel */ }}
         onSelectDemoRole={handleSelectDemoRole}
       />
-      {/* Foundation owns the scroll-progress track immediately below the header.
-          The portal sidebar remains a separate app-navigation region. */}
-      <div data-dns-tool-nav className="dns-tab-nav" />
+      <FoundationScrollProgress />
 
 {/* Main Content Area */}
       <div data-dns-portal-layout className="flex-1 min-h-0">
