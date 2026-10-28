@@ -21,6 +21,12 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
   const tr = (de: string, it: string, en: string) => lang === 'de' ? de : lang === 'it' ? it : en;
   const valueColor = isLight ? c.deep : c.surface;
   const compact = layout === 'compact';
+  const observationLabel = (value: string | null | undefined) => {
+    if (!value || !Number.isFinite(Date.parse(value))) return null;
+    return new Intl.DateTimeFormat(lang === 'de' ? 'de-DE' : lang === 'it' ? 'it-IT' : 'en-GB', {
+      dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Rome'
+    }).format(new Date(value));
+  };
   return (
     <section aria-label={label} className="overflow-hidden rounded-2xl border relative isolate" style={{ borderColor: c.border, background: c.surface, color: c.darkText, boxShadow: "0 18px 60px rgba(13,77,94,.14)", fontFamily: DNS_DESIGN_SYSTEM.typography.primaryFamily }}>
       {accent && <div aria-hidden="true" className="h-1.5 w-full" style={{ background: accent }} />}
@@ -55,14 +61,14 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
         {!snapshot && <p role="status" className="text-sm" style={{ color: c.mid }}>{tr('Die Gestaltung ist sichtbar; offizielle Daten sind noch nicht veröffentlicht.', 'Il layout è visibile; i dati ufficiali non sono ancora pubblicati.', 'Layout preview is available; official data has not been published yet.')}</p>}
         {includeTrails && <div className="space-y-2">
           <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: c.mid }}>{tr('Loipenstatus', 'Stato piste', 'Trail status')}</h4>
-          <p className={compact ? "text-lg font-extrabold" : "text-2xl font-extrabold"} style={{ color: c.deep }}>{tr('Offene Kilometer', 'Chilometri aperti', 'Open kilometers')} · {trails?.openKm ?? '—'} <span className="text-sm">km</span></p>
+          <p className={compact ? "text-lg font-extrabold" : "text-2xl font-extrabold"} style={{ color: c.deep }}>{tr('Offene Kilometer', 'Chilometri aperti', 'Open kilometers')} · {trails?.openKm ?? '—'} <span className="text-sm">km</span></p>{trails?.observedAt && <p className="text-xs" style={{ color: c.mid }}>{tr('Stand', 'Rilevazione', 'Observed')}: {observationLabel(trails.observedAt)}</p>}
         </div>}
         {includeWeather && <div className="space-y-2">
           <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: c.mid }}>{tr('Wetter & Schnee', 'Meteo e neve', 'Weather & snow')}</h4>
           <div className={compact ? "flex flex-wrap gap-2" : "grid grid-cols-2 gap-3"}>
             <div className="rounded-xl border p-4 backdrop-blur-md" style={{ background: "linear-gradient(145deg, rgba(170,208,209,.26), rgba(255,255,255,.72))", borderColor: c.border }}><p className="text-xs">{tr('Temperatur', 'Temperatura', 'Temperature')}</p><p className="text-xl font-bold" style={{ color: c.deep }}>{weather?.temperatureC == null ? '—' : weather.temperatureC + ' °C'}</p></div>
             <div className="rounded-md p-4" style={{ background: c.background }}><p className="text-xs">{tr('Schnee', 'Neve', 'Snow')}</p><p className="text-xl font-bold" style={{ color: c.deep }}>{weather?.snowDepthCm == null ? '—' : weather.snowDepthCm + ' cm'}</p></div>
-          </div>
+          </div>{weather?.observedAt && <p className="text-xs" style={{ color: c.mid }}>{tr('Stand', 'Rilevazione', 'Observed')}: {observationLabel(weather.observedAt)}</p>}
         </div>}
         {includePrices && <div className="space-y-2">
           <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: c.mid }}>{tr('Loipenpass-Tarife', 'Prezzi skipass', 'Pass prices')}</h4>
