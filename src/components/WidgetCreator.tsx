@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Language, AccessLevel } from '../types';
-import { NORDIC_REGIONS } from '../data/portalData';
+import { getWidgetAreaName } from './widget-creator/reportingAreas';
 import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './widget-creator/embedModel';
 import { WidgetPreview } from './widget-creator/WidgetPreview';
 import { WidgetControls } from './widget-creator/WidgetControls';
@@ -27,9 +27,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
 
   const includeBadge = false; // Fail-closed: role selected in the client is not certification.
 
-  const regionName = selectedRegion === 'all' 
-    ? (widgetLang === 'it' ? 'Tutte le 8 Aree Dolomiti NordicSki' : widgetLang === 'de' ? 'Alle 8 Regionen' : 'All 8 Regions')
-    : NORDIC_REGIONS.find(r => r.id === selectedRegion)?.name || 'Dolomiti NordicSki';
+  const regionName = getWidgetAreaName(selectedRegion, widgetLang);
 
   const activePalette = OFFICIAL_PALETTES.find(p => p.id === themePreset) || OFFICIAL_PALETTES[0];
   const currentBgColor = activePalette.color;
