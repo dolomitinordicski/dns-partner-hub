@@ -1,3 +1,4 @@
+import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data';
 import React, { useState } from 'react';
 import { Language, AccessLevel } from '../types';
 import { getWidgetAreaName } from './widget-creator/reportingAreas';
@@ -42,32 +43,37 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
     includeTrails, includeWeather, includePrices, includeBadge
   });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(embedCode);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2500);
+  const handleCopy = async () => {
+    if (!embedCode) return;
+    try {
+      await navigator.clipboard.writeText(embedCode);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2500);
+    } catch {
+      setCopiedCode(false);
+    }
   };
 
   return (
-    <div className="py-10 bg-[#052832] text-white space-y-8 font-sans">
+    <div className="py-10 space-y-8" style={{ background: DNS_DESIGN_SYSTEM.colors.background, color: DNS_DESIGN_SYSTEM.colors.darkText, fontFamily: DNS_DESIGN_SYSTEM.typography.primaryFamily }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
         
         {/* Header */}
-        <div className="border-b border-[#417483]/30 pb-6 space-y-3 text-center sm:text-left">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-none bg-[#0D4D5E] border border-[#417483]/50 text-[#AAD0D1] text-xs font-bold uppercase tracking-wider">
-            <Code className="w-3.5 h-3.5 text-[#AAD0D1]" />
+        <div className="border-b border-current pb-6 space-y-3 text-center sm:text-left">
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-none  border border-current text-inherit text-xs font-bold uppercase tracking-wider">
+            <Code className="w-3.5 h-3.5 text-inherit" />
             <span>
               {isPartner
                 ? (lang === 'de' ? 'Offizielles Partner-Widget für Hotel-Websites' : lang === 'it' ? 'Widget Ufficiale Struttura Partner Hotel' : 'Official Partner Hotel Widget')
                 : (lang === 'de' ? 'Kostenloses Website-Widget' : lang === 'it' ? 'Widget Unificato per il tuo Sito Web' : 'Unified Website Widget')}
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-inherit tracking-tight">
             {isPartner
               ? (lang === 'de' ? 'Partner Hotel-Widget Generator' : lang === 'it' ? 'Generatore Widget Partner Hotel' : 'Partner Hotel Widget Builder')
               : (lang === 'de' ? 'Dolomiti NordicSki Widget Generator' : lang === 'it' ? 'Generatore Widget Unificato' : 'Unified Widget Builder')}
           </h2>
-          <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-3xl font-light">
+          <p className="text-inherit text-sm sm:text-base leading-relaxed max-w-3xl font-light">
             {isPartner ? (
               lang === 'de' 
                 ? 'Erstellen Sie Ihr maßgeschneidertes Hotel-Widget mit kantigem Alpin-Design. Enthält das exklusive Partner-Siegel 2026, den Live-Loipenstatus, Wetter und Tarife.'
@@ -78,13 +84,13 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
               lang === 'de'
                 ? 'Erstellen Sie ein modulares Website-Widget in den offiziellen Dolomiti NordicSki Farben. Wählen Sie die Sprache (ITA, DE, EN) und die gewünschten Module.'
                 : lang === 'it'
-                ? 'Crea un widget unico nelle quattro palette ufficiali Dolomiti NordicSki. Seleziona la lingua (ITA, DE, EN) e configura i moduli da mostrare.'
-                : 'Build a unified widget in the official Dolomiti NordicSki palettes. Choose the widget language (ITA, DE, EN) and active content modules.'
+                ? 'Crea un widget con i tre colori corporate Dolomiti NordicSki. Seleziona la lingua (ITA, DE, EN) e configura i moduli da mostrare.'
+                : 'Build a unified widget in the three official Dolomiti NordicSki colors. Choose the widget language (ITA, DE, EN) and active content modules.'
             )}
           </p>
         </div>
 
-        <p role="status" className="text-sm text-slate-200">
+        <p role="status" className="text-sm text-inherit">
           {publicData.status === 'available' ?
             (lang === 'de' ? 'Öffentlicher Datenstand: ' : lang === 'it' ? 'Dati pubblici aggiornati: ' : 'Public data revision: ') + publicData.snapshot!.revision :
             (lang === 'de' ? 'Veröffentlichte Widget-Daten derzeit nicht verfügbar.' : lang === 'it' ? 'Dati pubblicati del widget non ancora disponibili.' : 'Published widget data not yet available.')}
