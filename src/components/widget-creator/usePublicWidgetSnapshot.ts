@@ -24,9 +24,19 @@ type State = { status: 'loading' | 'available' | 'unavailable' | 'error'; snapsh
 function isSnapshot(value: unknown, season: string, area: string | null): value is PublicWidgetSnapshot {
   if (!value || typeof value !== 'object') return false;
   const s = value as Partial<PublicWidgetSnapshot>;
-  return s.schemaVersion === 1 && s.seasonId === season && s.areaId === area
-    && typeof s.revision === 'string' && typeof s.publishedAt === 'string'
-    && !!s.pricing && Array.isArray(s.pricing.items) && !!s.trails && !!s.weather;
+  if (s.schemaVersion !== 1 || s.seasonId !== season || s.areaId !== area ||
+      typeof s.revision !== 'string' || !s.revision ||
+      typeof s.publishedAt !== 'string' || !Number.isFinite(Date.parse(s.publishedAt))) return false;
+  const logo = s.logo;
+  if (logo != null && (typeof logo.url !== 'string' || !logo.url.startsWith('https://') ||
+      !logo.alt || !['de', 'it', 'en'].every(key => typeof logo.alt[key as 'de' | 'it' | 'en'] === 'string'))) return false;
+  if (!s.pricing || !['available', 'unavailable', 'stale'].includes(s.pricing.status) ||
+      !Array.isArray(s.pricing.items) ||
+      s.pricing.items.some(p => !p || typeof p.productCode !== 'string' ||
+        p.currency !== 'EUR' || !Number.isFinite(p.amount) || p.amount < 0)) return false;
+  if (!s.trails || !['available', 'unavailable', 'stale'].includes(s.trails.status) ||
+      !s.weather || !['available', 'unavailable', 'stale'].includes(s.weather.status)) return false;
+  return true;
 }
 
 /** Reads a published exact document, never lists or accesses operational collections. */
