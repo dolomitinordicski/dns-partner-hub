@@ -79,9 +79,15 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
                     ? 'bg-emerald-700 text-white border-emerald-800'
                     : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50'
                 }`}>
-                  LIVE OK
+                  {widgetLang === 'de' ? 'DEMO · KEINE LIVE-DATEN' : widgetLang === 'it' ? 'DEMO · DATI NON LIVE' : 'DEMO · NOT LIVE DATA'}
                 </span>
               </div>
+
+              <p role="note" className={`text-[11px] font-medium ${isLight ? 'text-slate-700' : 'text-slate-200'}`}>
+                {widgetLang === 'de' ? 'Nur Vorschau mit Beispieldaten. Der offizielle Loipenstatus ist noch nicht verbunden.'
+                  : widgetLang === 'it' ? 'Anteprima con dati dimostrativi. Lo stato ufficiale delle piste non è ancora collegato.'
+                  : 'Preview with sample data. Official live trail status is not connected yet.'}
+              </p>
 
               {/* SECTION 1: EYE-CATCHING PARTNER BADGE (Official Dolomiti NordicSki Cyan/Teal Palette) */}
               {includeBadge && (
