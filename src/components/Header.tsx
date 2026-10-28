@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button type="button" className="dns-tool-header-session-action" onClick={accessLevel === 'public' ? onOpenLoginModal : onLogout}>
               {accessLevel === 'public' ? (lang === 'de' ? 'Anmelden' : lang === 'it' ? 'Accedi' : 'Login') : (lang === 'de' ? 'Abmelden' : lang === 'it' ? 'Esci' : 'Logout')}
             </button>
-            <button type="button" aria-label={lang === 'de' ? 'Menü' : lang === 'it' ? 'Menu' : 'Menu'} aria-expanded={open} aria-controls="dns-portal-navigation" onClick={() => setOpen(!open)} className="dns-button dns-portal-mobile-toggle" data-variant="icon">{open ? <X size={18} /> : <Menu size={18} />}</button>
+            <button type="button" aria-label={lang === 'de' ? 'Menü' : lang === 'it' ? 'Menu' : 'Menu'} aria-expanded={open} aria-controls="dns-portal-navigation" onClick={() => setOpen(!open)} className="dns-button lg:hidden" data-variant="icon">{open ? <X size={18} /> : <Menu size={18} />}</button>
           </div>
         </div>
       </div>
