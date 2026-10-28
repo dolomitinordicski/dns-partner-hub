@@ -17,6 +17,9 @@ interface HeaderProps {
 export const Header:React.FC<HeaderProps> = ({lang,setLang,accessLevel,onOpenLoginModal,onLogout,onOpenA11yModal}) => {
  const [open,setOpen]=React.useState(false);
  React.useEffect(()=>{
+  document.querySelector('[data-dns-app-nav]')?.setAttribute('data-dns-open',String(open));
+ },[open]);
+ React.useEffect(()=>{
   const close=()=>setOpen(false);
   window.addEventListener('dns:portal-navigate',close);
   return()=>window.removeEventListener('dns:portal-navigate',close);
