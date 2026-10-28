@@ -3,6 +3,7 @@ import React from 'react';
 import { DNS_SHARED_WEB_LOGO_URL } from '../../services/foundationBrand';
 import { resolveDNSRegionAccent } from '@dolomitinordicski/dns-shared-data';
 import type { Language } from '../../types';
+import { useRegionLogos } from './useRegionLogos';
 import type { PublicWidgetSnapshot } from './usePublicWidgetSnapshot';
 
 interface Props { lang: Language; snapshot: PublicWidgetSnapshot | null; regionName: string; includeTrails: boolean; includeWeather: boolean; includePrices: boolean; paletteColor: string; isLight: boolean; areaId: string }
@@ -14,6 +15,7 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
     : [];
   const trails = snapshot?.trails.status === 'available' ? snapshot.trails : null;
   const weather = snapshot?.weather.status === 'available' ? snapshot.weather : null;
+  const regionLogos = useRegionLogos(areaId);
   const c = DNS_DESIGN_SYSTEM.colors;
   const accent = areaId === 'all' ? null : resolveDNSRegionAccent(areaId);
   const tr = (de: string, it: string, en: string) => lang === 'de' ? de : lang === 'it' ? it : en;
@@ -27,7 +29,8 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
         <p className="relative text-xs font-bold uppercase tracking-wider opacity-90">{tr('Dolomiti NordicSki · Widget-Vorschau', 'Dolomiti NordicSki · Anteprima widget', 'Dolomiti NordicSki · Widget preview')}</p>
         <div className="relative flex flex-wrap items-center gap-4">
           <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="max-h-16 max-w-36 object-contain" />
-          {snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
+          {regionLogos.logos.map(logo => <img key={logo.id} src={logo.url} alt={logo.label} className="max-h-16 max-w-36 object-contain" loading="lazy" />)}
+          {regionLogos.status === 'ready' && regionLogos.logos.length === 0 && snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
           <div className="min-w-0 flex-1">
             <h3 className="text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight">{regionName}</h3>
             <p className="text-xs mt-1 opacity-80">{snapshot ? tr('Veröffentlichte Daten', 'Dati pubblicati', 'Published data') + ' · ' + snapshot.revision : tr('Noch keine Live-Daten verfügbar', 'Dati live non ancora disponibili', 'Live data not yet available')}</p>
