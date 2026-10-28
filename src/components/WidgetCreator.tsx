@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Language, AccessLevel } from '../types';
-import { NORDIC_REGIONS, DNS_LOGO_BASE64 } from '../data/portalData';
+import { NORDIC_REGIONS } from '../data/portalData';
 import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './widget-creator/embedModel';
 import { WidgetPreview } from './widget-creator/WidgetPreview';
 import { 
@@ -12,14 +12,11 @@ import {
   Ticket, 
   Sliders,
   Sun,
-  ShieldCheck,
   Lock,
   Layers,
   Palette,
   Globe,
-  Award,
-  ChevronRight,
-  Flame
+  Award
 } from 'lucide-react';
 
 interface WidgetCreatorProps {
