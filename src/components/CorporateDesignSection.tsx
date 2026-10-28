@@ -566,7 +566,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 </div>
               </div>
 
-              {/* Download Buttons for Formats */}
+              {/* Only genuine Foundation PNG download links */}
               <div className="space-y-3 pt-2">
                 <span className={`text-xs font-bold uppercase tracking-wider block ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                   {lang === 'it' && 'Scarica nei Formati Standard:'}
@@ -590,7 +590,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                         <span>{fmt}</span>
                       </div>
                       <span className="text-[10px] opacity-70 font-mono">
-                        {fmt === 'EPS' ? 'Vector' : fmt === 'SVG' ? 'Web' : fmt.includes('PNG') ? 'HD 300DPI' : 'Doc'}
+                        {lang === 'de' ? 'Originaldatei' : lang === 'it' ? 'File originale' : 'Original file'}
                       </span>
                     </button>
                   ))}
