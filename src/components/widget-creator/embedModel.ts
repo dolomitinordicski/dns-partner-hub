@@ -39,7 +39,7 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
     weather: includeWeather ? '1' : '0',
     prices: includePrices ? '1' : '0',
     theme: themePreset,
-    bg: encodeURIComponent(backgroundColor),
+    bg: backgroundColor,
     lang: widgetLang
   }).toString();
   const iframeSrc = `https://www.dolomitinordicski.com/widget?${queryParams}`;
