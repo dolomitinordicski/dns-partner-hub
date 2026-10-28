@@ -7,6 +7,7 @@ import { WidgetControls } from './widget-creator/WidgetControls';
 import { Code } from 'lucide-react';
 import { SEASONS } from '@dolomitinordicski/dns-shared-data';
 import { usePublicWidgetSnapshot } from './widget-creator/usePublicWidgetSnapshot';
+import { PublishedWidgetData } from './widget-creator/PublishedWidgetData';
 
 interface WidgetCreatorProps {
   lang: Language;
@@ -89,6 +90,8 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
             (lang === 'de' ? 'Öffentlicher Datenstand: ' : lang === 'it' ? 'Dati pubblici aggiornati: ' : 'Public data revision: ') + publicData.snapshot!.revision :
             (lang === 'de' ? 'Veröffentlichte Widget-Daten derzeit nicht verfügbar.' : lang === 'it' ? 'Dati pubblicati del widget non ancora disponibili.' : 'Published widget data not yet available.')}
         </p>
+
+        <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot} />
 
         {/* Builder Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
