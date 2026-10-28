@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Language, AccessibilitySettings, AccessLevel } from '../types';
-import { BRAND_COLORS, LOGO_VARIANTS, BRAND_GUIDELINES } from '../data/portalData';
+import { LOGO_VARIANTS, BRAND_GUIDELINES } from '../data/portalData';
+import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 import { DNS_SHARED_WEB_LOGO_URL } from '../services/foundationBrand';
 import { 
   FileText, 
@@ -38,6 +39,15 @@ const getLoc = (val: string | Record<Language, string> | undefined, currentLang:
   return val[currentLang] || val.de || val.it || val.en || fallback;
 };
 
+
+// The corporate color specification lives in DNS Shared Data, not this portal.
+const corporatePalette = DNS_DESIGN_SYSTEM.corporateColors;
+
+const rgbFromHex = (hex: string): string => {
+  const value = hex.replace('#', '');
+  return [0, 2, 4].map((position) => parseInt(value.slice(position, position + 2), 16)).join(', ');
+};
+
 export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ lang, a11y, accessLevel = 'public' }) => {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const [selectedLogoId, setSelectedLogoId] = useState<string>('logo-main-color');
@@ -64,17 +74,17 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
   return (
     <div className={`py-12 min-h-screen space-y-16 transition-colors ${
-      isLight ? 'bg-[#F4F8F9] text-[#083845]' : 'bg-[#083845] text-white'
+      isLight ? 'bg-[var(--color-dns-bg)] text-[var(--color-dns-primary-dark)]' : 'bg-[var(--color-dns-primary-dark)] text-white'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-16">
         
         {/* Section Header */}
         <div className={`border-b pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6 ${
-          isLight ? 'border-[#82B2BD]/40' : 'border-[#417483]/30'
+          isLight ? 'border-[var(--color-dns-secondary-dark)]/40' : 'border-[var(--color-dns-mid)]/30'
         }`}>
           <div className="space-y-3 max-w-3xl">
             <div className={`inline-flex items-center space-x-2 px-3.5 py-1 rounded-md text-xs font-bold border ${
-              isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#AAD0D1]/30 text-[#AAD0D1]'
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)]/30 text-[var(--color-dns-light)]'
             }`}>
               <Palette className="w-3.5 h-3.5" />
               <span>
@@ -83,13 +93,13 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 {lang === 'en' && 'Official Corporate Design & Brand Guidelines'}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-['Be_Vietnam_Pro']">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-[family-name:var(--font-display)]">
               {lang === 'it' && 'Corporate Design & Gestione del Brand'}
               {lang === 'de' && 'Corporate Design & Markenführung'}
               {lang === 'en' && 'Corporate Design & Brand Management'}
             </h2>
             <p className={`text-sm sm:text-base leading-relaxed font-light ${
-              isLight ? 'text-[#1B4B58]' : 'text-slate-200'
+              isLight ? 'text-[var(--color-dns-mid)]' : 'text-slate-200'
             }`}>
               {lang === 'it' && 'In questa sezione sono raccolti tutti gli elementi grafici ufficiali, i loghi ad alta risoluzione, la palette cromatica e le linee guida per la corretta applicazione del marchio Dolomiti NordicSki da parte degli alloggi partner, enti turistici e media.'}
               {lang === 'de' && 'Hier finden Sie alle offiziellen Grafikelemente, hochauflösenden Logos, Farbpaletten und Richtlinien zur korrekten Verwendung der Marke Dolomiti NordicSki durch Partnerbetriebe, Tourismusvereine und Medien.'}
@@ -105,8 +115,8 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
             }}
             className={`inline-flex items-center space-x-2 px-5 py-3 rounded-xl font-black text-sm shadow-lg transition-all shrink-0 hover:scale-[1.02] ${
               isLight 
-                ? 'bg-[#0D4D5E] hover:bg-[#083845] text-white' 
-                : 'bg-[#AAD0D1] hover:bg-white text-[#083845]'
+                ? 'bg-[var(--color-dns-deep)] hover:bg-[var(--color-dns-primary-dark)] text-white' 
+                : 'bg-[var(--color-dns-light)] hover:bg-white text-[var(--color-dns-primary-dark)]'
             }`}
           >
             <FileText className="w-4 h-4" />
@@ -121,28 +131,28 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
         {/* Success Alert Banner */}
         {downloadSuccess && (
-          <div className="p-4 rounded-xl bg-[#0D4D5E] border border-[#AAD0D1]/50 text-[#AAD0D1] flex items-center justify-between animate-fadeIn shadow-xl">
+          <div className="p-4 rounded-xl bg-[var(--color-dns-deep)] border border-[var(--color-dns-light)]/50 text-[var(--color-dns-light)] flex items-center justify-between animate-fadeIn shadow-xl">
             <div className="flex items-center space-x-3">
-              <CheckCircle2 className="w-5 h-5 text-[#AAD0D1]" />
+              <CheckCircle2 className="w-5 h-5 text-[var(--color-dns-light)]" />
               <span className="text-sm font-bold">
                 {lang === 'it' && `Download avviato con successo: ${downloadSuccess}`}
                 {lang === 'de' && `Download erfolgreich gestartet: ${downloadSuccess}`}
                 {lang === 'en' && `Download successfully started: ${downloadSuccess}`}
               </span>
             </div>
-            <span className="text-xs text-[#AAD0D1] font-bold uppercase tracking-wider">OK</span>
+            <span className="text-xs text-[var(--color-dns-light)] font-bold uppercase tracking-wider">OK</span>
           </div>
         )}
 
         {/* 1. VISUAL IDENTITY: 3 COLORS 1 VOICE & SYMBOLOGY */}
         <div className={`border rounded-3xl p-6 sm:p-10 space-y-8 shadow-2xl transition-colors ${
-          isLight ? 'bg-[#FFFFFF] border-[#82B2BD]' : 'bg-[#052832] border-[#417483]/40'
+          isLight ? 'bg-[var(--color-dns-surface)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
         }`}>
-          <div className={`border-b pb-6 space-y-2 ${isLight ? 'border-[#82B2BD]/30' : 'border-[#417483]/30'}`}>
-            <span className={`text-xs font-mono font-bold uppercase tracking-widest ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+          <div className={`border-b pb-6 space-y-2 ${isLight ? 'border-[var(--color-dns-secondary-dark)]/30' : 'border-[var(--color-dns-mid)]/30'}`}>
+            <span className={`text-xs font-mono font-bold uppercase tracking-widest ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
               3 COLORS • 1 VOICE
             </span>
-            <h3 className="text-2xl sm:text-3xl font-black font-['Be_Vietnam_Pro']">
+            <h3 className="text-2xl sm:text-3xl font-black font-[family-name:var(--font-display)]">
               {lang === 'de' && 'Farbsymbolik & Visuelle Identität'}
               {lang === 'it' && 'Simbologia dei Colori & Identità Visiva'}
               {lang === 'en' && 'Colour Symbolism & Visual Identity'}
@@ -157,68 +167,68 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Color 1 */}
-            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[#0D4D5E] transition-all group ${
-              isLight ? 'bg-[#F0F5F6] border-[#82B2BD]/50' : 'bg-[#083845] border-[#417483]/30'
+            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[var(--color-dns-deep)] transition-all group ${
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]/50' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/30'
             }`}>
-              <div className="w-12 h-12 rounded-xl bg-[#0D4D5E] border border-[#AAD0D1]/40 flex items-center justify-center font-mono font-bold text-xs text-[#AAD0D1] shadow-inner">
-                0D4D5E
+              <div className="w-12 h-12 rounded-xl bg-[var(--color-dns-deep)] border border-[var(--color-dns-light)]/40 flex items-center justify-center font-mono font-bold text-xs text-[var(--color-dns-light)] shadow-inner">
+                {corporatePalette.frostedIceBlue.hex.slice(1)}
               </div>
               <div>
-                <h4 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors">
-                  Frosted Ice Blue
+                <h4 className="font-extrabold text-lg group-hover:text-[var(--color-dns-deep)] transition-colors">
+                  {corporatePalette.frostedIceBlue.name}
                 </h4>
                 <p className="text-xs mt-2 leading-relaxed font-light opacity-90">
-                  {lang === 'de' && <>Steht für <strong>Klarheit, Frische und Reinheit</strong>. Verkörpert die prickelnde Höhenluft und unberührten Schnee.</>}
-                  {lang === 'it' && <>Rappresenta <strong>chiarezza, freschezza e purezza</strong>. Incarna l'aria frizzante delle vette e la neve incontaminata.</>}
+                  {lang === 'de' && corporatePalette.frostedIceBlue.description.de}
+                  {lang === 'it' && corporatePalette.frostedIceBlue.description.it}
                   {lang === 'en' && <>Represents <strong>clarity, freshness, and purity</strong>. Embodies mountain air and untouched snow.</>}
                 </p>
               </div>
               <div className="pt-3 border-t border-current/20 text-[11px] font-mono opacity-80">
-                HEX: #0D4D5E • RGB: 13, 77, 94
+                HEX: {corporatePalette.frostedIceBlue.hex} • RGB: {rgbFromHex(corporatePalette.frostedIceBlue.hex)}
               </div>
             </div>
 
             {/* Color 2 */}
-            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[#0D4D5E] transition-all group ${
-              isLight ? 'bg-[#F0F5F6] border-[#82B2BD]/50' : 'bg-[#083845] border-[#417483]/30'
+            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[var(--color-dns-deep)] transition-all group ${
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]/50' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/30'
             }`}>
-              <div className="w-12 h-12 rounded-xl bg-[#417483] border border-[#AAD0D1]/40 flex items-center justify-center font-mono font-bold text-xs text-white shadow-inner">
-                417483
+              <div className="w-12 h-12 rounded-xl bg-[var(--color-dns-mid)] border border-[var(--color-dns-light)]/40 flex items-center justify-center font-mono font-bold text-xs text-white shadow-inner">
+                {corporatePalette.nordicSkyBlue.hex.slice(1)}
               </div>
               <div>
-                <h4 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors">
-                  Nordic Sky Blue
+                <h4 className="font-extrabold text-lg group-hover:text-[var(--color-dns-deep)] transition-colors">
+                  {corporatePalette.nordicSkyBlue.name}
                 </h4>
                 <p className="text-xs mt-2 leading-relaxed font-light opacity-90">
-                  {lang === 'de' && <>Symbolisiert <strong>Gelassenheit, Balance und Freiheit</strong>. Spiegelt die Weite des alpinen Himmels wider.</>}
-                  {lang === 'it' && <>Simboleggia <strong>serenità, equilibrio e libertà</strong>. Rispecchia la vastità del cielo alpino sopra le Dolomiti.</>}
+                  {lang === 'de' && corporatePalette.nordicSkyBlue.description.de}
+                  {lang === 'it' && corporatePalette.nordicSkyBlue.description.it}
                   {lang === 'en' && <>Symbolises <strong>serenity, balance, and freedom</strong>. Reflects the vast alpine sky over the Dolomites.</>}
                 </p>
               </div>
               <div className="pt-3 border-t border-current/20 text-[11px] font-mono opacity-80">
-                HEX: #417483 • RGB: 65, 116, 131
+                HEX: {corporatePalette.nordicSkyBlue.hex} • RGB: {rgbFromHex(corporatePalette.nordicSkyBlue.hex)}
               </div>
             </div>
 
             {/* Color 3 */}
-            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[#0D4D5E] transition-all group ${
-              isLight ? 'bg-[#F0F5F6] border-[#82B2BD]/50' : 'bg-[#083845] border-[#417483]/30'
+            <div className={`border rounded-2xl p-6 space-y-4 hover:border-[var(--color-dns-deep)] transition-all group ${
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]/50' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/30'
             }`}>
-              <div className="w-12 h-12 rounded-xl bg-[#AAD0D1] border border-white/40 flex items-center justify-center font-mono font-bold text-xs text-[#083845] shadow-inner">
-                AAD0D1
+              <div className="w-12 h-12 rounded-xl bg-[var(--color-dns-light)] border border-white/40 flex items-center justify-center font-mono font-bold text-xs text-[var(--color-dns-primary-dark)] shadow-inner">
+                {corporatePalette.deepGlacierBlue.hex.slice(1)}
               </div>
               <div>
-                <h4 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors">
-                  Deep Glacier Blue
+                <h4 className="font-extrabold text-lg group-hover:text-[var(--color-dns-deep)] transition-colors">
+                  {corporatePalette.deepGlacierBlue.name}
                 </h4>
                 <p className="text-xs mt-2 leading-relaxed font-light opacity-90">
-                  {lang === 'de' && <>Erinnert an <strong>Stärke, Vertrauen und Ausdauer</strong>. Inspiriert von Bergseen und dem Geist des Langlaufsportes.</>}
-                  {lang === 'it' && <>Evoca <strong>forza, fiducia e resistenza</strong>. Ispirato ai laghi alpini ed allo spirito di resistenza dello sci nordico.</>}
+                  {lang === 'de' && corporatePalette.deepGlacierBlue.description.de}
+                  {lang === 'it' && corporatePalette.deepGlacierBlue.description.it}
                   {lang === 'en' && <>Evokes <strong>strength, trust, and endurance</strong>. Inspired by mountain lakes and the cross-country spirit.</>}
                 </p>
               </div>
               <div className="pt-3 border-t border-current/20 text-[11px] font-mono opacity-80">
-                HEX: #AAD0D1 • RGB: 170, 208, 209
+                HEX: {corporatePalette.deepGlacierBlue.hex} • RGB: {rgbFromHex(corporatePalette.deepGlacierBlue.hex)}
               </div>
             </div>
 
@@ -229,12 +239,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
         <div className="space-y-6">
           <div className="flex items-center space-x-3">
             <div className={`p-2 rounded-lg border ${
-              isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#AAD0D1]/30 text-[#AAD0D1]'
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)]/30 text-[var(--color-dns-light)]'
             }`}>
               <Type className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-black font-['Be_Vietnam_Pro']">
+              <h3 className="text-xl sm:text-2xl font-black font-[family-name:var(--font-display)]">
                 {lang === 'de' && 'Typografie & Offizielle Schriftarten'}
                 {lang === 'it' && 'Tipografia & Caratteri Ufficiali'}
                 {lang === 'en' && 'Typography & Official Fonts'}
@@ -250,12 +260,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Print Typeface */}
             <div className={`border rounded-2xl p-6 space-y-4 shadow-xl border-l-8 ${
-              isLight ? 'bg-[#FFFFFF] border-[#82B2BD] border-l-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#417483]/40 border-l-[#AAD0D1]'
+              isLight ? 'bg-[var(--color-dns-surface)] border-[var(--color-dns-secondary-dark)] border-l-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/40 border-l-[var(--color-dns-light)]'
             }`}>
-              <span className={`text-xs font-mono font-bold uppercase ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+              <span className={`text-xs font-mono font-bold uppercase ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                 PRINT & PUBLISHING
               </span>
-              <h4 className="font-extrabold text-xl font-['Be_Vietnam_Pro']">Futura Std & Univers LT</h4>
+              <h4 className="font-extrabold text-xl font-[family-name:var(--font-display)]">Futura Std & Univers LT</h4>
               <div className="space-y-2 text-sm opacity-90">
                 <p className="font-bold text-base">Futura Std Bold ({lang === 'de' ? 'Druck-Überschriften' : lang === 'en' ? 'Print Headings' : 'Titoli Stampa'})</p>
                 <p className="font-normal text-sm">Futura Std Book ({lang === 'de' ? 'Untertitel' : lang === 'en' ? 'Subtitles' : 'Sottotitoli'})</p>
@@ -266,17 +276,17 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
             {/* Web Typeface */}
             <div className={`border rounded-2xl p-6 space-y-4 shadow-xl border-l-8 ${
-              isLight ? 'bg-[#FFFFFF] border-[#82B2BD] border-l-[#417483]' : 'bg-[#0D4D5E] border-[#417483]/40 border-l-[#417483]'
+              isLight ? 'bg-[var(--color-dns-surface)] border-[var(--color-dns-secondary-dark)] border-l-[var(--color-dns-mid)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/40 border-l-[var(--color-dns-mid)]'
             }`}>
-              <span className={`text-xs font-mono font-bold uppercase ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+              <span className={`text-xs font-mono font-bold uppercase ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                 WEB & DIGITAL ECOSYSTEM
               </span>
-              <h4 className="font-extrabold text-xl font-['Be_Vietnam_Pro']">Be Vietnam Pro & Roboto</h4>
+              <h4 className="font-extrabold text-xl font-[family-name:var(--font-display)]">Be Vietnam Pro & Roboto</h4>
               <div className="space-y-2 text-sm opacity-90">
-                <p className="font-black text-base font-['Be_Vietnam_Pro']">Be Vietnam Pro Black 900 ({lang === 'de' ? 'Hauptüberschriften' : lang === 'en' ? 'Headings' : 'Headings'})</p>
-                <p className="font-light text-sm font-['Be_Vietnam_Pro']">Be Vietnam Pro Light 300 ({lang === 'de' ? 'Unterüberschriften' : lang === 'en' ? 'Subheadings' : 'Subheadings'})</p>
-                <p className="font-light text-xs font-sans">Roboto Light ({lang === 'de' ? 'Digitaler Fließtext' : lang === 'en' ? 'Digital Body Text' : 'Body Text Digital'})</p>
-                <p className="font-normal text-xs font-sans">Roboto Regular Condensed ({lang === 'de' ? 'Tabellen & Daten' : lang === 'en' ? 'Tables & Data' : 'Tabelle & Data'})</p>
+                <p className="font-black text-base font-[family-name:var(--font-display)]">Be Vietnam Pro Black 900 ({lang === 'de' ? 'Hauptüberschriften' : lang === 'en' ? 'Headings' : 'Headings'})</p>
+                <p className="font-light text-sm font-[family-name:var(--font-display)]">Be Vietnam Pro Light 300 ({lang === 'de' ? 'Unterüberschriften' : lang === 'en' ? 'Subheadings' : 'Subheadings'})</p>
+                <p className="font-light text-xs font-[family-name:var(--font-alt)]">Roboto Light ({lang === 'de' ? 'Digitaler Fließtext' : lang === 'en' ? 'Digital Body Text' : 'Body Text Digital'})</p>
+                <p className="font-normal text-xs font-[family-name:var(--font-alt)]">Roboto Regular Condensed ({lang === 'de' ? 'Tabellen & Daten' : lang === 'en' ? 'Tables & Data' : 'Tabelle & Data'})</p>
               </div>
             </div>
           </div>
@@ -284,13 +294,13 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
         {/* 3. LOGO EVOLUTION TIMELINE & DECODING */}
         <div className={`border rounded-3xl p-6 sm:p-10 space-y-10 shadow-2xl transition-colors ${
-          isLight ? 'bg-[#FFFFFF] border-[#82B2BD]' : 'bg-[#052832] border-[#417483]/40'
+          isLight ? 'bg-[var(--color-dns-surface)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
         }`}>
           
           {/* Timeline Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-6 border-current/20">
             <div>
-              <div className={`flex items-center space-x-2 font-bold text-xs ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+              <div className={`flex items-center space-x-2 font-bold text-xs ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                 <History className="w-4 h-4" />
                 <span>
                   {lang === 'de' && 'MARKENEVOLUTION (2000 - 2025)'}
@@ -298,7 +308,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                   {lang === 'en' && 'BRAND EVOLUTION (2000 - 2025)'}
                 </span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black font-['Be_Vietnam_Pro'] mt-1">
+              <h3 className="text-2xl sm:text-3xl font-black font-[family-name:var(--font-display)] mt-1">
                 {lang === 'de' && 'Die Geschichte des Logos Dolomiti NordicSki'}
                 {lang === 'it' && 'La Storia del Logo Dolomiti NordicSki'}
                 {lang === 'en' && 'History of the Dolomiti NordicSki Logo'}
@@ -308,7 +318,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
             <button
               onClick={() => setActiveTimelineYear(2025)}
               className={`px-4 py-2 rounded-xl border font-bold text-xs flex items-center space-x-2 transition-all shadow-md ${
-                isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#AAD0D1]/40 text-[#AAD0D1]'
+                isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)]/40 text-[var(--color-dns-light)]'
               }`}
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -332,11 +342,11 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                     className={`px-4 py-2 rounded-xl font-mono text-xs font-extrabold transition-all shrink-0 border ${
                       isActive
                         ? isLight
-                          ? 'bg-[#0D4D5E] text-white border-[#083845] shadow-lg scale-110'
-                          : 'bg-[#AAD0D1] text-[#083845] border-white shadow-lg scale-110'
+                          ? 'bg-[var(--color-dns-deep)] text-white border-[var(--color-dns-primary-dark)] shadow-lg scale-110'
+                          : 'bg-[var(--color-dns-light)] text-[var(--color-dns-primary-dark)] border-white shadow-lg scale-110'
                         : isLight
-                          ? 'bg-[#F0F5F6] text-[#083845] border-[#82B2BD]'
-                          : 'bg-[#083845] text-slate-300 border-[#417483]/40'
+                          ? 'bg-[var(--color-dns-bg)] text-[var(--color-dns-primary-dark)] border-[var(--color-dns-secondary-dark)]'
+                          : 'bg-[var(--color-dns-primary-dark)] text-slate-300 border-[var(--color-dns-mid)]/40'
                     }`}
                   >
                     {yr}
@@ -347,7 +357,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
             {/* Stage Preview */}
             <div className={`p-8 rounded-2xl border text-center space-y-4 ${
-              isLight ? 'bg-[#F0F5F6] border-[#82B2BD]' : 'bg-[#083845] border-[#417483]/40'
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
             }`}>
               <div className="bg-white p-6 rounded-2xl max-w-md mx-auto shadow-xl border border-slate-200 flex items-center justify-center h-32 sm:h-40">
                 <img 
@@ -357,7 +367,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 />
               </div>
               <div className="space-y-1">
-                <span className={`text-xs font-mono font-bold ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+                <span className={`text-xs font-mono font-bold ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                   {lang === 'de' && `MARKENVERSION ${activeTimelineYear}`}
                   {lang === 'it' && `VERSIONE BRAND ${activeTimelineYear}`}
                   {lang === 'en' && `BRAND VERSION ${activeTimelineYear}`}
@@ -381,7 +391,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
           {/* LOGO DECODING (3 CORE ELEMENTS) */}
           <div className="pt-6 border-t border-current/20 space-y-6">
-            <h4 className="text-xl font-black font-['Be_Vietnam_Pro']">
+            <h4 className="text-xl font-black font-[family-name:var(--font-display)]">
               {lang === 'de' && 'Anatomie & Decodierung des Logos (3 Kern-Elemente)'}
               {lang === 'it' && 'Anatomia e Decodifica del Logo (3 Elementi Chiave)'}
               {lang === 'en' && 'Logo Anatomy & Decoding (3 Core Elements)'}
@@ -391,10 +401,10 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
               
               {/* Element 1 */}
               <div className={`border rounded-2xl p-6 space-y-3 shadow-xl ${
-                isLight ? 'bg-[#F0F5F6] border-[#82B2BD]' : 'bg-[#083845] border-[#417483]/40'
+                isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
               }`}>
                 <span className={`text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded border ${
-                  isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#417483]/50 text-[#AAD0D1]'
+                  isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/50 text-[var(--color-dns-light)]'
                 }`}>
                   1. TEXTUAL ELEMENT
                 </span>
@@ -408,10 +418,10 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
               {/* Element 2 */}
               <div className={`border rounded-2xl p-6 space-y-3 shadow-xl ${
-                isLight ? 'bg-[#F0F5F6] border-[#82B2BD]' : 'bg-[#083845] border-[#417483]/40'
+                isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
               }`}>
                 <span className={`text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded border ${
-                  isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#417483]/50 text-[#AAD0D1]'
+                  isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/50 text-[var(--color-dns-light)]'
                 }`}>
                   2. SKIER
                 </span>
@@ -429,10 +439,10 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
               {/* Element 3 */}
               <div className={`border rounded-2xl p-6 space-y-3 shadow-xl ${
-                isLight ? 'bg-[#F0F5F6] border-[#82B2BD]' : 'bg-[#083845] border-[#417483]/40'
+                isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/40'
               }`}>
                 <span className={`text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded border ${
-                  isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#417483]/50 text-[#AAD0D1]'
+                  isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/50 text-[var(--color-dns-light)]'
                 }`}>
                   3. NORDIC SWOOSH
                 </span>
@@ -457,12 +467,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
         <div className="space-y-6">
           <div className="flex items-center space-x-3">
             <div className={`p-2 rounded-lg border ${
-              isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#AAD0D1]/30 text-[#AAD0D1]'
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)]/30 text-[var(--color-dns-light)]'
             }`}>
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-black font-['Be_Vietnam_Pro']">
+              <h3 className="text-xl sm:text-2xl font-black font-[family-name:var(--font-display)]">
                 {lang === 'de' && 'Offizielle Logos & Vektorformate'}
                 {lang === 'it' && 'Loghi Ufficiali & Formati Vettoriali'}
                 {lang === 'en' && 'Official Logos & Vector Formats'}
@@ -489,16 +499,16 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                     className={`w-full text-left p-4 rounded-xl border transition-all flex flex-col space-y-2 ${
                       isSelected
                         ? isLight
-                          ? 'bg-[#E2EFF1] border-[#0D4D5E] shadow-md'
-                          : 'bg-[#0D4D5E] border-[#AAD0D1] shadow-md'
+                          ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-deep)] shadow-md'
+                          : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)] shadow-md'
                         : isLight
-                          ? 'bg-white border-[#82B2BD]/50 hover:bg-[#F0F5F6]'
-                          : 'bg-[#083845]/80 border-[#417483]/30 hover:bg-[#0D4D5E]/50'
+                          ? 'bg-white border-[var(--color-dns-secondary-dark)]/50 hover:bg-[var(--color-dns-bg)]'
+                          : 'bg-[var(--color-dns-primary-dark)]/80 border-[var(--color-dns-mid)]/30 hover:bg-[var(--color-dns-deep)]/50'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`font-bold text-sm ${
-                        isSelected ? (isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]') : 'opacity-90'
+                        isSelected ? (isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]') : 'opacity-90'
                       }`}>
                         {vName}
                       </span>
@@ -516,11 +526,11 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
             {/* Active Logo Visual Stage */}
             <div className={`lg:col-span-8 border rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl ${
-              isLight ? 'bg-white border-[#82B2BD]' : 'bg-[#0D4D5E] border-[#417483]/50'
+              isLight ? 'bg-white border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/50'
             }`}>
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-current/20 pb-4">
                 <div>
-                  <h4 className="font-black text-lg font-['Be_Vietnam_Pro']">{getLoc(activeLogo.name, lang)}</h4>
+                  <h4 className="font-black text-lg font-[family-name:var(--font-display)]">{getLoc(activeLogo.name, lang)}</h4>
                   <p className="text-xs opacity-80 mt-0.5 font-light">{getLoc(activeLogo.useCase, lang)}</p>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -537,9 +547,9 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
               {/* Graphical rendering of logo */}
               <div className={`w-full h-64 sm:h-80 rounded-xl flex items-center justify-center p-8 border border-current/20 relative overflow-hidden transition-colors ${
-                activeLogo.bgType === 'dark' ? 'bg-[#083845]' :
+                activeLogo.bgType === 'dark' ? 'bg-[var(--color-dns-primary-dark)]' :
                 activeLogo.bgType === 'light' ? 'bg-white' :
-                activeLogo.bgType === 'color' ? 'bg-[#0D4D5E]' : 'bg-[#083845] bg-[radial-gradient(#417483_1px,transparent_1px)] [background-size:16px_16px]'
+                activeLogo.bgType === 'color' ? 'bg-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-primary-dark)] bg-[radial-gradient(var(--color-dns-mid)_1px,transparent_1px)] [background-size:16px_16px]'
               }`}>
                 {/* Official Base64 Logo Image Rendering */}
                 <div className="flex flex-col items-center justify-center text-center space-y-4 select-none">
@@ -551,7 +561,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                     />
                   </div>
                   
-                  <div className="pt-2 flex items-center space-x-2 opacity-80 text-[10px] font-mono tracking-widest uppercase text-[#0D4D5E]">
+                  <div className="pt-2 flex items-center space-x-2 opacity-80 text-[10px] font-mono tracking-widest uppercase text-[var(--color-dns-deep)]">
                     <span>
                       {lang === 'de' && '[ SCHUTZZONE MINDESTABSTAND = H(D) ]'}
                       {lang === 'it' && '[ AREA DI RISPETTO MARGINE = H(D) ]'}
@@ -563,7 +573,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
               {/* Download Buttons for Formats */}
               <div className="space-y-3 pt-2">
-                <span className={`text-xs font-bold uppercase tracking-wider block ${isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'}`}>
+                <span className={`text-xs font-bold uppercase tracking-wider block ${isLight ? 'text-[var(--color-dns-deep)]' : 'text-[var(--color-dns-light)]'}`}>
                   {lang === 'it' && 'Scarica nei Formati Standard:'}
                   {lang === 'de' && 'Herunterladen im Standardformat:'}
                   {lang === 'en' && 'Download Standard Formats:'}
@@ -576,12 +586,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                       onClick={() => handleDownloadLogo(getLoc(activeLogo.name, lang), fmt)}
                       className={`px-4 py-3 rounded-xl border flex items-center justify-between text-xs font-bold transition-all group shadow-md ${
                         isLight 
-                          ? 'bg-[#F0F5F6] hover:bg-[#E2EFF1] border-[#82B2BD] text-[#083845]' 
-                          : 'bg-[#083845] hover:bg-[#052832] border-[#417483]/50 text-white'
+                          ? 'bg-[var(--color-dns-bg)] hover:bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-primary-dark)]' 
+                          : 'bg-[var(--color-dns-primary-dark)] hover:bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/50 text-white'
                       }`}
                     >
                       <div className="flex items-center space-x-2">
-                        <Download className="w-3.5 h-3.5 text-[#0D4D5E] group-hover:scale-110 transition-transform" />
+                        <Download className="w-3.5 h-3.5 text-[var(--color-dns-deep)] group-hover:scale-110 transition-transform" />
                         <span>{fmt}</span>
                       </div>
                       <span className="text-[10px] opacity-70 font-mono">
@@ -599,12 +609,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
         <div className="space-y-6 pt-6 border-t border-current/20">
           <div className="flex items-center space-x-3">
             <div className={`p-2 rounded-lg border ${
-              isLight ? 'bg-[#E2EFF1] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#0D4D5E] border-[#AAD0D1]/30 text-[#AAD0D1]'
+              isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)] text-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-light)]/30 text-[var(--color-dns-light)]'
             }`}>
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-black font-['Be_Vietnam_Pro']">
+              <h3 className="text-xl sm:text-2xl font-black font-[family-name:var(--font-display)]">
                 {lang === 'de' && 'Nutzungsregeln & Co-Branding'}
                 {lang === 'it' && 'Regole d\'Uso & Co-Branding'}
                 {lang === 'en' && 'Usage Rules & Co-Branding'}
@@ -625,10 +635,10 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 <div 
                   key={idx}
                   className={`border rounded-2xl p-6 space-y-4 shadow-xl ${
-                    isLight ? 'bg-white border-[#82B2BD]' : 'bg-[#0D4D5E] border-[#417483]/40'
+                    isLight ? 'bg-white border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-deep)] border-[var(--color-dns-mid)]/40'
                   }`}
                 >
-                  <h4 className="font-black text-base flex items-center space-x-2 font-['Be_Vietnam_Pro'] text-[#0D4D5E]">
+                  <h4 className="font-black text-base flex items-center space-x-2 font-[family-name:var(--font-display)] text-[var(--color-dns-deep)]">
                     <Info className="w-4 h-4" />
                     <span>{gTitle}</span>
                   </h4>
@@ -639,7 +649,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-current/20">
                     {/* DOs */}
                     <div className="space-y-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1 text-[#0D4D5E]">
+                      <span className="text-[11px] font-bold uppercase tracking-wider flex items-center space-x-1 text-[var(--color-dns-deep)]">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>
                           {lang === 'de' && 'Erlaubt (DOs)'}
@@ -650,7 +660,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                       <ul className="space-y-1.5">
                         {guideline.dos.map((doItem, dIdx) => (
                           <li key={dIdx} className="text-[11px] flex items-start space-x-1.5 opacity-90">
-                            <span className="text-[#0D4D5E] mt-0.5">•</span>
+                            <span className="text-[var(--color-dns-deep)] mt-0.5">•</span>
                             <span>{getLoc(doItem, lang)}</span>
                           </li>
                         ))}
@@ -685,12 +695,12 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
 
         {/* AGENCY CREDIT FOOTER NOTICE */}
         <div className={`p-6 rounded-2xl border text-center space-y-2 ${
-          isLight ? 'bg-[#E2EFF1] border-[#82B2BD]' : 'bg-[#052832] border-[#417483]/30'
+          isLight ? 'bg-[var(--color-dns-bg)] border-[var(--color-dns-secondary-dark)]' : 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-mid)]/30'
         }`}>
           <p className="text-xs font-light opacity-90">
-            {lang === 'de' && <>Das Corporate Design wurde von der Agentur <strong className="text-[#0D4D5E]">PINKHAND</strong> entwickelt.</>}
-            {lang === 'it' && <>Il Corporate Design è stato sviluppato dall'agenzia <strong className="text-[#0D4D5E]">PINKHAND</strong>.</>}
-            {lang === 'en' && <>The Corporate Design was developed by the agency <strong className="text-[#0D4D5E]">PINKHAND</strong>.</>}
+            {lang === 'de' && <>Das Corporate Design wurde von der Agentur <strong className="text-[var(--color-dns-deep)]">PINKHAND</strong> entwickelt.</>}
+            {lang === 'it' && <>Il Corporate Design è stato sviluppato dall'agenzia <strong className="text-[var(--color-dns-deep)]">PINKHAND</strong>.</>}
+            {lang === 'en' && <>The Corporate Design was developed by the agency <strong className="text-[var(--color-dns-deep)]">PINKHAND</strong>.</>}
           </p>
         </div>
 
