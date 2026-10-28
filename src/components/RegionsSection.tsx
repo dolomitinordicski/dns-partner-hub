@@ -33,7 +33,7 @@ export const RegionsSection: React.FC<RegionsSectionProps> = ({ lang }) => {
             {lang === 'en' && 'The 8 Regions & Partner Network'}
           </h2>
           <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-3xl">
-            {lang === 'it' && 'Oltre 1.000 km di piste battute quotidianamente in 8 valli tra le Dolomiti patrimonio mondiale UNESCO e il Tirolo Orientale, tutte accessibili con l\'unico Skipass Dolomiti NordicSki.'}
+            {lang === 'it' && 'Le aree e le località del carosello Dolomiti NordicSki, secondo i dati anagrafici ufficiali condivisi.'}
             {lang === 'de' && 'Die DNS Gebiete und Orte aus den gemeinsamen Stammdaten.'}
             {lang === 'en' && 'DNS areas and destinations from the shared canonical dataset.'}
           </p>
