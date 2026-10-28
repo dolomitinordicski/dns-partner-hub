@@ -30,12 +30,20 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
         <p className={compact ? "relative text-[10px] font-bold uppercase tracking-wider opacity-90" : "relative text-xs font-bold uppercase tracking-wider opacity-90"}>{tr('Dolomiti NordicSki · Widget-Vorschau', 'Dolomiti NordicSki · Anteprima widget', 'Dolomiti NordicSki · Widget preview')}</p>
         <div className={compact ? "relative flex flex-wrap items-center gap-3" : "relative flex flex-wrap items-center gap-4"}>
           {areaId === "all" && <img src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" className="max-h-16 max-w-36 object-contain" />}
-          {regionLogos.logos.length > 0 && <div className="flex flex-wrap items-center gap-2 rounded-xl border px-3 py-2 backdrop-blur-md" style={{ background: "rgba(255,255,255,.90)", borderColor: accent ?? c.border }}>
-            {regionLogos.logos.map((logo, index) => <React.Fragment key={logo.id}>
-              {index > 0 && <span aria-hidden="true" className="h-8 w-px shrink-0" style={{ background: c.border }} />}
-              <img src={logo.url} alt={logo.label} className="h-10 sm:h-12 w-auto max-w-32 object-contain" loading="lazy" />
-            </React.Fragment>)}
-          </div>}
+          {regionLogos.logos.length > 0 && (
+            <div aria-label={tr('Gebietslogos', 'Loghi area', 'Area logos')}
+              className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 overflow-hidden rounded-xl border px-3 py-2 backdrop-blur-md"
+              style={{ background: 'rgba(255,255,255,.94)', borderColor: accent ?? c.border, boxShadow: DNS_DESIGN_SYSTEM.shadow.card }}>
+              {regionLogos.logos.map((logo, index) => (
+                <React.Fragment key={logo.id}>
+                  {index > 0 && <span aria-hidden="true" className="h-7 w-px shrink-0" style={{ background: c.border }} />}
+                  <img src={logo.url} alt={logo.label} loading="lazy"
+                    className={compact ? "block h-8 max-w-24 shrink-0 object-contain" : "block h-11 sm:h-12 max-w-32 shrink-0 object-contain"}
+                    style={{ width: 'auto' }} />
+                </React.Fragment>
+              ))}
+            </div>
+          )}
           {regionLogos.status === 'ready' && regionLogos.logos.length === 0 && snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
           <div className="min-w-0 flex-1">
             <h3 className={compact ? "text-lg sm:text-xl font-extrabold leading-tight tracking-tight" : "text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight"}>{regionName}</h3>
