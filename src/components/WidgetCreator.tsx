@@ -112,7 +112,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
           <div className="lg:col-span-7">
             <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot}
               regionName={regionName} includeTrails={includeTrails} includeWeather={includeWeather}
-              includePrices={includePrices} paletteColor={currentBgColor} isLight={isLight} />
+              includePrices={includePrices} paletteColor={currentBgColor} isLight={isLight} areaId={selectedRegion} />
           </div>
         </div>
 
