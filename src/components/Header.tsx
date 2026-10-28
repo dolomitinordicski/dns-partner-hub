@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header data-dns-tool-header className="dns-foundation-header bg-[var(--dns-primary)]">
+    <header data-dns-tool-header className="dns-foundation-header bg-[var(--color-dns-deep)]">
       <div className="dns-tool-header-shell">
         <div className="dns-tool-header-brand">
           <img className="dns-tool-header-logo" src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" />
