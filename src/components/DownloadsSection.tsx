@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, DownloadItem, AccessibilitySettings, AccessLevel } from '../types';
-import { DOWNLOAD_ITEMS, DNS_LOGO_BASE64 } from '../data/portalData';
+import { DOWNLOAD_ITEMS } from '../data/portalData';
+import { DNS_SHARED_WEB_LOGO_URL } from '../services/foundationBrand';
 import { db } from '../lib/firebase';
 import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { 
@@ -501,7 +502,7 @@ Dolomiti NordicSki - 1.000 km Cross-Country Carousel`;
             <div className="flex items-start space-x-4">
               <div className="p-3 rounded-2xl bg-white border border-[#AAD0D1] shrink-0">
                 <img 
-                  src={DNS_LOGO_BASE64} 
+                  src={DNS_SHARED_WEB_LOGO_URL} 
                   alt="Dolomiti NordicSki Logo" 
                   className="h-10 w-auto object-contain"
                 />
