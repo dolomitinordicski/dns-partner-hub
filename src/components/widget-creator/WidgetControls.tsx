@@ -306,6 +306,7 @@ export const WidgetControls: React.FC<Props> = ({
                 </span>
                 <button
                   onClick={handleCopy}
+                  disabled={!embedCode}
                   className="px-3.5 py-1.5 rounded-none bg-[#0D4D5E] hover:bg-[#0D4D5E]/80 border border-[#AAD0D1]/60 text-[#AAD0D1] font-bold text-xs flex items-center space-x-1.5 transition-all shadow-md cursor-pointer"
                 >
                   {copiedCode ? (
@@ -333,7 +334,7 @@ export const WidgetControls: React.FC<Props> = ({
               <textarea
                 readOnly
                 rows={3}
-                value={embedCode}
+                value={embedCode || (lang === 'de' ? 'Einbettung noch nicht freigegeben: DNS-Widget-Endpunkt wird geprüft.' : lang === 'it' ? 'Incorporamento non ancora disponibile: endpoint widget DNS da verificare.' : 'Embed not yet available: DNS widget endpoint pending verification.')}
                 className="w-full p-3 rounded-none bg-[#052832] border border-[#417483]/50 font-mono text-[11px] text-slate-200 select-all focus:outline-none"
               ></textarea>
             </div>
