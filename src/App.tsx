@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { DNS_DEFAULT_UI_LANGUAGE, DNS_UI_LANGUAGE_STORAGE_KEY, resolveDNSLanguagePreference } from '@dolomitinordicski/dns-shared-data/localization';
 import { NavigationTab, Language, AccessibilitySettings, AccessLevel } from './types';
 import { Header } from './components/Header';
-import { Hero } from './components/Hero';
 import { VisionSection } from './components/VisionSection';
 import { CorporateDesignSection } from './components/CorporateDesignSection';
 import { QualityCriteriaSection } from './components/QualityCriteriaSection';
@@ -16,18 +15,8 @@ import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
 
-import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { Footer } from './components/Footer';
-import { 
-  FileText, 
-  Ticket, 
-  Award, 
-  Download, 
-  ChevronRight, 
-  Sparkles,
-  Building2,
-  FolderGit2
-} from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavigationTab>('home');
@@ -142,187 +131,34 @@ export default function App() {
         <main data-dns-shell-main className="flex-1" style={{minWidth:0}}>
 
         
-        {/* HOME DASHBOARD TAB */}
+        {/* Foundation portal home: no separate marketing hero or duplicated navigation. */}
         {activeTab === 'home' && (
-          <div>
-            <Hero setActiveTab={setActiveTab} lang={lang} a11y={a11y} />
-            <PartnerOnboarding lang={lang} onWidget={() => setActiveTab('widgets')} />
-
-            {/* Quick Feature Shortcut Cards */}
-            <section className={`dns-portal-home-services py-12 border-b transition-colors ${
-              isLight ? 'bg-[#FFFFFF] border-[#82B2BD]/30' : 'bg-[#083845] border-[#417483]/30'
-            }`}>
-              <div className="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
-                <div className="text-center max-w-2xl mx-auto space-y-2">
-                  <span className={`text-xs font-mono font-bold uppercase tracking-widest flex items-center justify-center space-x-1.5 ${
-                    isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
-                  }`}>
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>
-                      {lang === 'de' && 'EXKLUSIVES B2B PARTNERPORTAL'}
-                      {lang === 'it' && 'PORTALE RISERVATO B2B'}
-                      {lang === 'en' && 'EXCLUSIVE B2B PARTNER PORTAL'}
-                    </span>
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold font-['Be_Vietnam_Pro']">
-                    {lang === 'de' && 'Services und Module für Partnerbetriebe'}
-                    {lang === 'it' && 'Servizi e Moduli per le Strutture Convenzionate'}
-                    {lang === 'en' && 'Services and Modules for Accredited Partners'}
-                  </h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  
-                  {/* Corporate Design */}
-                  <div
-                    onClick={() => setActiveTab('corporate-design')}
-                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
-                      isLight
-                        ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
-                        : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
-                    }`}
-                  >
-                    <div className={`p-3 rounded-xl w-fit group-hover:scale-110 transition-transform border ${
-                      isLight ? 'bg-[#FFFFFF] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#083845] border-[#417483]/40 text-[#AAD0D1]'
-                    }`}>
-                      <FileText className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors font-['Be_Vietnam_Pro']">
-                      {lang === 'de' && 'Corporate Design & Handbuch'}
-                      {lang === 'it' && 'Corporate Design & Manuale'}
-                      {lang === 'en' && 'Corporate Design & Manual'}
-                    </h3>
-                    <p className="text-xs opacity-90 leading-relaxed font-light">
-                      {lang === 'de' && 'Vektor-Logos EPS/SVG, offizielle Farbpalette, Typografie und Markenrichtlinien.'}
-                      {lang === 'it' && 'Loghi vettoriali EPS/SVG, palette colori ufficiale, font e linee guida di marchio.'}
-                      {lang === 'en' && 'Vector logos EPS/SVG, official colour palette, fonts, and brand guidelines.'}
-                    </p>
-                    <div className={`text-xs font-bold flex items-center space-x-1 pt-2 ${
-                      isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
-                    }`}>
-                      <span>
-                        {lang === 'de' && 'Handbuch öffnen'}
-                        {lang === 'it' && 'Apri Manuale'}
-                        {lang === 'en' && 'Open Guidelines'}
-                      </span>
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  {/* Prevendita Voucher */}
-                  <div
-                    onClick={() => setActiveTab('voucher-system')}
-                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
-                      isLight
-                        ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
-                        : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
-                    }`}
-                  >
-                    <div className={`p-3 rounded-xl w-fit group-hover:scale-110 transition-transform border ${
-                      isLight ? 'bg-[#FFFFFF] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#083845] border-[#417483]/40 text-[#AAD0D1]'
-                    }`}>
-                      <Ticket className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors font-['Be_Vietnam_Pro']">
-                      {lang === 'de' && 'Gutscheine & Loipenpässe'}
-                      {lang === 'it' && 'Emissione Voucher Skipass'}
-                      {lang === 'en' && 'Skipass Voucher Issuance'}
-                    </h3>
-                    <p className="text-xs opacity-90 leading-relaxed font-light">
-                      {lang === 'de' && 'Gutscheinmodul in Vorbereitung. Freischaltung erst nach DNS Core Integration.'}
-                      {lang === 'it' && 'Modulo voucher in preparazione. Attivazione dopo l’integrazione sicura con DNS Core.'}
-                      {lang === 'en' && 'Voucher module in preparation, pending secure DNS Core integration.'}
-                    </p>
-                    <div className={`text-xs font-bold flex items-center space-x-1 pt-2 ${
-                      isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
-                    }`}>
-                      <span>
-                        {lang === 'de' && 'In Vorbereitung'}
-                        {lang === 'it' && 'In preparazione'}
-                        {lang === 'en' && 'Coming soon'}
-                      </span>
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  {/* Criteri Qualità */}
-                  <div
-                    onClick={() => setActiveTab('quality-criteria')}
-                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
-                      isLight
-                        ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
-                        : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
-                    }`}
-                  >
-                    <div className={`p-3 rounded-xl w-fit group-hover:scale-110 transition-transform border ${
-                      isLight ? 'bg-[#FFFFFF] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#083845] border-[#417483]/40 text-[#AAD0D1]'
-                    }`}>
-                      <Award className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors font-['Be_Vietnam_Pro']">
-                      {lang === 'de' && 'Qualitätskriterien Hotel'}
-                      {lang === 'it' && 'Criteri di Qualità Hotel'}
-                      {lang === 'en' && 'Hotel Quality Criteria'}
-                    </h3>
-                    <p className="text-xs opacity-90 leading-relaxed font-light">
-                      {lang === 'de' && 'Zertifizierte Checkliste: Beheizter Skiraum, Wachstisch, Sportlerfrühstück.'}
-                      {lang === 'it' && 'Checklist ufficiale di accreditamento: deposito sci, sciolinatura, colazione sportiva.'}
-                      {lang === 'en' && 'Official accreditation checklist: heated ski room, wax bench, athlete breakfast.'}
-                    </p>
-                    <div className={`text-xs font-bold flex items-center space-x-1 pt-2 ${
-                      isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
-                    }`}>
-                      <span>
-                        {lang === 'de' && 'Kriterien prüfen'}
-                        {lang === 'it' && 'Verifica Criteri'}
-                        {lang === 'en' && 'Check Criteria'}
-                      </span>
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  {/* Download Assets */}
-                  <div
-                    onClick={() => setActiveTab('downloads')}
-                    className={`dns-portal-service-card p-6 rounded-2xl border transition-all cursor-pointer space-y-4 group shadow-xl hover:-translate-y-1 ${
-                      isLight
-                        ? 'bg-[#F0F5F6] border-[#82B2BD] hover:border-[#0D4D5E]'
-                        : 'bg-[#0D4D5E] border-[#417483]/40 hover:border-[#AAD0D1]'
-                    }`}
-                  >
-                    <div className={`p-3 rounded-xl w-fit group-hover:scale-110 transition-transform border ${
-                      isLight ? 'bg-[#FFFFFF] border-[#82B2BD] text-[#0D4D5E]' : 'bg-[#083845] border-[#417483]/40 text-[#AAD0D1]'
-                    }`}>
-                      <Download className="w-6 h-6" />
-                    </div>
-                    <h3 className="font-extrabold text-lg group-hover:text-[#0D4D5E] transition-colors font-['Be_Vietnam_Pro']">
-                      {lang === 'de' && 'Download Marketing Kit'}
-                      {lang === 'it' && 'Download Kit Marketing'}
-                      {lang === 'en' && 'Download Marketing Kit'}
-                    </h3>
-                    <p className="text-xs opacity-90 leading-relaxed font-light">
-                      {lang === 'de' && 'Loipenkarten 1.000 km, Infoflyer für Zimmer, Social Media Kits.'}
-                      {lang === 'it' && 'Cartine tracciati 1.000 km, flyer informativi per le camere, social media kit.'}
-                      {lang === 'en' && '1,000 km trail maps, guest room information flyers, social media kits.'}
-                    </p>
-                    <div className={`text-xs font-bold flex items-center space-x-1 pt-2 ${
-                      isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
-                    }`}>
-                      <span>
-                        {lang === 'de' && 'Assets herunterladen'}
-                        {lang === 'it' && 'Download Assets'}
-                        {lang === 'en' && 'Download Assets'}
-                      </span>
-                      <ChevronRight className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                </div>
+          <div className="space-y-8 py-8">
+            <header className="space-y-2">
+              <p className="dns-kicker">Dolomiti NordicSki</p>
+              <h1 className="text-2xl font-bold" style={{color:'var(--color-dns-deep,#0D4D5E)',fontFamily:'var(--dns-font-heading,system-ui)'}}>Partner Hub</h1>
+              <p style={{color:'var(--color-dns-mid,#417483)'}}>
+                {lang === 'de' ? 'Informationen und Werkzeuge für unsere Partnerbetriebe.' : lang === 'it' ? 'Informazioni e strumenti per le strutture partner.' : 'Information and tools for our partner properties.'}
+              </p>
+            </header>
+            <section className="dns-card p-5 sm:p-8" aria-label="Partner onboarding">
+              <PartnerOnboarding lang={lang} onWidget={() => setActiveTab('widgets')} />
+            </section>
+            <section className="space-y-4" aria-label="Partner services">
+              <h2 className="dns-section-title">{lang === 'de' ? 'Partner-Services' : lang === 'it' ? 'Servizi partner' : 'Partner services'}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {([
+                  ['corporate-design', {de:'Corporate Design',it:'Corporate Design',en:'Corporate Design'}],
+                  ['widgets', {de:'Widget Creator',it:'Widget Creator',en:'Widget Creator'}],
+                  ['quality-criteria', {de:'Qualitätskriterien',it:'Criteri di qualità',en:'Quality criteria'}],
+                  ['downloads', {de:'Downloads',it:'Download',en:'Downloads'}],
+                ] as const).map(([tab,label])=>(
+                  <button key={tab} type="button" className="dns-card p-5 text-left flex items-center justify-between gap-3" style={{border:'1px solid var(--color-dns-border,rgba(65,116,131,.20))',color:'var(--color-dns-deep,#0D4D5E)'}} onClick={()=>setActiveTab(tab)}>
+                    <span className="font-semibold">{label[lang]}</span><ChevronRight size={18} aria-hidden="true"/>
+                  </button>
+                ))}
               </div>
             </section>
-
-            {/* Corporate Overview Section on Home */}
-            <CorporateDesignSection lang={lang} a11y={a11y} accessLevel={accessLevel} />
           </div>
         )}
 
@@ -419,7 +255,6 @@ export default function App() {
       <div data-dns-tool-footer><Footer setActiveTab={setActiveTab} lang={lang} onOpenLegal={handleOpenLegal} /></div>
 
       {/* Floating Go To Top Button (Always visible across all devices) */}
-      <ScrollToTopButton lang={lang} />
 
     </div>
   );
