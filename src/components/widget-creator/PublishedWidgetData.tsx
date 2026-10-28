@@ -13,7 +13,9 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
   const priceItems = snapshot?.pricing.status === 'available'
     ? snapshot.pricing.items.filter(p => p.currency === 'EUR' && Number.isFinite(p.amount) && p.amount >= 0)
     : [];
-  const trails = snapshot?.trails.status === 'available' ? snapshot.trails : null;
+  const trailObservedAt = snapshot?.trails.observedAt ? Date.parse(snapshot.trails.observedAt) : NaN;
+  const trailsFresh = Number.isFinite(trailObservedAt) && trailObservedAt <= Date.now() + 60000 && Date.now() - trailObservedAt <= 24 * 60 * 60 * 1000;
+  const trails = snapshot?.trails.status === 'available' && trailsFresh ? snapshot.trails : null;
   const weather = snapshot?.weather.status === 'available' ? snapshot.weather : null;
   const regionLogos = useRegionLogos(areaId);
   const c = DNS_DESIGN_SYSTEM.colors;
