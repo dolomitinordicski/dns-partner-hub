@@ -2,6 +2,7 @@ import React from 'react';
 import { DNS_DEFAULT_UI_LANGUAGE, DNS_UI_LANGUAGE_STORAGE_KEY, resolveDNSLanguagePreference } from '@dolomitinordicski/dns-shared-data/localization';
 import { DNS_LOGO_BASE64 } from './data/portalData';
 import type { Language } from './types';
+import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 
 // Foundation owns the shell, buttons, cards, focus and accessibility presentation.
 // Legacy modules are deliberately disconnected while their screens are rebuilt.
@@ -16,6 +17,8 @@ function languagePreference():Language {
  try { const value=localStorage.getItem(DNS_UI_LANGUAGE_STORAGE_KEY);return value==='en'?'en':resolveDNSLanguagePreference({stored:value}) as Language; }
  catch { return DNS_DEFAULT_UI_LANGUAGE as Language; }
 }
+const headerTokens = DNS_DESIGN_SYSTEM.header;
+
 export default function App() {
  const [lang,setLang]=React.useState<Language>(languagePreference);
  const [active,setActive]=React.useState<Screen>('home');
@@ -24,10 +27,10 @@ export default function App() {
  React.useEffect(()=>{document.querySelector('[data-dns-app-nav]')?.setAttribute('data-dns-open',String(drawer));},[drawer]);
  const navigate=(screen:Screen)=>{setActive(screen);setDrawer(false);window.scrollTo({top:0,behavior:'smooth'});};
  return <div style={{minHeight:'100vh',background:'var(--color-dns-background,#F4F8F9)',color:'var(--color-dns-deep,#0D4D5E)'}}>
-   <header data-dns-tool-header className="dns-card" style={{position:'sticky',top:0,zIndex:30,borderRadius:0,borderBottom:'1px solid var(--color-dns-border,rgba(65,116,131,.20))'}}>
+   <header data-dns-tool-header className="dns-tool-header-shell" style={{position:'sticky',top:0,zIndex:30,background:headerTokens.background,color:headerTokens.titleColor,borderBottom:'1px solid var(--color-dns-border,rgba(65,116,131,.20))'}}>
     <div style={{display:'flex',alignItems:'center',gap:12,justifyContent:'space-between',padding:'12px var(--dns-shell-padding-x)',maxWidth:1440,margin:'auto',flexWrap:'wrap'}}>
-     <button type="button" onClick={()=>navigate('home')} className="dns-button" data-variant="tertiary" aria-label="Dolomiti NordicSki Partner Hub">
-       <img src={DNS_LOGO_BASE64} alt="" style={{height:40,width:'auto'}}/><span style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}><strong>Dolomiti NordicSki</strong><span className="dns-kicker">Partner Hub</span></span>
+     <button type="button" onClick={()=>navigate('home')} className="dns-tool-header-brand" aria-label="Dolomiti NordicSki Partner Hub" style={{display:'flex',alignItems:'center',gap:12,background:'transparent',color:'inherit',border:0,cursor:'pointer'}}>
+       <img src={DNS_LOGO_BASE64} alt="" style={{height:40,width:'auto'}}/><span style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}><strong className="dns-tool-header-title" style={{color:headerTokens.titleColor}}>Dolomiti NordicSki</strong><span className="dns-tool-header-subtitle" style={{color:headerTokens.subtitleColor}}>Partner Hub</span></span>
      </button>
      <div style={{display:'flex',gap:6,alignItems:'center',flexWrap:'wrap'}}>
       {(['de','it','en'] as Language[]).map(l=><button key={l} type="button" className="dns-button" data-variant={lang===l?'primary':'tertiary'} aria-pressed={lang===l} onClick={()=>setLang(l)}>{l.toUpperCase()}</button>)}
