@@ -12,7 +12,6 @@ import { WidgetCreator } from './components/WidgetCreator';
 import { PortalNavigation } from './components/PortalNavigation';
 import { PortalHome } from './components/PortalHome';
 import { PartnerLoginModal } from './components/PartnerLoginModal';
-import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
 
@@ -35,7 +34,6 @@ export default function App() {
     try { window.localStorage.setItem(DNS_UI_LANGUAGE_STORAGE_KEY, lang); } catch { /* storage optional */ }
   }, [lang]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [isA11yModalOpen, setIsA11yModalOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [legalModalTab, setLegalModalTab] = useState<LegalTab>('privacy');
 
@@ -108,7 +106,7 @@ export default function App() {
         onLogout={handleLogout}
         a11y={a11y}
         setA11y={setA11y}
-        onOpenA11yModal={() => setIsA11yModalOpen(true)}
+        onOpenA11yModal={() => { /* Foundation controls its own panel */ }}
         onSelectDemoRole={handleSelectDemoRole}
       />
 
@@ -186,15 +184,6 @@ export default function App() {
         onClose={() => setIsLoginModalOpen(false)}
         lang={lang}
         onLoginSuccess={handleLoginSuccess}
-      />
-
-      {/* Accessibility Control Modal */}
-      <AccessibilityModal
-        isOpen={isA11yModalOpen}
-        onClose={() => setIsA11yModalOpen(false)}
-        a11y={a11y}
-        setA11y={setA11y}
-        lang={lang}
       />
 
       {/* GDPR Legal Modal (Privacy, Cookie Policy, Note Legali) */}
