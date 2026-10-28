@@ -22,13 +22,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       DNS_PAGES_PREVIEW: 'true'
-      VITE_DNS_STATIC_PREVIEW: 'true'
+      VITE_DNS_STATIC_PREVIEW: 'false'
+      VITE_DNS_FIREBASE_API_KEY: ${{ secrets.DNS_FIREBASE_WEB_API_KEY }}
+      VITE_DNS_FIREBASE_AUTH_DOMAIN: ${{ vars.DNS_FIREBASE_AUTH_DOMAIN }}
+      VITE_DNS_FIREBASE_PROJECT_ID: dns-core
+      VITE_DNS_FIREBASE_APP_ID: ${{ vars.DNS_FIREBASE_APP_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - run: npm install --no-audit --no-fund
+      - name: Require real DNS Core Firebase web configuration
+        run: |
+          test -n "$VITE_DNS_FIREBASE_API_KEY" || { echo 'Missing DNS_FIREBASE_WEB_API_KEY secret'; exit 1; }
+          test -n "$VITE_DNS_FIREBASE_AUTH_DOMAIN" || { echo 'Missing DNS_FIREBASE_AUTH_DOMAIN variable'; exit 1; }
+          test -n "$VITE_DNS_FIREBASE_APP_ID" || { echo 'Missing DNS_FIREBASE_APP_ID variable'; exit 1; }
       - name: Typecheck frontend
         run: npm run lint
       - name: Build static frontend only

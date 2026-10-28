@@ -1,6 +1,7 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
+import { WidgetEmbedPage } from './components/widget-creator/WidgetEmbedPage';
 import './tailwind.css';
 // Local bundled font files: no request to third-party font CDNs at runtime.
 import '@fontsource/be-vietnam-pro/400.css';
@@ -29,6 +30,6 @@ initDNSNavigationStyles();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {new URLSearchParams(window.location.search).get('dnsWidget') === '1' ? <WidgetEmbedPage /> : <App />}
   </StrictMode>,
 );
