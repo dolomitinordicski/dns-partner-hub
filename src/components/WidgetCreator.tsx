@@ -43,10 +43,15 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
     includeTrails, includeWeather, includePrices, includeBadge
   });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(embedCode);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2500);
+  const handleCopy = async () => {
+    if (!embedCode) return;
+    try {
+      await navigator.clipboard.writeText(embedCode);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2500);
+    } catch {
+      setCopiedCode(false);
+    }
   };
 
   return (
@@ -79,8 +84,8 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
               lang === 'de'
                 ? 'Erstellen Sie ein modulares Website-Widget in den offiziellen Dolomiti NordicSki Farben. Wählen Sie die Sprache (ITA, DE, EN) und die gewünschten Module.'
                 : lang === 'it'
-                ? 'Crea un widget unico nelle quattro palette ufficiali Dolomiti NordicSki. Seleziona la lingua (ITA, DE, EN) e configura i moduli da mostrare.'
-                : 'Build a unified widget in the official Dolomiti NordicSki palettes. Choose the widget language (ITA, DE, EN) and active content modules.'
+                ? 'Crea un widget con i tre colori corporate Dolomiti NordicSki. Seleziona la lingua (ITA, DE, EN) e configura i moduli da mostrare.'
+                : 'Build a unified widget in the three official Dolomiti NordicSki colors. Choose the widget language (ITA, DE, EN) and active content modules.'
             )}
           </p>
         </div>
