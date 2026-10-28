@@ -19,7 +19,7 @@ export interface PublicWidgetSnapshot {
   trails: { status: string; observedAt: string | null; openKm: number | null; totalKm: number | null };
   weather: { status: string; observedAt: string | null; temperatureC: number | null; snowDepthCm: number | null };
 }
-type State = { status: 'loading' | 'available' | 'unavailable' | 'error'; snapshot: PublicWidgetSnapshot | null };
+type State = { status: 'loading' | 'available' | 'unavailable' | 'error'; snapshot: PublicWidgetSnapshot | null; reason?: string };
 
 function isSnapshot(value: unknown, season: string, area: string | null): value is PublicWidgetSnapshot {
   if (!value || typeof value !== 'object') return false;
@@ -49,6 +49,10 @@ export function usePublicWidgetSnapshot(seasonId: string, areaId: string) {
       setState({ status: 'unavailable', snapshot: null });
       return;
     }
+    if (!seasonId) {
+      setState({ status: 'unavailable', snapshot: null, reason: 'No active season in Shared Data' });
+      return;
+    }
     const read = async () => {
       try {
         const id = seasonId + '__' + (canonicalAreaId ?? 'all');
@@ -58,9 +62,17 @@ export function usePublicWidgetSnapshot(seasonId: string, areaId: string) {
         const value: unknown = record?.snapshot;
         if (result.exists() && record?.publicationStatus === 'published' && isSnapshot(value, seasonId, canonicalAreaId)) {
           setState({ status: 'available', snapshot: value });
-        } else setState({ status: 'unavailable', snapshot: null });
-      } catch {
-        if (active) setState({ status: 'error', snapshot: null });
+        } else {
+          const reason = !result.exists() ? 'Document not found' :
+            record?.publicationStatus !== 'published' ? 'Document not published' :
+            'Snapshot contract mismatch';
+          console.warn('[DNS widget] Public snapshot unavailable', { documentId: id, reason });
+          setState({ status: 'unavailable', snapshot: null, reason });
+        }
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error);
+        console.error('[DNS widget] Firestore read failed', { seasonId, areaId, reason });
+        if (active) setState({ status: 'error', snapshot: null, reason });
       }
     };
     setState({ status: 'loading', snapshot: null });
