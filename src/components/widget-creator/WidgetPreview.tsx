@@ -20,7 +20,6 @@ export const WidgetPreview: React.FC<WidgetPreviewProps> = ({
   lang, widgetLang, activePalette, isLight, currentBgColor, regionName,
   includeBadge, includeTrails, includeWeather, includePrices
 }) => (
-          {/* Live Preview Stage (SHARP EDGES / NO ROUNDED CORNERS AS REQUESTED) */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center space-x-2">
