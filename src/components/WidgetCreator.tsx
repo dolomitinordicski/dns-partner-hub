@@ -38,10 +38,15 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
     includeTrails, includeWeather, includePrices, includeBadge
   });
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(embedCode);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2500);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(embedCode);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2500);
+    } catch (error) {
+      console.warn('Widget embed code could not be copied:', error);
+      setCopiedCode(false);
+    }
   };
 
   return (
