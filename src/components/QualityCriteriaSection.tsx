@@ -99,20 +99,20 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[var(--color-dns-deep)] border border-[var(--color-dns-mid)]/50 text-[var(--color-dns-light)] text-xs font-semibold">
             <Award className="w-3.5 h-3.5 text-[var(--color-dns-light)]" />
             <span>
-              {lang === 'it' && 'Standard Ufficiali & Vantaggi Esclusivi per gli Alloggi Partner'}
-              {lang === 'de' && 'Offizielle Qualitätskriterien & Partnervorteile 2026'}
-              {lang === 'en' && 'Official Quality Standards & Exclusive Partner Benefits'}
+              {lang === 'it' && 'Criteri DNS per alloggi specializzati'}
+              {lang === 'de' && 'DNS Qualitätskriterien für spezialisierte Betriebe'}
+              {lang === 'en' && 'DNS Specialized Accommodation Criteria'}
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            {lang === 'it' && 'Vantaggi Partner & Criteri di Qualità'}
-            {lang === 'de' && 'Partnervorteile & Qualitätskriterien'}
-            {lang === 'en' && 'Partner Benefits & Quality Standards'}
+            {lang === 'it' && 'Servizi partner & Criteri di Qualità'}
+            {lang === 'de' && 'Partner-Services & Qualitätskriterien'}
+            {lang === 'en' && 'Partner Services & Quality Criteria'}
           </h2>
           <p className="text-slate-200 text-sm sm:text-base leading-relaxed max-w-3xl">
             {lang === 'it' && 'Scopri tutti i vantaggi esclusivi riservati alle strutture convenzionate Dolomiti NordicSki e verifica la checklist dei criteri di qualità ufficiali per richiedere l\'accreditamento.'}
-            {lang === 'de' && 'Entdecken Sie die exklusiven Vorteile für Partnerbetriebe und prüfen Sie die offizielle Qualitäts-Checkliste für die Zertifizierung.'}
-            {lang === 'en' && 'Discover the exclusive benefits reserved for accredited partner hotels and check the official accreditation criteria.'}
+            {lang === 'de' && 'Prüfen Sie die veröffentlichten Qualitätskriterien für spezialisierte Unterkünfte. Die Selbsteinschätzung ersetzt keine Prüfung durch DNS.'}
+            {lang === 'en' && 'Review the published criteria for specialized accommodations. Self-assessment does not grant accreditation.'}
           </p>
         </div>
 
@@ -167,6 +167,12 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
           </button>
         </div>
 
+        {/* Benefits are legacy promotional descriptions, not the normative ten-point checklist. */}
+        {activeSubTab === 'benefits' && (
+          <p className="text-xs text-[var(--color-dns-light)]">
+            {lang === 'de' ? 'Hinweis: Die folgenden Partner-Services sind eine Übersicht; konkrete Verfügbarkeit und Leistungen sind bei DNS zu prüfen.' : lang === 'it' ? 'Nota: i servizi partner sotto elencati sono una panoramica; verifica la disponibilità effettiva con DNS.' : 'Note: Partner services below are an overview; confirm actual availability with DNS.'}
+          </p>
+        )}
         {/* TAB 1: PARTNERVORTEILE / BENEFITS */}
         {activeSubTab === 'benefits' && (
           <div className="space-y-8 animate-fadeIn">
@@ -358,40 +364,22 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                 <h3 className="text-xl font-bold text-white flex items-center space-x-2">
                   <Send className="w-5 h-5 text-[var(--color-dns-light)]" />
                   <span>
-                    {lang === 'de' && 'Antrag auf Partner-Zertifizierung 2026'}
-                    {lang === 'it' && 'Richiesta Accreditamento Struttura Partner 2026'}
-                    {lang === 'en' && 'Partner Accreditation Application 2026'}
+                    {lang === 'de' && 'Kontakt für DNS-Partnerprüfung'}
+                    {lang === 'it' && 'Contatto per la verifica DNS'}
+                    {lang === 'en' && 'Contact DNS for Review'}
                   </span>
                 </h3>
                 <p className="text-xs text-slate-300 mt-1">
-                  {lang === 'de' && 'Füllen Sie das Formular aus, um die offizielle Zertifizierung zu beantragen.'}
-                  {lang === 'it' && 'Compila il modulo per richiedere l\'accreditamento ufficiale e l\'inserimento sul portale Dolomiti NordicSki.'}
-                  {lang === 'en' && 'Fill out the form to request official accreditation on the Dolomiti NordicSki portal.'}
+                  {lang === 'de' && 'Geben Sie Ihre Kontaktdaten ein, um eine E-Mail an das DNS-Büro vorzubereiten.'}
+                  {lang === 'it' && 'Compila il modulo per preparare una richiesta di verifica via email all’ufficio DNS.'}
+                  {lang === 'en' && 'Enter your details to prepare an email to DNS for review.'}
                 </p>
               </div>
 
-              {formSubmitted ? (
-                <div className="p-6 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-light)]/50 text-center space-y-3">
-                  <CheckCircle2 className="w-10 h-10 text-[var(--color-dns-light)] mx-auto animate-bounce" />
-                  <h4 className="font-extrabold text-lg text-[var(--color-dns-light)]">
-                    {lang === 'de' && 'Anforderung erfolgreich gesendet!'}
-                    {lang === 'it' && 'Richiesta Inviata con Successo!'}
-                    {lang === 'en' && 'Application Sent Successfully!'}
-                  </h4>
-                  <p className="text-xs text-slate-200 max-w-md mx-auto leading-relaxed">
-                    {lang === 'de' && 'Das Hauptbüro Dolomiti NordicSki wird Ihre Daten prüfen und sich innerhalb von 48 Stunden bei Ihnen melden.'}
-                    {lang === 'it' && 'L\'Ufficio Centrale Dolomiti NordicSki verificherà i dati della tua struttura e ti contatterà entro 48 ore lavorative.'}
-                    {lang === 'en' && 'The Dolomiti NordicSki central office will review your application and contact you within 48 working hours.'}
-                  </p>
-                  <button
-                    onClick={() => setFormSubmitted(false)}
-                    className="mt-4 px-4 py-2 rounded-lg bg-[var(--color-dns-deep)] text-xs font-bold text-[var(--color-dns-light)] border border-[var(--color-dns-light)]/40"
-                  >
-                    {lang === 'it' ? 'Invia Un\'Altra Richiesta' : 'Send Another Request'}
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={(e) => { e.preventDefault(); setFormSubmitted(true); }} className="space-y-4">
+              <p className="text-sm text-[var(--color-dns-light)]">
+                {lang === 'de' ? 'Das Formular öffnet einen E-Mail-Entwurf. Es wird nichts automatisch versendet oder gespeichert. Bitte senden Sie die Nachricht in Ihrer Mail-App.' : lang === 'it' ? 'Il modulo prepara una bozza email. Non invia né salva dati automaticamente: per inoltrare la richiesta devi inviare l’email.' : 'This form prepares an email draft. Nothing is sent or saved automatically. Send it from your mail application.'}
+              </p>
+              <form onSubmit={openEmailDraft} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <label className="text-xs font-bold text-slate-200">
@@ -400,7 +388,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                         {lang === 'en' && 'Property / Accommodation Name'}
                       </label>
                       <input 
-                        type="text" 
+                        type="text" name="property" 
                         required 
                         placeholder="e.g. Hotel Alpine Resort"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 text-xs font-medium text-white focus:border-[var(--color-dns-light)] focus:outline-none"
@@ -413,7 +401,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                         {lang === 'en' && 'Location & Nordic Region'}
                       </label>
                       <input 
-                        type="text" 
+                        type="text" name="location" 
                         required 
                         placeholder="e.g. Toblach / 3 Zinnen"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 text-xs font-medium text-white focus:border-[var(--color-dns-light)] focus:outline-none"
@@ -429,7 +417,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                         {lang === 'en' && 'Contact Email'}
                       </label>
                       <input 
-                        type="email" 
+                        type="email" name="email" 
                         required 
                         placeholder="info@hotel-alpine.com"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 text-xs font-medium text-white focus:border-[var(--color-dns-light)] focus:outline-none"
@@ -442,7 +430,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                         {lang === 'en' && 'Reception Phone'}
                       </label>
                       <input 
-                        type="tel" 
+                        type="tel" name="phone" 
                         required 
                         placeholder="+39 0474 123456"
                         className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 text-xs font-medium text-white focus:border-[var(--color-dns-light)] focus:outline-none"
@@ -456,7 +444,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                       {lang === 'it' && 'Note o Richieste Particolari'}
                       {lang === 'en' && 'Notes or Special Requests'}
                     </label>
-                    <textarea 
+                    <textarea name="notes" 
                       rows={3}
                       placeholder={lang === 'de' ? 'Beschreiben Sie Ihre Langlaufeinrichtungen...' : lang === 'it' ? 'Descrivi brevemente i servizi dedicati allo sci di fondo...' : 'Briefly describe your Nordic skiing facilities...'}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 text-xs font-medium text-white focus:border-[var(--color-dns-light)] focus:outline-none"
@@ -467,12 +455,11 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                     type="submit"
                     className="w-full py-3 rounded-xl bg-[var(--color-dns-deep)] hover:bg-[var(--color-dns-deep)]/80 border border-[var(--color-dns-light)]/40 text-[var(--color-dns-light)] font-bold text-sm shadow-lg transition-all hover:scale-[1.01] cursor-pointer"
                   >
-                    {lang === 'de' && 'Zertifizierungsantrag absenden'}
-                    {lang === 'it' && 'Invia Richiesta di Accreditamento'}
-                    {lang === 'en' && 'Submit Accreditation Application'}
+                    {lang === 'de' && 'E-Mail-Entwurf öffnen'}
+                    {lang === 'it' && 'Apri bozza email'}
+                    {lang === 'en' && 'Open Email Draft'}
                   </button>
                 </form>
-              )}
             </div>
           </div>
         )}
