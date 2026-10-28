@@ -24,16 +24,25 @@ export default function App() {
  React.useEffect(()=>{document.querySelector('[data-dns-app-nav]')?.setAttribute('data-dns-open',String(drawer));},[drawer]);
  const navigate=(screen:Screen)=>{setActive(screen);setDrawer(false);window.scrollTo({top:0,behavior:'smooth'});};
  return <div style={{minHeight:'100vh',background:'var(--color-dns-background,#F4F8F9)',color:'var(--color-dns-deep,#0D4D5E)'}}>
-   <header data-dns-tool-header className="dns-card" style={{position:'sticky',top:0,zIndex:30,borderRadius:0,borderBottom:'1px solid var(--color-dns-border,rgba(65,116,131,.20))'}}>
-    <div style={{display:'flex',alignItems:'center',gap:12,justifyContent:'space-between',padding:'12px var(--dns-shell-padding-x)',maxWidth:1440,margin:'auto',flexWrap:'wrap'}}>
-     <button type="button" onClick={()=>navigate('home')} className="dns-button" data-variant="tertiary" aria-label="Dolomiti NordicSki Partner Hub">
-       <img src={DNS_LOGO_BASE64} alt="" style={{height:40,width:'auto'}}/><span style={{display:'flex',flexDirection:'column',alignItems:'flex-start'}}><strong>Dolomiti NordicSki</strong><span className="dns-kicker">Partner Hub</span></span>
-     </button>
-     <div style={{display:'flex',gap:6,alignItems:'center',flexWrap:'wrap'}}>
-      {(['de','it','en'] as Language[]).map(l=><button key={l} type="button" className="dns-button" data-variant={lang===l?'primary':'tertiary'} aria-pressed={lang===l} onClick={()=>setLang(l)}>{l.toUpperCase()}</button>)}
-      <button type="button" className="dns-button" data-variant="secondary" onClick={()=>document.dispatchEvent(new Event('dns:open-accessibility'))} aria-label={lang==='de'?'Barrierefreiheit':lang==='it'?'Accessibilità':'Accessibility'}>Aa</button>
-      <button type="button" className="dns-button" data-variant="secondary" aria-controls="dns-portal-navigation" aria-expanded={drawer} onClick={()=>setDrawer(!drawer)}>☰</button>
-     </div>
+   <header data-dns-tool-header>
+    <div className="dns-tool-header-shell">
+      <div className="dns-tool-header-brand">
+        <img src={DNS_LOGO_BASE64} alt="Dolomiti NordicSki" className="dns-tool-header-logo"/>
+        <div className="dns-tool-header-identity">
+          <div className="dns-tool-header-title"><strong>DNS</strong><span> PARTNER HUB</span></div>
+          <div className="dns-tool-header-subtitle">DOLOMITI NORDICSKI</div>
+        </div>
+      </div>
+      <div className="dns-tool-header-actions">
+        <div className="dns-tool-header-controls">
+          <div className="dns-tool-header-language" role="group" aria-label="Language">
+            {(['de','it','en'] as Language[]).map(l=><button key={l} type="button" aria-pressed={lang===l} className="dns-tool-header-session-action" onClick={()=>setLang(l)}>{l.toUpperCase()}</button>)}
+          </div>
+          <span className="dns-tool-header-account">{lang==='de'?'Öffentlich':lang==='it'?'Pubblico':'Public'}</span>
+          <span className="dns-tool-header-session-action" role="status">{lang==='de'?'Anmeldung folgt':lang==='it'?'Accesso in preparazione':'Login coming soon'}</span>
+          <button type="button" className="dns-tool-header-session-action" aria-controls="dns-portal-navigation" aria-expanded={drawer} onClick={()=>setDrawer(!drawer)}>{lang==='de'?'Menü':lang==='it'?'Menu':'Menu'}</button>
+        </div>
+      </div>
     </div>
    </header>
    <div data-dns-portal-layout>
