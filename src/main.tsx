@@ -1,7 +1,7 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
-import './index.css';
+import './tailwind.css';
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 import { initDNSUIPrimitives } from '@dolomitinordicski/dns-shared-data/ui/primitives';
 import { initDNSShellRuntime } from '@dolomitinordicski/dns-shared-data/ui/shell';
