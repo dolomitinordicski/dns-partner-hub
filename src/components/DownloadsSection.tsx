@@ -85,7 +85,7 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
 
   const handleCreateMaterialBox = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || !/^https?:\/\/\S+$/i.test(newDownloadUrl.trim())) return;
 
     setIsSubmitting(true);
     try {
@@ -96,7 +96,7 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
         fileSize: newFileSize || '2.5 MB',
         updatedAt: new Date().toISOString().slice(0, 10),
         description: newDescription || 'Materiale ufficiale caricato dalla Direzione Generale.',
-        downloadUrl: newDownloadUrl || 'https://www.dolomitinordicski.com',
+        downloadUrl: newDownloadUrl.trim(),
         createdAt: new Date().toISOString(),
         createdViaAdmin: true
       });
@@ -124,30 +124,18 @@ export const DownloadsSection: React.FC<DownloadsSectionProps> = ({ lang, a11y, 
     }
   };
 
-  const handleTriggerDownload = (item: DownloadItem) => {
-    const title = getLoc(item.title, lang);
-    setDownloadNotification(`${title} (${item.fileType})`);
-    
-    // Create an actual dummy blob file to trigger browser download
-    const dummyContent = `%PDF-1.5 %Dolomiti NordicSki Official Document
-Document: ${title}
-Format: ${item.fileType}
-Size: ${item.fileSize}
-Category: ${item.category}
-Generated: ${new Date().toISOString()}
-Dolomiti NordicSki - 1.000 km Cross-Country Carousel`;
-    
-    const blob = new Blob([dummyContent], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${title.toLowerCase().replace(/[^a-z0-9]/g, '_')}_dolomiti_nordicski.${item.fileType.toLowerCase()}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const hasDownloadUrl = (item: DownloadItem): boolean => {
+    try {
+      const url = new URL(item.downloadUrl || '');
+      return url.protocol === 'https:' || url.protocol === 'http:';
+    } catch {
+      return false;
+    }
+  };
 
-    setTimeout(() => setDownloadNotification(null), 3500);
+  const handleTriggerDownload = (item: DownloadItem) => {
+    if (!hasDownloadUrl(item)) return;
+    window.open(item.downloadUrl, '_blank', 'noopener,noreferrer');
   };
 
   const categories = [
@@ -352,10 +340,12 @@ Dolomiti NordicSki - 1.000 km Cross-Country Carousel`;
 
                 <button
                   onClick={() => handleTriggerDownload(item)}
-                  className="px-4 py-2 rounded-xl bg-[#0D4D5E] hover:bg-[#083845] border border-[#82B2BD]/40 text-[#AAD0D1] font-extrabold text-xs flex items-center space-x-2 transition-all shadow-md cursor-pointer"
+                  disabled={!hasDownloadUrl(item)}
+                  title={!hasDownloadUrl(item) ? (lang === "de" ? "Datei noch nicht verfügbar" : lang === "it" ? "File non ancora disponibile" : "File not yet available") : undefined}
+                  className="px-4 py-2 rounded-xl bg-[#0D4D5E] hover:bg-[#083845] border border-[#82B2BD]/40 text-[#AAD0D1] font-extrabold text-xs flex items-center space-x-2 transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Download className="w-3.5 h-3.5 text-[#AAD0D1]" />
-                  <span>Download</span>
+                  <span>{hasDownloadUrl(item) ? "Download" : lang === "de" ? "Nicht verfügbar" : lang === "it" ? "Non disponibile" : "Unavailable"}</span>
                 </button>
               </div>
             </div>
@@ -462,7 +452,7 @@ Dolomiti NordicSki - 1.000 km Cross-Country Carousel`;
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-200 block">URL o Link Download (Opzionale Google Drive)</label>
+                <label className="text-xs font-bold text-slate-200 block">URL del materiale (obbligatorio)</label>
                 <input
                   type="url"
                   value={newDownloadUrl}
@@ -559,10 +549,10 @@ Dolomiti NordicSki - 1.000 km Cross-Country Carousel`;
                   handleTriggerDownload(previewItem);
                   setPreviewItem(null);
                 }}
-                className="px-6 py-2.5 rounded-xl bg-[#0D4D5E] hover:bg-[#083845] border border-[#AAD0D1]/50 text-[#AAD0D1] font-extrabold text-xs flex items-center space-x-2 shadow-lg cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-[#0D4D5E] hover:bg-[#083845] border border-[#AAD0D1]/50 text-[#AAD0D1] font-extrabold text-xs flex items-center space-x-2 shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Download className="w-4 h-4" />
-                <span>Scarica Documento Ora ({previewItem.fileType})</span>
+                <span>{hasDownloadUrl(previewItem) ? (lang === "de" ? "Datei öffnen" : lang === "it" ? "Apri file" : "Open file") : (lang === "de" ? "Nicht verfügbar" : lang === "it" ? "Non disponibile" : "Unavailable")}</span>
               </button>
             </div>
 
