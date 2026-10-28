@@ -35,7 +35,7 @@ export function useRegionLogos(areaId: string) {
     void loadManifest().then(manifest => {
       if (!active) return;
       const selected = findRegionLogosForEntity(manifest.assets, 'reportingArea', areaId)
-        .filter(asset => typeof asset.filename === 'string' && /^[a-z0-9][a-z0-9.-]*\\.svg$/i.test(asset.filename))
+        .filter(asset => typeof asset.filename === 'string' && /^[a-z0-9][a-z0-9.-]*\.svg$/i.test(asset.filename))
         .map(asset => ({
           id: asset.id,
           label: asset.label,
