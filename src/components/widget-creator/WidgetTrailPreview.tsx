@@ -1,10 +1,11 @@
 import React from 'react';
 import { CloudSnow } from 'lucide-react';
 import type { Language } from '../../types';
+import type { DNSTrailSnapshot } from './widgetContracts';
 
 /** Presentation-only legacy preview. No live piste data is fetched here. */
-interface Props { widgetLang: Language; isLight: boolean; includeTrails: boolean }
-export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, includeTrails }) => (
+interface Props { widgetLang: Language; isLight: boolean; includeTrails: boolean; snapshot?: DNSTrailSnapshot | null }
+export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, includeTrails, snapshot = null }) => (
   <>
 {includeTrails && (
                 <div className="space-y-3">
@@ -21,6 +22,7 @@ export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, inclu
                     </span>
                   </div>
 
+                  <p role="status" className="text-xs opacity-80">{snapshot?.status === 'available' ? (widgetLang === 'de' ? 'Daten der offiziellen Quelle' : widgetLang === 'it' ? 'Dati dalla fonte ufficiale' : 'Official-source data') : (widgetLang === 'de' ? 'Noch keine verifizierten Loipendaten' : widgetLang === 'it' ? 'Dati piste verificati non disponibili' : 'Verified trail data unavailable')}</p>
                   <div className="grid grid-cols-3 gap-2.5">
                     <div className={`p-3 rounded-none border space-y-0.5 ${
                       isLight ? 'bg-slate-200/80 border-slate-300 text-slate-950' : 'bg-black/30 border-white/15 text-white'
@@ -33,7 +35,7 @@ export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, inclu
                       <span className={`text-base sm:text-lg font-black ${
                         isLight ? 'text-[#052832]' : 'text-[#AAD0D1]'
                       }`}>
-                        100% (82/82)
+                        {snapshot?.status === 'available' ? (widgetLang === 'de' ? 'Verfügbar' : widgetLang === 'it' ? 'Disponibile' : 'Available') : '—'}
                       </span>
                     </div>
 
@@ -48,7 +50,7 @@ export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, inclu
                       <span className={`text-base sm:text-lg font-black ${
                         isLight ? 'text-[#052832]' : 'text-[#AAD0D1]'
                       }`}>
-                        1.000 KM
+                        {snapshot?.status === 'available' && snapshot.openKm !== null ? `${snapshot.openKm.toLocaleString(widgetLang === 'en' ? 'en' : widgetLang)} km` : '—'}
                       </span>
                     </div>
 
@@ -63,7 +65,7 @@ export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, inclu
                       <span className={`text-base sm:text-lg font-black ${
                         isLight ? 'text-emerald-800' : 'text-emerald-400'
                       }`}>
-                        {widgetLang === 'de' ? 'Kompakt' : 'Powder'}
+                        —
                       </span>
                     </div>
                   </div>
@@ -79,9 +81,7 @@ export const WidgetTrailPreview: React.FC<Props> = ({ widgetLang, isLight, inclu
                     <span className={`font-black ${
                       isLight ? 'text-[#0D4D5E]' : 'text-[#AAD0D1]'
                     }`}>
-                      {widgetLang === 'de' && 'Heute 06:00 Uhr (Klassisch & Skating)'}
-                      {widgetLang === 'it' && 'Oggi ore 06:00 (Binario & Skating)'}
-                      {widgetLang === 'en' && 'Today 06:00 AM (Classic & Skating)'}
+                      —
                     </span>
                   </div>
                 </div>
