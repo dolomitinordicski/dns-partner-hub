@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
           <img className="dns-tool-header-logo" src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" />
           <div className="dns-tool-header-identity">
             <div className="dns-tool-header-title"><strong>DNS</strong> <span>PARTNER HUB</span></div>
-            <div className="dns-tool-header-subtitle">Dolomiti NordicSki</div>
+            <div className="dns-tool-header-subtitle">{lang === 'de' ? 'Services & Ressourcen' : lang === 'it' ? 'Servizi e risorse' : 'Services & Resources'}</div>
           </div>
         </div>
         <div className="dns-tool-header-actions">
