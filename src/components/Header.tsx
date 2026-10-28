@@ -51,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header data-dns-tool-header className="dns-foundation-header bg-[var(--color-dns-deep)]">
+    <header data-dns-tool-header className="dns-foundation-header bg-[var(--dns-header-bg)] text-white">
       <div className="dns-tool-header-shell">
         <div className="dns-tool-header-brand">
           <img className="dns-tool-header-logo" src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" />
@@ -62,16 +62,29 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <div className="dns-tool-header-actions">
           <div className="dns-tool-header-controls">
+            <div ref={a11yMount} data-dns-accessibility-mount />
             <div className="dns-tool-header-language" role="group" aria-label={lang === 'de' ? 'Sprache' : lang === 'it' ? 'Lingua' : 'Language'}>
               {(['de', 'it', 'en'] as Language[]).map(l => (
-                <button key={l} type="button" className="dns-button" data-variant={lang === l ? 'primary' : 'tertiary'} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>
+                <button
+                  key={l}
+                  type="button"
+                  data-dns-press
+                  className={`border-b-2 px-1 py-2 text-[10px] font-bold tracking-wide ${lang === l ? 'border-white text-white' : 'border-transparent text-[var(--color-dns-light)]'}`}
+                  aria-pressed={lang === l}
+                  onClick={() => setLang(l)}
+                >
+                  {l.toUpperCase()}
+                </button>
               ))}
             </div>
-            <div ref={a11yMount} data-dns-accessibility-mount />
             <button type="button" className="dns-tool-header-session-action" onClick={accessLevel === 'public' ? onOpenLoginModal : onLogout}>
               {accessLevel === 'public' ? (lang === 'de' ? 'Anmelden' : lang === 'it' ? 'Accedi' : 'Login') : (lang === 'de' ? 'Abmelden' : lang === 'it' ? 'Esci' : 'Logout')}
             </button>
-            <button type="button" aria-label={lang === 'de' ? 'Menü' : lang === 'it' ? 'Menu' : 'Menu'} aria-expanded={open} aria-controls="dns-portal-navigation" onClick={() => setOpen(!open)} className="dns-button lg:hidden" data-variant="icon">{open ? <X size={18} /> : <Menu size={18} />}</button>
+            <button type="button" aria-label={lang === 'de' ? 'Menü' : lang === 'it' ? 'Menu' : 'Menu'} aria-expanded={open} aria-controls="dns-portal-navigation" onClick={() => setOpen(!open)} className="inline-flex items-center justify-center rounded-md border border-[var(--color-dns-border)] px-2 py-1 text-white lg:hidden">{open ? <X size={18} /> : <Menu size={18} />}</button>
+          </div>
+          <div className="dns-tool-header-status" data-state="ready" aria-label="DNS Foundation runtime" aria-live="polite">
+            <span className="dns-tool-header-status-dot" />
+            Foundation v{DNS_FOUNDATION_RELEASE_VERSION}
           </div>
         </div>
       </div>
