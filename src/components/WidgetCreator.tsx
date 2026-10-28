@@ -5,6 +5,8 @@ import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './
 import { WidgetPreview } from './widget-creator/WidgetPreview';
 import { WidgetControls } from './widget-creator/WidgetControls';
 import { Code } from 'lucide-react';
+import { SEASONS } from '@dolomitinordicski/dns-shared-data';
+import { usePublicWidgetSnapshot } from './widget-creator/usePublicWidgetSnapshot';
 
 interface WidgetCreatorProps {
   lang: Language;
@@ -28,6 +30,8 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
   const includeBadge = false; // Fail-closed: role selected in the client is not certification.
 
   const regionName = getWidgetAreaName(selectedRegion, widgetLang);
+  const currentSeason = SEASONS.find(season => season.status === 'active')?.id;
+  const publicData = usePublicWidgetSnapshot(currentSeason ?? '', selectedRegion);
 
   const activePalette = OFFICIAL_PALETTES.find(p => p.id === themePreset) || OFFICIAL_PALETTES[0];
   const currentBgColor = activePalette.color;
@@ -79,6 +83,12 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
             )}
           </p>
         </div>
+
+        <p role="status" className="text-sm text-slate-200">
+          {publicData.status === 'available' ?
+            (lang === 'de' ? 'Öffentlicher Datenstand: ' : lang === 'it' ? 'Dati pubblici aggiornati: ' : 'Public data revision: ') + publicData.snapshot!.revision :
+            (lang === 'de' ? 'Veröffentlichte Widget-Daten derzeit nicht verfügbar.' : lang === 'it' ? 'Dati pubblicati del widget non ancora disponibili.' : 'Published widget data not yet available.')}
+        </p>
 
         {/* Builder Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
