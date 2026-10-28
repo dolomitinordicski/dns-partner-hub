@@ -253,44 +253,49 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                     </span>
                   </h3>
                   <p className="text-xs text-slate-300 mt-1">
-                    {lang === 'de' && 'Wählen Sie die in Ihrem Betrieb vorhandenen Dienste zur Prüfung der Zertifizierung:'}
-                    {lang === 'it' && 'Seleziona i servizi presenti nella tua struttura per verificare lo stato di idoneità:'}
-                    {lang === 'en' && 'Select the services available at your property to check certification status:'}
+                    {lang === 'de' && 'Prüfen Sie die vorhandenen Leistungen. Dies ist eine Selbsteinschätzung, keine Zertifizierungsentscheidung:'}
+                    {lang === 'it' && 'Indica i servizi disponibili: è un’autovalutazione, non una certificazione.'}
+                    {lang === 'en' && 'Mark the services offered. This is self-assessment, not certification.'}
                   </p>
                 </div>
 
                 <div className="px-5 py-3 rounded-xl bg-[var(--color-dns-primary-dark)] border border-[var(--color-dns-mid)]/40 flex items-center space-x-4 shrink-0">
                   <div>
                     <span className="text-[10px] text-slate-300 uppercase font-bold block">
-                      {lang === 'de' && 'Pflichtkriterien'}
-                      {lang === 'it' && 'Qualità Criteri Obbligatori'}
-                      {lang === 'en' && 'Mandatory Criteria'}
+                      {lang === 'de' && 'Selbstcheck'}
+                      {lang === 'it' && 'Autovalutazione'}
+                      {lang === 'en' && 'Self-assessment'}
                     </span>
                     <span className="text-xl font-black text-[var(--color-dns-light)]">
-                      {checkedMandatoryCount} / {mandatoryCount}
+                      {checkedCount} / {selfCheckCount}
                     </span>
                   </div>
-                  <div className={`px-3 py-1 rounded-lg text-xs font-extrabold uppercase ${
-                    isEligible 
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' 
-                      : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                  }`}>
-                    {isEligible 
-                      ? (lang === 'de' ? 'Zertifizierbar' : lang === 'en' ? 'Eligible' : 'Struttura Idonea') 
-                      : (lang === 'de' ? 'Anpassung nötig' : lang === 'en' ? 'Integration Required' : 'Integrazione Richiesta')}
-                  </div>
+                  <span className="rounded-md border border-[var(--color-dns-mid)] px-3 py-1 text-[11px] font-semibold text-[var(--color-dns-light)]">
+                    {lang === 'de' ? 'Keine automatische Zertifizierung' : lang === 'it' ? 'Nessuna certificazione automatica' : 'Not an automatic certification'}
+                  </span>
                 </div>
               </div>
 
+              <a href={DNS_PARTNER_QUALITY_SOURCE.url} target="_blank" rel="noopener noreferrer"
+                 className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--color-dns-light)] underline underline-offset-4">
+                {lang === 'de' ? 'Quelle: DNS Qualitätskriterien 2025, S. 8' : lang === 'it' ? 'Fonte: Criteri qualità DNS 2025, pag. 8' : 'Source: DNS Quality Criteria 2025, p. 8'}
+              </a>
+
+              <p className="text-xs text-slate-300">
+                {lang === 'de' ? 'Die Kennzeichnung wird erst nach einer Prüfung durch DNS angebracht. Das Frühstückskriterium gilt nur für Unterkünfte mit Frühstück.' : lang === 'it' ? 'La targa DNS si espone soltanto dopo la verifica. La colazione sportiva si applica solo agli alloggi che offrono la colazione.' : 'The DNS plaque is displayed only after review. The breakfast criterion applies only where breakfast is served.'}
+              </p>
               {/* Criteria Cards List */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {QUALITY_CRITERIA.map((criterion) => {
+                {DNS_PARTNER_QUALITY_CRITERIA.map((criterion) => {
                   const isChecked = checkedIds.includes(criterion.id);
                   return (
-                    <div
+                    <button
+                      type="button"
+                      aria-pressed={isChecked}
+                      disabled={criterion.phase === 'post-review'}
                       key={criterion.id}
                       onClick={() => toggleCriterion(criterion.id)}
-                      className={`p-5 rounded-xl border transition-all cursor-pointer flex items-start space-x-4 ${
+                      className={`w-full text-left p-5 rounded-xl border transition-all flex items-start space-x-4 ${
                         isChecked
                           ? 'bg-[var(--color-dns-primary-dark)] border-[var(--color-dns-light)] shadow-md'
                           : 'bg-[var(--color-dns-primary-dark)]/50 border-[var(--color-dns-mid)]/20 hover:border-[var(--color-dns-mid)]/60 opacity-80'
@@ -312,13 +317,13 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                             {getCriterionIcon(criterion.icon)}
                             <span>{criterion.title[lang]}</span>
                           </span>
-                          {criterion.isMandatory ? (
+                          {criterion.phase === 'conditional' ? (
                             <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-[var(--color-dns-deep)] text-[var(--color-dns-light)] border border-[var(--color-dns-mid)]/50">
-                              {lang === 'de' ? 'Pflicht' : lang === 'en' ? 'Mandatory' : 'Obbligatorio'}
+                              {lang === 'de' ? 'Bei Frühstück' : lang === 'it' ? 'Se offre colazione' : 'When breakfast is served'}
                             </span>
                           ) : (
                             <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-[var(--color-dns-primary-dark)] text-slate-300 border border-[var(--color-dns-mid)]/30">
-                              {lang === 'de' ? 'Optional' : lang === 'en' ? 'Optional' : 'Opzionale'}
+                              {criterion.phase === 'post-review' ? (lang === 'de' ? 'Nach DNS-Prüfung' : lang === 'it' ? 'Dopo verifica DNS' : 'After DNS review') : (lang === 'de' ? 'DNS-Kriterium' : lang === 'it' ? 'Criterio DNS' : 'DNS criterion')}
                             </span>
                           )}
                         </div>
@@ -326,7 +331,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                           {criterion.description[lang]}
                         </p>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -337,7 +342,7 @@ export const QualityCriteriaSection: React.FC<QualityCriteriaSectionProps> = ({
                   onClick={() => setActiveSubTab('application')}
                   className="px-6 py-3 rounded-xl bg-[var(--color-dns-deep)] hover:bg-[var(--color-dns-deep)]/80 border border-[var(--color-dns-light)]/50 text-[var(--color-dns-light)] font-bold text-xs flex items-center space-x-2 transition-all shadow-lg cursor-pointer"
                 >
-                  <span>{lang === 'it' ? 'Procedi con la Richiesta Accreditamento' : 'Proceed to Application'}</span>
+                  <span>{lang === 'de' ? 'DNS für eine Prüfung kontaktieren' : lang === 'it' ? 'Contatta DNS per la verifica' : 'Contact DNS for review'}</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
