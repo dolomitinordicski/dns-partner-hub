@@ -1,3 +1,4 @@
+import type { DNSWidgetContext } from './widgetContracts';
 import type { Language } from '../../types';
 
 export type WidgetThemePreset = 'dns-primary' | 'dns-deep' | 'dns-muted-teal' | 'frosted-ice';
@@ -12,6 +13,7 @@ export const OFFICIAL_PALETTES: {
 ];
 
 export interface WidgetEmbedOptions {
+  readonly context?: DNSWidgetContext;
   selectedRegion: string;
   widgetLang: Language;
   themePreset: WidgetThemePreset;
@@ -23,6 +25,11 @@ export interface WidgetEmbedOptions {
 }
 
 export function createWidgetEmbed(options: WidgetEmbedOptions) {
+  // The partner embed must be issued and validated by DNS Core, never composed client-side.
+  // Public embeds retain their existing URL and configuration unchanged.
+  if (options.context?.product === 'partner') {
+    throw new Error('Partner widgets require a DNS Core-issued embed token and endpoint.');
+  }
   const { selectedRegion, widgetLang, themePreset, backgroundColor, includeTrails, includeWeather, includePrices, includeBadge } = options;
   const queryParams = new URLSearchParams({
     area: selectedRegion,
