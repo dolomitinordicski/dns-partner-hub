@@ -61,7 +61,7 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
         {!snapshot && <p role="status" className="text-sm" style={{ color: c.mid }}>{tr('Die Gestaltung ist sichtbar; offizielle Daten sind noch nicht veröffentlicht.', 'Il layout è visibile; i dati ufficiali non sono ancora pubblicati.', 'Layout preview is available; official data has not been published yet.')}</p>}
         {includeTrails && <div className="space-y-2">
           <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: c.mid }}>{tr('Loipenstatus', 'Stato piste', 'Trail status')}</h4>
-          <p className={compact ? "text-lg font-extrabold" : "text-2xl font-extrabold"} style={{ color: c.deep }}>{tr('Offene Kilometer', 'Chilometri aperti', 'Open kilometers')} · {trails?.openKm ?? '—'} <span className="text-sm">/ {trails?.totalKm ?? '—'} km</span></p>{trails?.observedAt && <p className="text-xs" style={{ color: c.mid }}>{tr('Stand', 'Rilevazione', 'Observed')}: {observationLabel(trails.observedAt)}</p>}
+          <p className={compact ? "text-lg font-extrabold" : "text-2xl font-extrabold"} style={{ color: c.deep }}>{tr('Offene Kilometer', 'Chilometri aperti', 'Open kilometers')} · {trails?.openKm ?? '—'} <span className="text-sm">/ {trails?.totalKm ?? '—'} km</span></p>{trails?.observedAt && <p className="text-xs" style={{ color: c.mid }}>{tr('DNS-Website geprüft', 'Sito DNS verificato', 'DNS website checked')}: {observationLabel(trails.observedAt)}</p>}
         </div>}
         {includeWeather && <div className="space-y-2">
           <h4 className="text-xs font-bold uppercase tracking-wider" style={{ color: c.mid }}>{tr('Wetter & Schnee', 'Meteo e neve', 'Weather & snow')}</h4>
