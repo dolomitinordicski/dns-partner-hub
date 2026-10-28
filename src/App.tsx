@@ -56,8 +56,6 @@ export default function App() {
     reducedMotion: false,
   });
 
-  const isLight = a11y.theme === 'light';
-
   // Role elevation is disabled until the server-authenticated DNS grant integration is ready.
   const handleLoginSuccess = (_code: string, _name: string, _role?: 'partner' | 'regional' | 'admin') => {
     setAccessLevel('public');
@@ -78,17 +76,9 @@ export default function App() {
     }
   };
 
-  const rootClasses = `min-h-screen font-sans antialiased selection:bg-[#AAD0D1] selection:text-[#083845] flex flex-col justify-between transition-colors duration-300 ${
-    isLight ? 'bg-[#F4F8F9] text-[#083845]' : 'bg-[#052832] text-white'
-  } ${
-    a11y.fontSize === 'large' ? 'text-base' : a11y.fontSize === 'xlarge' ? 'text-lg' : 'text-sm'
-  } ${
-    a11y.highContrast ? 'contrast-125' : ''
-  } ${
-    a11y.readableFont ? 'tracking-wide leading-relaxed font-sans' : ''
-  } ${
-    a11y.reducedMotion ? '[&_*]:!transition-none [&_*]:!animation-none' : ''
-  }`;
+  // Foundation tokens own the shell appearance; its accessibility runtime owns
+  // contrast, scaling and motion instead of a second React/CSS implementation.
+  const rootClasses = 'min-h-screen flex flex-col justify-between bg-[var(--color-dns-bg)] text-[var(--color-dns-primary-dark)] font-[var(--font-body)] antialiased selection:bg-[var(--color-dns-light)] selection:text-[var(--color-dns-primary-dark)]';
 
   return (
     <div className={rootClasses}>
@@ -113,9 +103,9 @@ export default function App() {
 
 
 {/* Main Content Area */}
-      <div data-dns-portal-layout style={{flex:1}}>
+      <div data-dns-portal-layout className="flex-1 min-h-0">
         <PortalNavigation activeTab={activeTab} lang={lang} onNavigate={(tab) => {setActiveTab(tab);window.dispatchEvent(new Event('dns:portal-navigate'));window.scrollTo({top:0,behavior:'smooth'});}} />
-        <main data-dns-shell-main className="flex-1" style={{minWidth:0}}>
+        <main data-dns-shell-main className="flex-1 min-w-0">
 
         
         {activeTab === 'home' && <PortalHome lang={lang} onNavigate={setActiveTab} />}
