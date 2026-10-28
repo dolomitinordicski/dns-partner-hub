@@ -11,13 +11,14 @@ interface Props {
   includeTrails: boolean; setIncludeTrails: (value: boolean) => void;
   includeWeather: boolean; setIncludeWeather: (value: boolean) => void;
   includePrices: boolean; setIncludePrices: (value: boolean) => void;
+  layout: 'standard' | 'compact'; setLayout: (layout: 'standard' | 'compact') => void;
   isPartner: boolean; handleCopy: () => void; copiedCode: boolean; embedCode: string;
 }
 const t = (lang: Language, de: string, it: string, en: string) => lang === 'de' ? de : lang === 'it' ? it : en;
 export function WidgetControls(props: Props) {
   const { lang, widgetLang, setWidgetLang, themePreset, setThemePreset, selectedRegion, setSelectedRegion,
     includeTrails, setIncludeTrails, includeWeather, setIncludeWeather, includePrices, setIncludePrices,
-    handleCopy, copiedCode, embedCode } = props;
+    handleCopy, copiedCode, embedCode, layout, setLayout } = props;
   const c = DNS_DESIGN_SYSTEM.colors;
   const field = 'w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-2';
   return (
@@ -36,6 +37,7 @@ export function WidgetControls(props: Props) {
           {WIDGET_REPORTING_AREAS.map(a => <option key={a.id} value={a.id}>{a.localizedName[widgetLang]}</option>)}
         </select>
       </label>
+      <fieldset className="space-y-2"><legend className="font-semibold text-sm">{t(lang, "Format", "Formato", "Layout")}</legend><div className="flex gap-2">{(["standard", "compact"] as const).map(value => <button type="button" key={value} onClick={() => setLayout(value)} aria-pressed={layout === value} className="rounded-md border px-3 py-2 text-sm font-medium" style={{ borderColor: c.mid, background: layout === value ? c.deep : c.surface, color: layout === value ? c.surface : c.deep }}>{value === "standard" ? "Standard" : "Compact"}</button>)}</div></fieldset>
       <fieldset className="space-y-2">
         <legend className="font-semibold text-sm">{t(lang, 'Corporate-Farbe', 'Colore corporate', 'Corporate color')}</legend>
         {OFFICIAL_PALETTES.map(p => <label key={p.id} className="flex items-center gap-3 text-sm">
