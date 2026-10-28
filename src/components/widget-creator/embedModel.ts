@@ -1,4 +1,5 @@
 import type { DNSWidgetContext } from './widgetContracts';
+import { toLegacyWidgetAreaId } from './reportingAreas';
 import type { Language } from '../../types';
 
 export type WidgetThemePreset = 'dns-primary' | 'dns-deep' | 'dns-muted-teal' | 'frosted-ice';
@@ -32,7 +33,7 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
   }
   const { selectedRegion, widgetLang, themePreset, backgroundColor, includeTrails, includeWeather, includePrices, includeBadge } = options;
   const queryParams = new URLSearchParams({
-    area: selectedRegion,
+    area: toLegacyWidgetAreaId(selectedRegion),
     badge: includeBadge ? '1' : '0',
     trails: includeTrails ? '1' : '0',
     weather: includeWeather ? '1' : '0',
