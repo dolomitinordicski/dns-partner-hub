@@ -1,16 +1,16 @@
+import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data';
 import type { DNSWidgetContext } from './widgetContracts';
 import { toLegacyWidgetAreaId } from './reportingAreas';
 import type { Language } from '../../types';
 
-export type WidgetThemePreset = 'dns-primary' | 'dns-deep' | 'dns-muted-teal' | 'frosted-ice';
+export type WidgetThemePreset = 'dns-primary' | 'dns-mid' | 'dns-light';
 
 export const OFFICIAL_PALETTES: {
   id: WidgetThemePreset; label: string; color: string; isLight?: boolean; desc: string;
 }[] = [
-  { id: 'dns-primary', label: 'DNS Alpine Primary', color: '#0D4D5E', desc: 'Ottanio Primario (#0D4D5E)' },
-  { id: 'dns-deep', label: 'DNS Deep', color: '#083845', desc: 'Blu Petrolio Scuro (#083845)' },
-  { id: 'dns-muted-teal', label: 'DNS Muted Teal', color: '#417483', desc: 'Ottanio Medio (#417483)' },
-  { id: 'frosted-ice', label: 'Frosted Ice', color: '#E8F4F6', isLight: true, desc: 'Ghiaccio Chiaro (#E8F4F6)' },
+  { id: 'dns-primary', label: DNS_DESIGN_SYSTEM.corporateColors.frostedIceBlue.name, color: DNS_DESIGN_SYSTEM.colors.deep, desc: DNS_DESIGN_SYSTEM.corporateColors.frostedIceBlue.name },
+  { id: 'dns-mid', label: DNS_DESIGN_SYSTEM.corporateColors.nordicSkyBlue.name, color: DNS_DESIGN_SYSTEM.colors.mid, desc: DNS_DESIGN_SYSTEM.corporateColors.nordicSkyBlue.name },
+  { id: 'dns-light', label: DNS_DESIGN_SYSTEM.corporateColors.deepGlacierBlue.name, color: DNS_DESIGN_SYSTEM.colors.light, isLight: true, desc: DNS_DESIGN_SYSTEM.corporateColors.deepGlacierBlue.name },
 ];
 
 export interface WidgetEmbedOptions {
@@ -39,7 +39,7 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
     weather: includeWeather ? '1' : '0',
     prices: includePrices ? '1' : '0',
     theme: themePreset,
-    bg: encodeURIComponent(backgroundColor),
+    bg: backgroundColor,
     lang: widgetLang
   }).toString();
   const iframeSrc = `https://www.dolomitinordicski.com/widget?${queryParams}`;
