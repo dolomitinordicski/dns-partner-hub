@@ -1,6 +1,8 @@
 import React from 'react';
 import type { NavigationTab, Language, AccessibilitySettings, AccessLevel } from '../types';
-import { DNS_LOGO_BASE64 } from '../data/portalData';
+import { DNS_FOUNDATION_RELEASE_VERSION } from '@dolomitinordicski/dns-shared-data/release';
+
+const DNS_SHARED_WEB_LOGO_URL = `https://raw.githubusercontent.com/dolomitinordicski/dns-shared-data/foundation-v${DNS_FOUNDATION_RELEASE_VERSION}/brand/logo-web.png`;
 import { Accessibility, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
@@ -38,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header data-dns-tool-header className="dns-foundation-header bg-[var(--dns-primary)]">
       <div className="dns-tool-header-shell">
         <div className="dns-tool-header-brand">
-          <img className="dns-tool-header-logo" src={DNS_LOGO_BASE64} alt="Dolomiti NordicSki" />
+          <img className="dns-tool-header-logo" src={DNS_SHARED_WEB_LOGO_URL} alt="Dolomiti NordicSki" />
           <div className="dns-tool-header-identity">
             <div className="dns-tool-header-title"><strong>DNS</strong> <span>PARTNER HUB</span></div>
             <div className="dns-tool-header-subtitle">Dolomiti NordicSki</div>
