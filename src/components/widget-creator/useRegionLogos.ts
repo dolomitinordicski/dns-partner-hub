@@ -34,7 +34,7 @@ export function useRegionLogos(areaId: string) {
     setState({ status: 'loading', logos: [] });
     void loadManifest().then(manifest => {
       if (!active) return;
-      const selected = findRegionLogosForEntity(manifest.assets, 'reportingArea', areaId)
+      // Flyer-style area lockup: Antholz shows its composite area mark together with the\n      // official Biathlon organization mark. Source bindings remain unchanged.\n      const primary = findRegionLogosForEntity(manifest.assets, 'reportingArea', areaId);\n      const selected = areaId === 'antholzertal'\n        ? [...primary, ...findRegionLogosForEntity(manifest.assets, 'organization', 'biathlon-antholz')]\n        : primary
         .filter(asset => typeof asset.filename === 'string' && /^[a-z0-9][a-z0-9.-]*\.svg$/i.test(asset.filename))
         .map(asset => ({
           id: asset.id,
