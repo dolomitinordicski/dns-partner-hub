@@ -541,11 +541,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
               </div>
 
               {/* Graphical rendering of logo */}
-              <div className={`w-full h-64 sm:h-80 rounded-xl flex items-center justify-center p-8 border border-current/20 relative overflow-hidden transition-colors ${
-                activeLogo.bgType === 'dark' ? 'bg-[var(--color-dns-primary-dark)]' :
-                activeLogo.bgType === 'light' ? 'bg-white' :
-                activeLogo.bgType === 'color' ? 'bg-[var(--color-dns-deep)]' : 'bg-[var(--color-dns-primary-dark)] bg-[radial-gradient(var(--color-dns-mid)_1px,transparent_1px)] [background-size:16px_16px]'
-              }`}>
+              <div className="w-full h-64 sm:h-80 rounded-xl flex items-center justify-center p-8 border border-current/20 relative overflow-hidden transition-colors bg-[var(--color-dns-surface)]">
                 {/* Official Foundation Logo Image Rendering */}
                 <div className="flex flex-col items-center justify-center text-center space-y-4 select-none">
                   <div className="bg-white p-6 rounded-2xl shadow-xl max-w-md flex items-center justify-center border border-slate-200">
