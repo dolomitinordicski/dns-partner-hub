@@ -9,13 +9,13 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--dns-font-body, system-ui, sans-serif);
   background-color: #083845;
   color: #F4F9F9;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Be Vietnam Pro', sans-serif;
+  font-family: var(--dns-font-heading, system-ui, sans-serif);
 }
 
 .bg-dns-primary { background-color: var(--dns-primary); }

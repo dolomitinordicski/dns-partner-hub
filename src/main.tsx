@@ -5,13 +5,15 @@ import './index.css';
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data/design-system';
 
 // Foundation owns the source tokens. Keep existing component classes during migration.
-const { colors } = DNS_DESIGN_SYSTEM;
+const { colors, typography } = DNS_DESIGN_SYSTEM;
 const rootStyle = document.documentElement.style;
 rootStyle.setProperty('--dns-primary', colors.deep);
 rootStyle.setProperty('--dns-deep', colors.primaryDark);
 rootStyle.setProperty('--dns-teal', colors.mid);
 rootStyle.setProperty('--dns-soft', colors.light);
 rootStyle.setProperty('--dns-bg', colors.background);
+rootStyle.setProperty('--dns-font-heading', `"${typography.primaryFamily}", system-ui, sans-serif`);
+rootStyle.setProperty('--dns-font-body', `"${typography.secondaryFamily}", system-ui, sans-serif`);
 
 
 createRoot(document.getElementById('root')!).render(
