@@ -1,8 +1,7 @@
 import React from 'react';
 import type { NavigationTab, Language, AccessibilitySettings, AccessLevel } from '../types';
 import { DNS_FOUNDATION_RELEASE_VERSION } from '@dolomitinordicski/dns-shared-data/release';
-
-const DNS_SHARED_WEB_LOGO_URL = `https://raw.githubusercontent.com/dolomitinordicski/dns-shared-data/foundation-v${DNS_FOUNDATION_RELEASE_VERSION}/brand/logo-web.png`;
+import { DNS_SHARED_WEB_LOGO_URL } from '../services/foundationBrand';
 import { Menu, X } from 'lucide-react';
 import { initDNSAccessibilityRuntime } from '@dolomitinordicski/dns-shared-data/ui/accessibility';
 

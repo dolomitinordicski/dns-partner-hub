@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Language, AccessibilitySettings, AccessLevel } from '../types';
-import { BRAND_COLORS, LOGO_VARIANTS, BRAND_GUIDELINES, DNS_LOGO_BASE64 } from '../data/portalData';
+import { BRAND_COLORS, LOGO_VARIANTS, BRAND_GUIDELINES } from '../data/portalData';
+import { DNS_SHARED_WEB_LOGO_URL } from '../services/foundationBrand';
 import { 
   FileText, 
   Download, 
@@ -350,7 +351,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
             }`}>
               <div className="bg-white p-6 rounded-2xl max-w-md mx-auto shadow-xl border border-slate-200 flex items-center justify-center h-32 sm:h-40">
                 <img 
-                  src={DNS_LOGO_BASE64} 
+                  src={DNS_SHARED_WEB_LOGO_URL} 
                   alt={`Dolomiti NordicSki Logo ${activeTimelineYear}`} 
                   className="max-h-24 sm:max-h-28 w-auto object-contain transition-all duration-500"
                 />
@@ -544,7 +545,7 @@ export const CorporateDesignSection: React.FC<CorporateDesignSectionProps> = ({ 
                 <div className="flex flex-col items-center justify-center text-center space-y-4 select-none">
                   <div className="bg-white p-6 rounded-2xl shadow-xl max-w-md flex items-center justify-center border border-slate-200">
                     <img 
-                      src={DNS_LOGO_BASE64} 
+                      src={DNS_SHARED_WEB_LOGO_URL} 
                       alt="Dolomiti NordicSki Masterbrand" 
                       className="max-h-28 sm:max-h-36 w-auto object-contain"
                     />
