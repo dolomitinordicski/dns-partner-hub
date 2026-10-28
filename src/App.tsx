@@ -99,8 +99,9 @@ export default function App() {
         onOpenA11yModal={() => { /* Foundation controls its own panel */ }}
         onSelectDemoRole={handleSelectDemoRole}
       />
-
-
+      {/* Foundation owns the scroll-progress track immediately below the header.
+          The portal sidebar remains a separate app-navigation region. */}
+      <div data-dns-tool-nav className="dns-tab-nav" />
 
 {/* Main Content Area */}
       <div data-dns-portal-layout className="flex-1 min-h-0">

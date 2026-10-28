@@ -19,7 +19,7 @@ const tabs = [
 ] as const;
 
 export const PortalNavigation: React.FC<Props> = ({activeTab,lang,onNavigate}) => (
- <nav id="dns-portal-navigation" data-dns-app-nav data-dns-open="false" aria-label="Partner Hub" className="dns-card flex flex-col gap-1 rounded-none px-3 py-5 max-lg:hidden max-lg:data-[dns-open=true]:flex">
+ <nav id="dns-portal-navigation" data-dns-app-nav data-dns-open="false" aria-label="Partner Hub" className="dns-card flex flex-col gap-1 rounded-none px-3 py-5 max-lg:hidden max-lg:data-[dns-open=true]:flex lg:sticky lg:top-[var(--dns-sticky-stack-height,0px)] lg:self-start lg:max-h-[calc(100dvh-var(--dns-sticky-stack-height,0px))] lg:overflow-y-auto">
   {tabs.map(([tab,labels])=><button type="button" key={tab} className="dns-button" data-variant={activeTab===tab?'primary':'tertiary'} aria-current={activeTab===tab?'page':undefined}  onClick={()=>onNavigate(tab)}>{labels[lang]}</button>)}
  </nav>
 );
