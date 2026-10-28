@@ -4,14 +4,7 @@ import { NORDIC_REGIONS } from '../data/portalData';
 import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './widget-creator/embedModel';
 import { WidgetPreview } from './widget-creator/WidgetPreview';
 import { WidgetControls } from './widget-creator/WidgetControls';
-import { 
-  Code, 
-  Copy, 
-  Check, 
-  Sparkles, 
-  CloudSnow, 
-  Ticket
-} from 'lucide-react';
+import { Code } from 'lucide-react';
 
 interface WidgetCreatorProps {
   lang: Language;
@@ -42,7 +35,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
   const currentBgColor = activePalette.color;
   const isLight = !!activePalette.isLight;
 
-  const { iframeSrc, iframeHeight, embedCode } = createWidgetEmbed({
+  const { embedCode } = createWidgetEmbed({
     selectedRegion, widgetLang, themePreset, backgroundColor: currentBgColor,
     includeTrails, includeWeather, includePrices, includeBadge
   });
