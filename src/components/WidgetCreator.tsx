@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Language, AccessLevel } from '../types';
 import { getWidgetAreaName } from './widget-creator/reportingAreas';
 import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './widget-creator/embedModel';
-import { WidgetPreview } from './widget-creator/WidgetPreview';
 import { WidgetControls } from './widget-creator/WidgetControls';
 import { Code } from 'lucide-react';
 import { SEASONS } from '@dolomitinordicski/dns-shared-data';
@@ -91,8 +90,6 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
             (lang === 'de' ? 'Veröffentlichte Widget-Daten derzeit nicht verfügbar.' : lang === 'it' ? 'Dati pubblicati del widget non ancora disponibili.' : 'Published widget data not yet available.')}
         </p>
 
-        <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot} />
-
         {/* Builder Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
@@ -106,12 +103,15 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
             isPartner={isPartner} handleCopy={handleCopy} copiedCode={copiedCode} embedCode={embedCode}
           />
 
-          <WidgetPreview
-            lang={lang} widgetLang={widgetLang} activePalette={activePalette}
-            isLight={isLight} currentBgColor={currentBgColor} regionName={regionName}
-            includeBadge={includeBadge} includeTrails={includeTrails}
-            includeWeather={includeWeather} includePrices={includePrices}
-          />
+          <div className="lg:col-span-7">
+            {publicData.snapshot ? (
+              <PublishedWidgetData lang={widgetLang} snapshot={publicData.snapshot} />
+            ) : (
+              <p role="status" className="p-4 border border-current">
+                {lang === 'de' ? 'Keine veröffentlichten Widget-Daten verfügbar.' : lang === 'it' ? 'Nessun dato widget pubblicato disponibile.' : 'No published widget data available.'}
+              </p>
+            )}
+          </div>
         </div>
 
       </div>
