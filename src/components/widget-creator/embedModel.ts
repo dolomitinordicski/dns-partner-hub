@@ -1,6 +1,5 @@
 import { DNS_DESIGN_SYSTEM } from '@dolomitinordicski/dns-shared-data';
 import type { DNSWidgetContext } from './widgetContracts';
-import { toLegacyWidgetAreaId } from './reportingAreas';
 import type { Language } from '../../types';
 
 export type WidgetThemePreset = 'dns-primary' | 'dns-mid' | 'dns-light';
@@ -33,7 +32,8 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
   }
   const { selectedRegion, widgetLang, themePreset, backgroundColor, includeTrails, includeWeather, includePrices, includeBadge } = options;
   const queryParams = new URLSearchParams({
-    area: toLegacyWidgetAreaId(selectedRegion),
+    dnsWidget: '1',
+    area: selectedRegion,
     badge: includeBadge ? '1' : '0',
     trails: includeTrails ? '1' : '0',
     weather: includeWeather ? '1' : '0',
@@ -42,7 +42,7 @@ export function createWidgetEmbed(options: WidgetEmbedOptions) {
     bg: backgroundColor,
     lang: widgetLang
   }).toString();
-  const iframeSrc = `https://www.dolomitinordicski.com/widget?${queryParams}`;
+  const iframeSrc = `https://dolomitinordicski.github.io/dns-partner-hub/?${queryParams}`;
   const iframeHeight = (includeBadge ? 120 : 0) + (includeTrails ? 160 : 0) + (includeWeather ? 100 : 0) + (includePrices ? 140 : 0) + 120;
   const embedCode = `<iframe src="${iframeSrc}" width="100%" height="${iframeHeight}" frameborder="0" style="border:none; border-radius:0px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.25);" title="Dolomiti NordicSki Live Widget (${widgetLang.toUpperCase()})"></iframe>`;
   return { iframeSrc, iframeHeight, embedCode };
