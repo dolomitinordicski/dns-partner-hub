@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Language, AccessLevel } from '../types';
 import { NORDIC_REGIONS, DNS_LOGO_BASE64 } from '../data/portalData';
+import { OFFICIAL_PALETTES, createWidgetEmbed, type WidgetThemePreset } from './widget-creator/embedModel';
 import { 
   Code, 
   Copy, 
@@ -24,36 +25,6 @@ interface WidgetCreatorProps {
   lang: Language;
   accessLevel?: AccessLevel;
 }
-
-export type WidgetThemePreset = 'dns-primary' | 'dns-deep' | 'dns-muted-teal' | 'frosted-ice';
-
-const OFFICIAL_PALETTES: { id: WidgetThemePreset; label: string; color: string; isLight?: boolean; desc: string }[] = [
-  { 
-    id: 'dns-primary', 
-    label: 'DNS Alpine Primary', 
-    color: '#0D4D5E', 
-    desc: 'Ottanio Primario (#0D4D5E)' 
-  },
-  { 
-    id: 'dns-deep', 
-    label: 'DNS Deep', 
-    color: '#083845', 
-    desc: 'Blu Petrolio Scuro (#083845)' 
-  },
-  { 
-    id: 'dns-muted-teal', 
-    label: 'DNS Muted Teal', 
-    color: '#417483', 
-    desc: 'Ottanio Medio (#417483)' 
-  },
-  { 
-    id: 'frosted-ice', 
-    label: 'Frosted Ice', 
-    color: '#E8F4F6', 
-    isLight: true, 
-    desc: 'Ghiaccio Chiaro (#E8F4F6)' 
-  },
-];
 
 export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel = 'public' }) => {
   // No official certified seal until server-authorized widget entitlement exists.
@@ -79,23 +50,10 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
   const currentBgColor = activePalette.color;
   const isLight = !!activePalette.isLight;
 
-  // Compute query parameters for iframe
-  const queryParams = new URLSearchParams({
-    area: selectedRegion,
-    badge: includeBadge ? '1' : '0',
-    trails: includeTrails ? '1' : '0',
-    weather: includeWeather ? '1' : '0',
-    prices: includePrices ? '1' : '0',
-    theme: themePreset,
-    bg: encodeURIComponent(currentBgColor),
-    lang: widgetLang
-  }).toString();
-
-  const iframeSrc = `https://www.dolomitinordicski.com/widget?${queryParams}`;
-  const iframeHeight = (includeBadge ? 120 : 0) + (includeTrails ? 160 : 0) + (includeWeather ? 100 : 0) + (includePrices ? 140 : 0) + 120;
-  
-  // Sharp edges embed code (border-radius: 0) as requested by user
-  const embedCode = `<iframe src="${iframeSrc}" width="100%" height="${iframeHeight}" frameborder="0" style="border:none; border-radius:0px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.25);" title="Dolomiti NordicSki Live Widget (${widgetLang.toUpperCase()})"></iframe>`;
+  const { iframeSrc, iframeHeight, embedCode } = createWidgetEmbed({
+    selectedRegion, widgetLang, themePreset, backgroundColor: currentBgColor,
+    includeTrails, includeWeather, includePrices, includeBadge
+  });
 
   const handleCopy = () => {
     navigator.clipboard.writeText(embedCode);
