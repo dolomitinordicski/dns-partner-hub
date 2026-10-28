@@ -9,14 +9,14 @@ import { DownloadsSection } from './components/DownloadsSection';
 import { RegionsSection } from './components/RegionsSection';
 import { ContactSection } from './components/ContactSection';
 import { WidgetCreator } from './components/WidgetCreator';
-import { PartnerOnboarding } from './components/PartnerOnboarding';
+import { PortalNavigation } from './components/PortalNavigation';
+import { PortalHome } from './components/PortalHome';
 import { PartnerLoginModal } from './components/PartnerLoginModal';
 import { AccessibilityModal } from './components/AccessibilityModal';
 import { CookieConsent } from './components/CookieConsent';
 import { LegalModal, LegalTab } from './components/LegalModal';
 
 import { Footer } from './components/Footer';
-import { ChevronRight } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavigationTab>('home');
@@ -116,51 +116,11 @@ export default function App() {
 
 {/* Main Content Area */}
       <div data-dns-portal-layout style={{flex:1}}>
-        <nav id="dns-portal-navigation" data-dns-app-nav data-dns-open="false" aria-label="Partner Hub" className="dns-card" style={{borderRadius:0,padding:'20px 12px',display:'flex',flexDirection:'column',gap:4}}>
-          {([
-            ['home',{de:'Start',it:'Home',en:'Home'}],
-            ['vision',{de:'Vision',it:'Vision',en:'Vision'}],
-            ['corporate-design',{de:'Corporate Design',it:'Corporate Design',en:'Corporate Design'}],
-            ['quality-criteria',{de:'Qualitätskriterien',it:'Criteri di qualità',en:'Quality criteria'}],
-            ['widgets',{de:'Widget Creator',it:'Widget Creator',en:'Widget Creator'}],
-            ['regions',{de:'DNS Gebiete',it:'Aree DNS',en:'DNS areas'}],
-            ['downloads',{de:'Downloads',it:'Download',en:'Downloads'}],
-            ['contacts',{de:'Kontakt',it:'Contatti',en:'Contacts'}],
-          ] as const).map(([tab,labels])=><button type="button" key={tab} className="dns-button" data-variant={activeTab===tab?'primary':'tertiary'} aria-current={activeTab===tab?'page':undefined} style={{justifyContent:'flex-start',fontSize:12}} onClick={()=>{setActiveTab(tab);window.dispatchEvent(new Event('dns:portal-navigate'));window.scrollTo({top:0,behavior:'smooth'});}}>{labels[lang]}</button>)}
-        </nav>
+        <PortalNavigation activeTab={activeTab} lang={lang} onNavigate={(tab) => {setActiveTab(tab);window.dispatchEvent(new Event('dns:portal-navigate'));window.scrollTo({top:0,behavior:'smooth'});}} />
         <main data-dns-shell-main className="flex-1" style={{minWidth:0}}>
 
         
-        {/* Foundation portal home: no separate marketing hero or duplicated navigation. */}
-        {activeTab === 'home' && (
-          <div className="space-y-8 py-8">
-            <header className="space-y-2">
-              <p className="dns-kicker">Dolomiti NordicSki</p>
-              <h1 className="text-2xl font-bold" style={{color:'var(--color-dns-deep,#0D4D5E)',fontFamily:'var(--dns-font-heading,system-ui)'}}>Partner Hub</h1>
-              <p style={{color:'var(--color-dns-mid,#417483)'}}>
-                {lang === 'de' ? 'Informationen und Werkzeuge für unsere Partnerbetriebe.' : lang === 'it' ? 'Informazioni e strumenti per le strutture partner.' : 'Information and tools for our partner properties.'}
-              </p>
-            </header>
-            <section className="dns-card p-5 sm:p-8" aria-label="Partner onboarding">
-              <PartnerOnboarding lang={lang} onWidget={() => setActiveTab('widgets')} />
-            </section>
-            <section className="space-y-4" aria-label="Partner services">
-              <h2 className="dns-section-title">{lang === 'de' ? 'Partner-Services' : lang === 'it' ? 'Servizi partner' : 'Partner services'}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {([
-                  ['corporate-design', {de:'Corporate Design',it:'Corporate Design',en:'Corporate Design'}],
-                  ['widgets', {de:'Widget Creator',it:'Widget Creator',en:'Widget Creator'}],
-                  ['quality-criteria', {de:'Qualitätskriterien',it:'Criteri di qualità',en:'Quality criteria'}],
-                  ['downloads', {de:'Downloads',it:'Download',en:'Downloads'}],
-                ] as const).map(([tab,label])=>(
-                  <button key={tab} type="button" className="dns-card p-5 text-left flex items-center justify-between gap-3" style={{border:'1px solid var(--color-dns-border,rgba(65,116,131,.20))',color:'var(--color-dns-deep,#0D4D5E)'}} onClick={()=>setActiveTab(tab)}>
-                    <span className="font-semibold">{label[lang]}</span><ChevronRight size={18} aria-hidden="true"/>
-                  </button>
-                ))}
-              </div>
-            </section>
-          </div>
-        )}
+        {activeTab === 'home' && <PortalHome lang={lang} onNavigate={setActiveTab} />}
 
         {/* VISION TAB */}
         {activeTab === 'vision' && <VisionSection lang={lang} />}
