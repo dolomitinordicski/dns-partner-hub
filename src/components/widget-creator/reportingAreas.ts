@@ -12,3 +12,10 @@ export function getWidgetAreaName(areaId: string, language: Language): string {
   return WIDGET_REPORTING_AREAS.find(area => area.id === areaId)?.localizedName[language]
     ?? 'Dolomiti NordicSki';
 }
+
+/** Transitional embed compatibility: aliases are sourced from Shared Data, not hardcoded. */
+export function toLegacyWidgetAreaId(canonicalId: string): string {
+  if (canonicalId === 'all') return 'all';
+  const area = WIDGET_REPORTING_AREAS.find(entry => entry.id === canonicalId);
+  return area?.legacyRefs.partnerPortal?.[0] ?? canonicalId;
+}
