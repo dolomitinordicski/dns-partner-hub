@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sliders, Globe, Palette, Layers, Award, Lock, CloudSnow, Sun, Ticket, Code, Check, Copy } from 'lucide-react';
-import { NORDIC_REGIONS } from '../../data/portalData';
+import { WIDGET_REPORTING_AREAS } from './reportingAreas';
 import type { Language } from '../../types';
 import { OFFICIAL_PALETTES, type WidgetThemePreset } from './embedModel';
 
@@ -119,13 +119,13 @@ export const WidgetControls: React.FC<Props> = ({
                 className="w-full px-3.5 py-2.5 rounded-none bg-[#052832] border border-[#417483]/50 text-xs font-bold text-white focus:border-[#AAD0D1] focus:outline-none cursor-pointer"
               >
                 <option value="all">
-                  {widgetLang === 'de' && 'Alle 8 Regionen (1.000 km)'}
-                  {widgetLang === 'it' && 'Tutte le 8 Aree (Carosello Completo 1.000 km)'}
-                  {widgetLang === 'en' && 'All 8 Regions (Full 1,000 km Carousel)'}
+                  {widgetLang === 'de' && 'Alle DNS Gebiete'}
+                  {widgetLang === 'it' && 'Tutte le aree DNS'}
+                  {widgetLang === 'en' && 'All DNS areas'}
                 </option>
-                {NORDIC_REGIONS.map(r => (
-                  <option key={r.id} value={r.id}>
-                    {r.name} ({r.kmTracks} km)
+                {WIDGET_REPORTING_AREAS.map(area => (
+                  <option key={area.id} value={area.id}>
+                    {area.localizedName[widgetLang]}
                   </option>
                 ))}
               </select>
