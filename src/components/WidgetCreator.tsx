@@ -93,7 +93,7 @@ export const WidgetCreator: React.FC<WidgetCreatorProps> = ({ lang, accessLevel 
 
         <p role="status" className="text-sm text-inherit">
           {publicData.status === 'available' ?
-            (lang === 'de' ? 'Öffentlicher Datenstand: ' : lang === 'it' ? 'Dati pubblici aggiornati: ' : 'Public data revision: ') + publicData.snapshot!.revision :
+            (lang === 'de' ? 'Veröffentlichte Daten verfügbar' : lang === 'it' ? 'Dati pubblicati disponibili' : 'Published data available') :
             (lang === 'de' ? 'Veröffentlichte Widget-Daten derzeit nicht verfügbar.' : lang === 'it' ? 'Dati pubblicati del widget non ancora disponibili.' : 'Published widget data not yet available.') + (publicData.reason ? ' [' + publicData.reason + ']' : '')}
         </p>
 
