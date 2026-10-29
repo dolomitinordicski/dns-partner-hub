@@ -55,7 +55,7 @@ export function PublishedWidgetData({ lang, snapshot, regionName, includeTrails,
           {regionLogos.status === 'ready' && regionLogos.logos.length === 0 && snapshot?.logo?.url?.startsWith('https://') && snapshot.logo.url !== DNS_SHARED_WEB_LOGO_URL && <img src={snapshot.logo.url} alt={snapshot.logo.alt[lang]} className="max-h-16 max-w-36 object-contain" />}
           <div className="min-w-0 flex-1">
             <h3 className={compact ? "text-lg sm:text-xl font-extrabold leading-tight tracking-tight" : "text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight"}>{regionName}</h3>
-            <p className="text-xs mt-1 opacity-80">{snapshot ? tr('Veröffentlichte Daten', 'Dati pubblicati', 'Published data') + ' · ' + snapshot.revision : tr('Noch keine Live-Daten verfügbar', 'Dati live non ancora disponibili', 'Live data not yet available')}</p>
+            <p className="text-xs mt-1 opacity-80">{snapshot ? tr('Aktueller Loipenstatus', 'Stato piste aggiornato', 'Current trail status') : tr('Noch keine Live-Daten verfügbar', 'Dati live non ancora disponibili', 'Live data not yet available')}</p>
           </div>
         </div>
       </header>
